@@ -235,6 +235,35 @@ ul.checklist .pts{margin-left:auto;font-family:var(--font-mono);font-size:.8rem;
 details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:12px 0}
 details summary{cursor:pointer;font-weight:600}
 
+.dag .edge{stroke:var(--line-strong);stroke-width:1.8}
+.dag .edge.path{stroke:var(--ok);stroke-width:3.2}
+.strip{display:flex;flex-wrap:wrap;gap:4px;font-family:var(--font-mono)}
+.strip span{display:flex;flex-direction:column;align-items:center;min-width:32px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2)}
+.strip span small{font-size:.65rem;color:var(--muted)}
+.strip span.cmp{background:var(--hot-soft);border-color:var(--hot)}
+.strip span.in{border-color:var(--hot);border-style:dashed}
+.strip span.best{background:var(--ok-soft);border-color:var(--ok)}
+table.grid td.tv{color:var(--ok);font-weight:700}
+table.grid td.fv{color:var(--muted)}
+.sos{position:fixed;right:20px;bottom:20px;z-index:30;display:flex;align-items:center;gap:9px;background:var(--bad);color:#fff;font-family:var(--font-display);font-weight:800;font-size:1rem;text-decoration:none;padding:12px 18px;border-radius:99px;box-shadow:0 6px 18px rgba(194,47,61,.35),0 0 0 3px var(--surface)}
+.sos:hover{filter:brightness(1.08)}
+.sos.hide{display:none}
+.sos-dot{width:11px;height:11px;border-radius:50%;background:#fff;animation:sosPulse 1.4s ease-in-out infinite}
+@keyframes sosPulse{0%,100%{opacity:1}50%{opacity:.25}}
+.urg-strat{border-color:var(--bad);border-width:2px}
+.flash{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin:10px 0}
+.fcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.fcard.known{border-color:var(--ok);background:var(--ok-soft)}
+.fcard h4{margin:0}
+.fcard .fq{margin:0;color:var(--muted);font-size:.93rem}
+.fcard .fa{font-family:var(--font-mono);font-size:.8rem;background:var(--code-bg);border-radius:8px;padding:9px 11px;white-space:pre-wrap;line-height:1.55;margin:0}
+.fcard .fa.masked{color:transparent;text-shadow:none;user-select:none;position:relative}
+.fcard .fa.masked::after{content:"Clique sur « Voir la réponse »";position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-family:var(--font-body);font-size:.85rem}
+.fcard .row{margin:0}
+ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.plan > div{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:10px;padding:12px 14px}
+.plan p{margin:.3rem 0 0;font-size:.95rem}
 @media (max-width:820px){
   .app{grid-template-columns:1fr}
   .side{position:sticky;top:0;height:auto;z-index:10;flex-direction:row;align-items:center;padding:8px 10px;gap:10px;border-right:0;border-bottom:1px solid var(--line);overflow-x:auto}
@@ -246,6 +275,7 @@ details summary{cursor:pointer;font-weight:600}
   h1{font-size:1.7rem}
   body{font-size:16px}
 }
+@media (max-width:820px){.sos{right:12px;bottom:12px;padding:10px 14px;font-size:.9rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -260,6 +290,9 @@ details summary{cursor:pointer;font-weight:600}
     <a href="#juliette"><span>Juliette</span><small>TD3 · répartir ses heures</small><i class="chip" data-prog="juliette"></i></a>
     <a href="#plsc"><span>PLSC</span><small>TD4 · séquence commune</small><i class="chip" data-prog="plsc"></i></a>
     <a href="#plssc"><span>PLSSC</span><small>TD6 · sous-séquence croissante</small><i class="chip" data-prog="plssc"></i></a>
+    <a href="#arbres"><span>Arbres binaires</span><small>Hors TD · ABR, parcours</small><i class="chip" data-prog="arbres"></i></a>
+    <a href="#palindrome"><span>Sous-chaîne palindrome</span><small>Hors TD · à faire en 90 min</small><i class="chip" data-prog="palindrome"></i></a>
+    <a href="#abropt"><span>ABR de coût minimum</span><small>Cours · dernier chapitre</small><i class="chip" data-prog="abropt"></i></a>
     <a href="#examen"><span>Sujets blancs</span><small>Format partiel, chronométré</small><i class="chip" data-prog="examen"></i></a>
   </nav>
   <div class="side-foot">Ta progression est gardée dans ce navigateur. <button type="button" id="reset-prog">Tout remettre à zéro</button></div>
@@ -275,6 +308,15 @@ details summary{cursor:pointer;font-weight:600}
     <p class="lead">Quatre problèmes au programme, une seule méthode pour tous les résoudre. Chaque chapitre explique l'idée avec des exemples de tous les jours, montre l'algorithme qui remplit son tableau case par case, puis te fait écrire le code comme le jour du partiel.</p>
   </header>
   <div class="cards" id="home-cards"></div>
+  <div class="panel" style="margin-bottom:14px">
+    <h3>Le programme du partiel</h3>
+    <div class="two" style="gap:6px 24px">
+      <div><p><b>TD</b> : feuille 2 ex. 2 et 3 (chemins de coût minimum), feuille 3 (Juliette), feuille 4 (plsc), feuille 6 (plssc).</p>
+      <p><b>Hors TD</b> : exercices sur les <a href="#arbres">arbres binaires</a> et la <a href="#palindrome">plus longue sous-chaîne palindrome</a>. Le prof recommande de traiter ce dernier comme un contrôle : 90 minutes, seul, sans téléphone. Un <a href="#examen">sujet blanc</a> est prévu pour ça.</p></div>
+      <div><p><b>Cours</b> : tout depuis le dernier contrôle, jusqu'au calcul d'un <a href="#abropt">arbre binaire de recherche de coût minimum</a> inclus.</p>
+      <p class="callout warn" style="margin:6px 0"><b>Pas de question sur le Seam Carving.</b> Inutile de le réviser.</p></div>
+    </div>
+  </div>
   <div class="two">
     <div class="panel">
       <h3>Ce qui t'attend le jour J</h3>
@@ -362,6 +404,8 @@ details summary{cursor:pointer;font-weight:600}
       <tr><td>Juliette (TD3)</td><td>m(k,t) : meilleure somme pondérée, t heures sur les k premières unités</td><td>m(0,t) = 0</td><td>m(k,t) = max sur 0 ≤ h ≤ t de m(k−1,t−h) + c(k−1)·e(k−1,h)</td><td>α·n·H²</td></tr>
       <tr><td>PLSC (TD4)</td><td>l(p,q) : longueur d'une plsc des p et q préfixes</td><td>l(0,q) = l(p,0) = 0</td><td>égales : 1+l(p−1,q−1)<br>sinon : max( l(p−1,q), l(p,q−1) )</td><td>Θ(m·n)</td></tr>
       <tr><td>PLSSC (TD6)</td><td>l(j) : longueur d'une plssc qui finit en j</td><td>pred(j) = ∅ : l(j) = 1</td><td>l(j) = 1 + max sur i ∈ pred(j) de l(i)<br>réponse = max des l(j)</td><td>α·n²</td></tr>
+      <tr><td>Sous-chaîne palindrome (hors TD)</td><td>p(i,j) : vrai si S[i:j] est un palindrome</td><td>p(i,i) = vrai<br>p(i,i+1) = vrai</td><td>p(i,j) = ( S[i] == S[j−1] ) et p(i+1, j−1), j − i ≥ 2</td><td>Θ(n²)</td></tr>
+      <tr><td>ABR de coût minimum (cours)</td><td>m(i,j) : coût min d'un ABR sur les clés [i:j]</td><td>m(i,i) = 0</td><td>m(i,j) = σ(i,j) + min sur i ≤ r &lt; j de m(i,r) + m(r+1,j)</td><td>α·n³</td></tr>
     </table></div>
     <button type="button" class="btn primary next-sub" data-go="j">Suite : la boîte à outils Java →</button>
   </div>
@@ -743,6 +787,345 @@ details summary{cursor:pointer;font-weight:600}
   </div>
 </section>
 
+<!-- ============ ARBRES BINAIRES ============ -->
+<section class="view" id="v-arbres" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">Hors TD</p>
+    <h1>Arbres binaires</h1>
+    <p class="lead">Une structure où chaque élément a au plus deux « enfants ». Toutes les fonctions sur les arbres s'écrivent avec la même idée récursive : traiter l'arbre vide, puis combiner les deux sous-arbres.</p>
+  </header>
+  <div class="subtabs" role="tablist">
+    <button type="button" data-sub="c" class="on">Comprendre</button>
+    <button type="button" data-sub="s">Simulateur</button>
+    <button type="button" data-sub="k">Le code</button>
+    <button type="button" data-sub="e">S'entraîner</button>
+  </div>
+
+  <div class="sub prose" data-sub="c">
+    <h2 style="margin-top:0">C'est quoi, un arbre binaire ?</h2>
+    <p>Un arbre binaire est <b>soit vide</b>, <b>soit</b> une <b>racine</b> (une valeur) avec deux sous-arbres, <b>gauche</b> et <b>droit</b>, qui sont eux-mêmes des arbres binaires. La définition se mord la queue, et c'est voulu : c'est pour ça que toutes les fonctions sur les arbres sont récursives.</p>
+    <p class="analogy">Un organigramme où chaque chef a au plus deux adjoints. Le grand patron est la racine, chaque adjoint dirige son propre « sous-organigramme ». Les employés sans adjoint sont les feuilles.</p>
+    <div class="dag-wrap" data-tree="demo"></div>
+    <div class="scroll"><table class="notes">
+      <tr><td>racine</td><td>le nœud tout en haut (ici 50).</td></tr>
+      <tr><td>feuille</td><td>un nœud dont les deux sous-arbres sont vides (ici 20, 35, 60, 80).</td></tr>
+      <tr><td>taille</td><td>le nombre de valeurs (ici 8).</td></tr>
+      <tr><td>hauteur</td><td>le nombre de niveaux (ici 4). Convention de cette page : hauteur(vide) = 0, une feuille seule a hauteur 1. Certains cours prennent −1 pour l'arbre vide : regarde la convention de ton cours, la formule récursive reste la même.</td></tr>
+      <tr><td>profondeur</td><td>la distance à la racine : la racine est à profondeur 0, ses fils à 1, etc.</td></tr>
+    </table></div>
+    <p>En Java, la classe du contrôle 2 :</p>
+    <pre class="code" data-code="ab_class"></pre>
+
+    <h2>La recette pour toutes les fonctions sur les arbres</h2>
+    <ol>
+      <li><b>Cas de base</b> : que vaut le résultat pour l'arbre vide ? (0, false, rien à afficher…)</li>
+      <li><b>Cas général</b> : on suppose qu'on a le résultat pour sag(a) et sad(a) (appels récursifs), et on les combine avec la racine vr(a).</li>
+    </ol>
+    <p class="analogy">Pour compter les employés, le patron demande à chacun de ses deux adjoints « combien vous êtes dans ton équipe ? », additionne les deux réponses, et s'ajoute lui-même. Chaque adjoint fait pareil avec ses propres adjoints.</p>
+    <div class="formula">taille(vide) = 0 &nbsp;&nbsp;·&nbsp;&nbsp; taille(a) = 1 + taille(sag(a)) + taille(sad(a))<br>hauteur(vide) = 0 &nbsp;&nbsp;·&nbsp;&nbsp; hauteur(a) = 1 + max( hauteur(sag(a)), hauteur(sad(a)) )</div>
+
+    <h2>Les trois parcours</h2>
+    <p>Pour afficher toutes les valeurs, on visite la racine et les deux sous-arbres. Seul l'ordre change :</p>
+    <div class="scroll"><table class="notes">
+      <tr><td><b>préfixe</b></td><td>racine, puis gauche, puis droite. Sur l'exemple : 50 30 20 40 35 70 60 80</td></tr>
+      <tr><td><b>infixe</b></td><td>gauche, puis racine, puis droite. Sur l'exemple : 20 30 35 40 50 60 70 80</td></tr>
+      <tr><td><b>suffixe</b></td><td>gauche, puis droite, puis racine. Sur l'exemple : 20 35 40 30 60 80 70 50</td></tr>
+    </table></div>
+    <p>Moyen mnémotechnique : le nom dit <b>où se place la racine</b> (pré = avant, in = au milieu, suf = après).</p>
+
+    <h2>Les arbres binaires de recherche (ABR)</h2>
+    <p>Un ABR est un arbre binaire rangé : pour chaque nœud, <b>toutes</b> les valeurs de son sous-arbre gauche sont plus petites que lui, et <b>toutes</b> celles de son sous-arbre droit sont plus grandes.</p>
+    <p class="analogy">Le jeu « plus grand / plus petit » : on te dit 50, tu sais si ton nombre est à gauche ou à droite, et tu élimines la moitié des possibilités à chaque question.</p>
+    <ul>
+      <li><b>Chercher</b> x : on compare à la racine. Égal : trouvé. Plus petit : on cherche <b>seulement</b> à gauche. Plus grand : seulement à droite.</li>
+      <li><b>Le parcours infixe d'un ABR donne les valeurs dans l'ordre croissant.</b> C'est la fonction <code>ac</code> du contrôle 2.</li>
+      <li><b>Insérer</b> x : on descend comme pour chercher, et on accroche x à l'endroit vide où l'on tombe. La version du cours reconstruit les nœuds sur le chemin : <code>new AB(vr(a), insérer(x, sag(a)), sad(a))</code>.</li>
+      <li><b>Le maximum</b> est tout en bas à droite, le minimum tout en bas à gauche.</li>
+    </ul>
+
+    <h2>L'ABR de hauteur minimum : abrhmin(i, j)</h2>
+    <p>Pour construire l'ABR le plus « tassé » possible avec les valeurs de l'intervalle [i:j] (de i à j−1), on met le <b>milieu</b> m = (i+j)/2 à la racine, puis on recommence à gauche sur [i:m] et à droite sur [m+1:j]. Si i ≥ j, l'intervalle est vide : on retourne l'arbre vide.</p>
+    <p>C'est le même principe que la recherche par dichotomie. Et c'est exactement la structure qu'on réutilise pour l'<a href="#abropt">ABR de coût minimum</a>, en changeant juste le choix de la racine.</p>
+    <button type="button" class="btn primary next-sub" data-go="s">Construire des arbres →</button>
+  </div>
+
+  <div class="sub" data-sub="s" hidden>
+    <h3 style="margin-top:0">Insérer dans un ABR, pas à pas</h3>
+    <div class="sim" id="sim-ab">
+      <div class="sim-inputs">
+        <label class="grow" for="ab-vals">Valeurs à insérer dans l'ordre <input id="ab-vals" type="text" value="50 30 70 20 40 60 80 35"></label>
+        <button type="button" class="btn primary" id="ab-load">Lancer</button>
+        <button type="button" class="btn ghost" id="ab-sorted">Essayer avec des valeurs triées</button>
+      </div>
+      <p class="err" id="ab-err"></p>
+      <div class="pbar"></div><div class="pmsg"></div>
+      <div class="legend"><span class="l-cur">valeur insérée</span><span class="l-path">chemin parcouru</span></div>
+      <div class="sim-view"></div>
+    </div>
+    <h3>abrhmin(i, j) : l'ABR de hauteur minimum</h3>
+    <div class="sim" id="sim-hmin">
+      <div class="sim-inputs">
+        <label for="hm-i">i <input id="hm-i" type="number" value="0" min="0"></label>
+        <label for="hm-j">j <input id="hm-j" type="number" value="7" min="0"></label>
+        <button type="button" class="btn primary" id="hm-go">Construire</button>
+      </div>
+      <p class="err" id="hm-err"></p>
+      <div class="sim-view"></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="k" hidden>
+    <div class="prose">
+    <div class="codeblock"><h3>taille et hauteur</h3><pre class="code" data-code="ab_th"></pre></div>
+    <div class="codeblock"><h3>nombre de feuilles</h3><pre class="code" data-code="ab_feuilles"></pre></div>
+    <div class="codeblock"><h3>Les trois parcours</h3><p class="explain">La seule différence est la place de la ligne qui affiche la racine.</p><pre class="code" data-code="ab_parcours"></pre></div>
+    <div class="codeblock"><h3>Chercher dans un ABR</h3><p class="explain">On ne descend que d'un côté : c'est tout l'intérêt d'un ABR.</p><pre class="code" data-code="ab_appartient"></pre></div>
+    <div class="codeblock"><h3>Maximum d'un ABR</h3><pre class="code" data-code="ab_max"></pre></div>
+    <div class="codeblock"><h3>insérer (contrôle 2, repère : 6 lignes)</h3><pre class="code" data-code="ab_ins"></pre></div>
+    <div class="codeblock"><h3>abrhmin (contrôle 2, repère : 6 lignes)</h3><pre class="code" data-code="ab_hmin"></pre></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="e" hidden>
+    <div class="ex"><h4><span class="kind">À la main</span>Construis l'ABR et parcours-le <span class="done-mark" data-done="hx-arbres"></span></h4><p>Dessine au brouillon l'ABR obtenu en insérant les valeurs dans l'ordre donné, puis réponds. Écris les parcours avec des espaces entre les nombres.</p><div data-hand="arbres"></div></div>
+    <div class="ex"><h4><span class="kind">QCM</span>Arbres binaires <span class="done-mark" data-done="qcm-arbres"></span></h4><div class="qcm" data-qcm="arbres"></div></div>
+    <div data-trous="tr-taille"></div>
+    <div data-trous="tr-hauteur"></div>
+    <div data-trous="tr-appartient"></div>
+    <div data-trous="tr-inserer"></div>
+    <div data-trous="tr-hmin"></div>
+    <div data-write="wr-hauteur"></div>
+    <div data-write="wr-feuilles"></div>
+    <div data-write="wr-appartient"></div>
+    <div data-write="wr-inserer"></div>
+  </div>
+</section>
+
+<!-- ============ PALINDROME ============ -->
+<section class="view" id="v-palindrome" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">Hors TD · à traiter comme un contrôle</p>
+    <h1>Plus longue sous-chaîne palindrome</h1>
+    <p class="lead">Trouver le plus long morceau d'un mot qui se lit pareil dans les deux sens. Dans BANANAS, c'est ANANA.</p>
+  </header>
+  <div class="subtabs" role="tablist">
+    <button type="button" data-sub="c" class="on">Comprendre</button>
+    <button type="button" data-sub="s">Simulateur</button>
+    <button type="button" data-sub="k">Le code</button>
+    <button type="button" data-sub="e">S'entraîner</button>
+  </div>
+
+  <div class="sub prose" data-sub="c">
+    <div class="callout">Le prof recommande de résoudre ce problème <b>comme un contrôle</b> : 90 minutes, seul, sans téléphone. Si tu veux jouer le jeu, ne lis pas cette page avant : lance directement le <a href="#examen">sujet blanc « sous-chaîne palindrome »</a>, puis reviens ici pour comprendre.</div>
+    <p class="note">Je n'ai pas l'énoncé exact du prof. Cette page utilise la méthode classique avec ses notations habituelles (intervalle [i:j], j exclu). Si ton sujet nomme les choses autrement, la logique reste la même.</p>
+    <h2>Palindrome et sous-chaîne</h2>
+    <p>Un <b>palindrome</b> se lit pareil de gauche à droite et de droite à gauche : RADAR, KAYAK, ANANA. Une lettre seule est un palindrome, et le mot vide aussi.</p>
+    <p>Une <b>sous-chaîne</b> est un morceau <b>d'un seul tenant</b> : on ne saute aucune lettre. GORI est une sous-chaîne de ALGORITHME ; AGRT n'en est pas (c'est une sous-séquence, comme dans la PLSC, où l'on pouvait sauter des lettres).</p>
+    <p>En Java, <code>S.substring(i, j)</code> est la sous-chaîne S[i:j], des lettres d'indices i à j−1. Elle a j − i lettres.</p>
+
+    <h2>L'idée : éplucher un oignon</h2>
+    <p class="analogy">Pour vérifier qu'un mot est un palindrome, tu caches la première et la dernière lettre avec tes doigts : si elles sont égales, il reste à vérifier le mot du milieu, et ainsi de suite. Le mot est un palindrome si <b>ses deux lettres du bord sont égales ET si l'intérieur est un palindrome</b>.</p>
+    <div class="formula">RADAR : R = R, et ADA est un palindrome (A = A, et D en est un)<br>ANANAS : A ≠ S, donc ce n'est pas un palindrome</div>
+
+    <h2>Équation de récurrence</h2>
+    <p>S a n lettres. On note <b>p(i,j)</b> la valeur « vrai si la sous-chaîne S[i:j] est un palindrome », pour 0 ≤ i ≤ j ≤ n.</p>
+    <div class="rec"><b>Base</b><span>p(i,i) = vrai, 0 ≤ i ≤ n &nbsp;(chaîne vide)<br>p(i,i+1) = vrai, 0 ≤ i &lt; n &nbsp;(une seule lettre)</span><b>Hérédité</b><span>pour j − i ≥ 2 :<br>p(i,j) = ( S[i] == S[j−1] ) et p(i+1, j−1)</span><b>Réponse</b><span>le plus grand j − i tel que p(i,j) est vrai ; la sous-chaîne est S.substring(i, j)</span></div>
+    <p class="note">S[j−1] est la dernière lettre de S[i:j], car j est exclu. Si ton cours utilise des intervalles fermés S[i..j], remplace j−1 par j : p(i,j) = (S[i] == S[j]) et p(i+1, j−1).</p>
+
+    <h2>Dans quel ordre remplir le tableau ?</h2>
+    <p>p(i,j) a besoin de p(i+1, j−1), qui concerne une sous-chaîne <b>plus courte de 2 lettres</b>. On remplit donc par <b>longueur d = j − i croissante</b> : d'abord les longueurs 0 et 1 (la base), puis 2, puis 3… Dans le tableau, ça revient à remplir les diagonales l'une après l'autre.</p>
+    <p>C'est le même schéma « par longueur d'intervalle » que pour l'<a href="#abropt">ABR de coût minimum</a>.</p>
+
+    <h2>Complexité</h2>
+    <p>Environ n²/2 cases, chacune en temps constant : <b>Θ(n²)</b>. La méthode naïve (tester toutes les sous-chaînes une par une en les relisant) coûte Θ(n³).</p>
+    <button type="button" class="btn primary next-sub" data-go="s">Voir le tableau se remplir →</button>
+  </div>
+
+  <div class="sub" data-sub="s" hidden>
+    <p class="prose">Chaque case (i, j) dit si S[i:j] est un palindrome. On compare les deux lettres du bord (en orange) et on regarde la case de l'intérieur, en bas à gauche en diagonale. À la fin, la plus longue sous-chaîne s'affiche en vert.</p>
+    <div class="sim" id="sim-pal">
+      <div class="sim-inputs">
+        <label for="pal-S">Chaîne S <input id="pal-S" type="text" value="BANANAS" maxlength="14"></label>
+        <button type="button" class="btn primary" id="pal-load">Lancer</button>
+        <button type="button" class="btn ghost" id="pal-ex">Autre exemple</button>
+      </div>
+      <p class="err" id="pal-err"></p>
+      <div class="pbar"></div><div class="pmsg"></div>
+      <div class="legend"><span class="l-cur">case calculée</span><span class="l-dep">case de l'intérieur</span><span class="l-path">plus longue sous-chaîne</span></div>
+      <div class="sim-view"></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="k" hidden>
+    <div class="prose">
+    <div class="codeblock"><h3>calculerP</h3><p class="explain">Les deux bases, puis une boucle sur la longueur d, puis sur le début i ; la fin est j = i + d.</p><pre class="code" data-code="pal_P"></pre></div>
+    <div class="codeblock"><h3>plscp : retourner la plus longue sous-chaîne palindrome</h3><pre class="code" data-code="pal_res"></pre></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="e" hidden>
+    <div class="ex"><h4><span class="kind">À la main</span>Remplis le tableau P <span class="done-mark" data-done="hx-palindrome"></span></h4><p>Les bases sont données. Écris V (vrai) ou F (faux) dans chaque case, en commençant par les petites longueurs (les cases juste au-dessus de la base).</p><div data-hand="palindrome"></div></div>
+    <div class="ex"><h4><span class="kind">QCM</span>Sous-chaîne palindrome <span class="done-mark" data-done="qcm-palindrome"></span></h4><div class="qcm" data-qcm="palindrome"></div></div>
+    <div data-trous="tr-calcP"></div>
+    <div data-trous="tr-plscp"></div>
+    <div data-write="wr-calcP"></div>
+    <div data-write="wr-plscp"></div>
+  </div>
+</section>
+
+<!-- ============ ABR COUT MIN ============ -->
+<section class="view" id="v-abropt" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">Cours · dernier chapitre au programme</p>
+    <h1>Arbre binaire de recherche de coût minimum</h1>
+    <p class="lead">Quand certaines clés sont cherchées beaucoup plus souvent que d'autres, on a intérêt à les placer près de la racine. Quel ABR minimise le nombre total de comparaisons ?</p>
+  </header>
+  <div class="subtabs" role="tablist">
+    <button type="button" data-sub="c" class="on">Comprendre</button>
+    <button type="button" data-sub="s">Simulateur</button>
+    <button type="button" data-sub="k">Le code</button>
+    <button type="button" data-sub="e">S'entraîner</button>
+  </div>
+
+  <div class="sub prose" data-sub="c">
+    <p class="note">Je n'ai pas tes notes de cours sur ce chapitre. Cette page présente la version classique : n clés 0, 1, …, n−1, chaque clé k étant cherchée f(k) fois. Si ton cours ajoute des fréquences pour les recherches qui échouent, la structure de la récurrence est la même ; seule la somme σ change.</p>
+    <h2>Le problème</h2>
+    <p>Chercher une clé à la profondeur p dans un ABR coûte p + 1 comparaisons (la racine est à profondeur 0 : une comparaison). Si la clé k est cherchée f(k) fois, le <b>coût</b> de l'arbre est le nombre total de comparaisons :</p>
+    <div class="formula">coût = Σ f(k) × ( profondeur(k) + 1 )</div>
+    <p class="analogy">Dans un magasin, on met les produits les plus demandés près de l'entrée. Ici on a une contrainte en plus : le rangement doit rester un ABR (plus petit à gauche, plus grand à droite). On ne peut donc pas simplement trier par popularité.</p>
+    <h3>Exemple : 3 clés, f = [5, 1, 1]</h3>
+    <div class="two">
+      <div><div class="dag-wrap" data-tree="ao-eq"></div><p class="note">Arbre équilibré (abrhmin) : 5×2 + 1×1 + 1×2 = <b>13</b></p></div>
+      <div><div class="dag-wrap" data-tree="ao-opt"></div><p class="note">Clé 0 à la racine : 5×1 + 1×2 + 1×3 = <b>10</b></p></div>
+    </div>
+    <p>Le plus équilibré n'est pas le meilleur : la clé 0, très demandée, gagne à être à la racine, même si l'arbre devient penché.</p>
+
+    <h2>Supposons le problème résolu</h2>
+    <p>L'ABR optimal sur les clés [i:j] a une racine r, avec i ≤ r &lt; j. Comme c'est un ABR :</p>
+    <ul>
+      <li>le sous-arbre gauche contient les clés [i:r], et il doit être lui-même optimal (sinon on le remplacerait par un meilleur) ;</li>
+      <li>le sous-arbre droit contient les clés [r+1:j], optimal lui aussi.</li>
+    </ul>
+    <p>Quand on accroche ces deux sous-arbres sous r, chacune de leurs clés descend d'un niveau : elle coûte une comparaison de plus, celle avec r. Et r elle-même coûte 1 comparaison par recherche. Au total, <b>chaque clé de [i:j] paie une comparaison avec la racine</b>, ce qui ajoute la somme de toutes leurs fréquences :</p>
+    <div class="formula">σ(i,j) = f(i) + f(i+1) + … + f(j−1)<br>coût = coût(gauche) + coût(droit) + σ(i,j)</div>
+    <p>On ne sait pas quelle racine r est la bonne, donc on les essaie toutes et on garde la meilleure.</p>
+
+    <h2>Équation de récurrence</h2>
+    <p><b>m(i,j)</b> = coût minimum d'un ABR construit sur les clés de l'intervalle [i:j], pour 0 ≤ i ≤ j ≤ n.</p>
+    <div class="rec"><b>Base</b><span>m(i,i) = 0 &nbsp;(intervalle vide, arbre vide)</span><b>Hérédité</b><span>pour 0 ≤ i &lt; j ≤ n :<br>m(i,j) = σ(i,j) + min sur i ≤ r &lt; j de ( m(i,r) + m(r+1,j) )<br>a(i,j) = le r qui réalise ce minimum : la racine</span><b>Réponse</b><span>m(0,n), et l'arbre se reconstruit à partir de a(0,n)</span></div>
+    <p>m(i,j) n'utilise que des intervalles plus courts : on remplit par <b>longueur d = j − i croissante</b>, comme pour les palindromes. Pour calculer σ vite, on précalcule les sommes cumulées S[k] = f(0) + … + f(k−1) : alors σ(i,j) = S[j] − S[i].</p>
+
+    <h2>Reconstruire l'arbre</h2>
+    <p>Le code ressemble trait pour trait à <code>abrhmin(i, j)</code> du contrôle 2. La seule différence : la racine n'est plus le milieu (i+j)/2, mais la meilleure racine A[i][j].</p>
+    <pre class="code" data-code="ao_abr"></pre>
+
+    <h2>Complexité</h2>
+    <p>Environ n²/2 intervalles, et pour chacun jusqu'à n racines à essayer : de l'ordre de <b>α·n³</b>.</p>
+    <button type="button" class="btn primary next-sub" data-go="s">Voir le calcul →</button>
+  </div>
+
+  <div class="sub" data-sub="s" hidden>
+    <p class="prose">Les tableaux M et A sont remplis diagonale par diagonale. Pour chaque intervalle, on essaie chaque racine r. À la fin, l'arbre optimal se construit, et on vérifie que son coût est bien M[0][n].</p>
+    <div class="sim" id="sim-ao">
+      <div class="sim-inputs">
+        <label class="grow" for="ao-F">Fréquences f(0), f(1), … <input id="ao-F" type="text" value="3 1 6 2 5"></label>
+        <button type="button" class="btn primary" id="ao-load">Lancer</button>
+        <button type="button" class="btn ghost" id="ao-ex">Exemple 5, 1, 1</button>
+      </div>
+      <p class="err" id="ao-err"></p>
+      <div class="pbar"></div><div class="pmsg"></div>
+      <div class="legend"><span class="l-cur">case calculée</span><span class="l-dep">cases essayées</span><span class="l-best">meilleure racine</span><span class="l-path">reconstruction</span></div>
+      <div class="sim-view"></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="k" hidden>
+    <div class="prose">
+    <div class="codeblock"><h3>calculerMA</h3><p class="explain">Sommes cumulées, base sur la diagonale, puis trois boucles : longueur d, début i, racine r.</p><pre class="code" data-code="ao_MA"></pre></div>
+    <div class="codeblock"><h3>abrOpt : construire l'ABR de coût minimum</h3><p class="explain">Appel principal : <code>AB a = abrOpt(A, 0, n);</code></p><pre class="code" data-code="ao_abr"></pre></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="e" hidden>
+    <div class="ex"><h4><span class="kind">À la main</span>Remplis le tableau M <span class="done-mark" data-done="hx-abropt"></span></h4><p>4 clés. La diagonale vaut 0. Remplis par longueur croissante : d'abord les intervalles d'une clé (m(i,i+1) = f(i)), puis de deux, etc. Donne ensuite la racine de l'arbre optimal.</p><div data-hand="abropt"></div></div>
+    <div class="ex"><h4><span class="kind">QCM</span>ABR de coût minimum <span class="done-mark" data-done="qcm-abropt"></span></h4><div class="qcm" data-qcm="abropt"></div></div>
+    <div data-trous="tr-aoMA"></div>
+    <div data-trous="tr-aoAbr"></div>
+    <div data-write="wr-aoMA"></div>
+    <div data-write="wr-aoAbr"></div>
+  </div>
+</section>
+
+<!-- ============ URGENCE ============ -->
+<section class="view" id="v-urgence" hidden>
+  <header class="sec-head">
+    <p class="eyebrow" style="color:var(--bad)">Bouton d'urgence · révision du dernier jour</p>
+    <h1>Le kit de survie pour avoir 10</h1>
+    <p class="lead">Si tu n'as plus qu'une journée, n'essaie pas de tout comprendre. Apprends par cœur ce qui suit : les mêmes morceaux reviennent dans toutes les questions.</p>
+  </header>
+
+  <div class="panel urg-strat">
+    <h3>La stratégie : où sont les 10 points</h3>
+    <p>Le partiel, c'est 4 questions de 5 points, presque toujours dans cet ordre : une fonction utilitaire, la récurrence, la fonction de calcul, la fonction récursive d'affichage.</p>
+    <div class="scroll"><table class="recap">
+      <tr><th>Question</th><th>Ce que tu apprends par cœur</th><th>Points visés</th></tr>
+      <tr><td>Récurrence</td><td>Les 8 cartes ci-dessous (base + hérédité + intervalle)</td><td><b>4 à 5</b></td></tr>
+      <tr><td>Fonction utilitaire</td><td>afficher(G), symetrique(G), le parcours de liste, les fonctions d'arbre</td><td><b>3 à 5</b></td></tr>
+      <tr><td>Fonction de calcul</td><td>Le squelette n°1 : même incomplet, la base, les boucles et le return rapportent</td><td><b>2 à 3</b></td></tr>
+      <tr><td>Affichage récursif</td><td>Le squelette n°2 : 4 lignes, toujours les mêmes</td><td><b>2 à 3</b></td></tr>
+    </table></div>
+    <p class="note">Ces estimations viennent du barème des sujets blancs de cette plateforme, pas du barème officiel du prof. L'idée reste valable : ne laisse <b>jamais</b> une question vide, le squelette seul rapporte des points.</p>
+  </div>
+
+  <h2>1 · Les 8 récurrences à savoir par cœur</h2>
+  <p class="prose">Lis le titre, récite la réponse dans ta tête (ou écris-la), puis clique sur la carte pour vérifier. Marque « Je sais » quand tu la récites sans faute.</p>
+  <div class="row"><button type="button" class="btn" id="urg-hide">Tout cacher</button><button type="button" class="btn" id="urg-show">Tout montrer</button><span class="note" id="urg-count"></span></div>
+  <div class="flash" id="urg-cards"></div>
+
+  <h2>2 · Squelette n°1 : toute fonction de calcul</h2>
+  <p class="prose">calculerM, calculerMA, calculerL, calculerLA, calculerP… ont toutes la même forme. Seuls changent la taille des tableaux, la base et la formule.</p>
+  <pre class="code" data-code="sk_calcul"></pre>
+
+  <h2>3 · Squelette n°2 : toute fonction récursive d'affichage</h2>
+  <p class="prose">acm, aro, plsc, plssc, afficherCheminMinimum : quatre lignes, toujours dans cet ordre.</p>
+  <pre class="code" data-code="sk_affiche"></pre>
+  <p class="prose">Exemple réel, le acm du contrôle 2 :</p>
+  <pre class="code" data-code="ch_ctl_acm"></pre>
+
+  <h2>4 · Les fonctions utilitaires (les points faciles)</h2>
+  <div class="two-col">
+    <div><h5>Parcourir une liste</h5><pre class="code" data-code="parcours"></pre><h5>Afficher un graphe</h5><pre class="code" data-code="afficher"></pre></div>
+    <div><h5>Graphe symétrique</h5><pre class="code" data-code="symetrique"></pre></div>
+  </div>
+  <div class="two-col">
+    <div><h5>Taille et hauteur</h5><pre class="code" data-code="ab_th"></pre><h5>abrhmin</h5><pre class="code" data-code="ab_hmin"></pre></div>
+    <div><h5>Insérer dans un ABR</h5><pre class="code" data-code="ab_ins"></pre><h5>Parcours infixe (ordre croissant)</h5><pre class="code" data-code="abr_ac"></pre></div>
+  </div>
+
+  <h2>5 · Les 10 pièges qui coûtent des points</h2>
+  <ol class="pieges">
+    <li><b>n+1</b> pour la taille quand il existe un cas « 0 élément » : <code>M[n+1][H+1]</code>, <code>L[m+1][n+1]</code>, <code>P[n+1][n+1]</code>.</li>
+    <li>Le k-ième élément a l'indice <b>k−1</b> : <code>C[k-1]</code>, <code>T.charAt(p-1)</code>.</li>
+    <li>String : <code>T.length()</code> avec parenthèses. Tableau : <code>t.length</code> sans.</li>
+    <li>Dans l'affichage récursif, l'<b>appel d'abord</b>, l'affichage ensuite.</li>
+    <li>Un minimum démarre à <code>Integer.MAX_VALUE</code>, un maximum à <code>Integer.MIN_VALUE</code>.</li>
+    <li>On garde le meilleur <b>et</b> son arg dans le même if : <code>if (m &lt; mj){ mj = m; aj = i; }</code></li>
+    <li>Retourner deux tableaux : <code>return new int[][] {M, A};</code> (et <code>int[][][]</code> pour deux tableaux 2D).</li>
+    <li>PLSSC : la réponse est le <b>max de tous les L[j]</b>, pas L[n−1].</li>
+    <li>Prédécesseurs = graphe symétrique : <code>Gp[j]</code>, jamais <code>G[j]</code>.</li>
+    <li>Dans une récurrence, écris <b>toujours</b> l'intervalle des indices (1 ≤ j &lt; n…). Il est noté.</li>
+  </ol>
+
+  <h2>6 · Le plan du dernier jour</h2>
+  <div class="plan">
+    <div><b>Matin · 2 h</b><p>Les deux squelettes et les fonctions utilitaires : lis-les, puis réécris-les de mémoire sur une feuille, 3 fois chacun, jusqu'à zéro erreur.</p></div>
+    <div><b>Après-midi · 2 h</b><p>Les 8 cartes de récurrence jusqu'à toutes les savoir, puis les <b>codes à trous</b> de chaque chapitre (onglet S'entraîner).</p></div>
+    <div><b>Soir · 1 h 30</b><p>Un sujet blanc chronométré : l'<a href="#examen">annale du contrôle 2</a>. Corrige-toi avec le barème et relis seulement ce que tu as raté.</p></div>
+    <div><b>Avant de dormir · 15 min</b><p>Relis les 10 pièges et les cartes. Puis dors : une nuit de sommeil fixe mieux ce que tu as appris qu'une heure de plus.</p></div>
+  </div>
+  <div class="callout warn" style="margin-top:18px"><b>Le jour J :</b> commence par la question de récurrence, puis la fonction utilitaire. Pour les deux autres, écris d'abord le squelette (base, boucles, return) puis complète ce que tu peux.</div>
+</section>
+
 <!-- ============ EXAMEN ============ -->
 <section class="view" id="v-examen" hidden>
   <header class="sec-head">
@@ -754,6 +1137,7 @@ details summary{cursor:pointer;font-weight:600}
 </section>
 
 </main>
+<a class="sos" href="#urgence" id="sos-btn"><span class="sos-dot" aria-hidden="true"></span>Urgence · objectif 10/20</a>
 </div>
 <script>
 // ===================== DONNÉES =====================
@@ -1289,8 +1673,285 @@ const TOPICS = [
  {id:'juliette',tag:'TD3',title:'Juliette optimise ses révisions',desc:'Répartir H heures entre n matières pour la meilleure moyenne.'},
  {id:'plsc',tag:'TD4',title:'Plus longue séquence commune',desc:'Le plus long mot obtenu en barrant des lettres dans deux mots.'},
  {id:'plssc',tag:'TD6',title:'Plus longue sous-séquence croissante',desc:'Garder le plus de nombres possible, dans l\'ordre, en montant toujours.'},
- {id:'examen',tag:'Entraînement final',title:'Sujets blancs',desc:'5 sujets chronométrés au format du partiel, avec barème d\'auto-correction.'}
+ {id:'arbres',tag:'Hors TD',title:'Arbres binaires',desc:'Taille, hauteur, parcours, ABR, insertion, arbre de hauteur minimum.'},
+ {id:'palindrome',tag:'Hors TD · à faire en 90 min',title:'Plus longue sous-chaîne palindrome',desc:'Le plus long morceau d\'un mot qui se lit dans les deux sens.'},
+ {id:'abropt',tag:'Cours · dernier chapitre',title:'ABR de coût minimum',desc:'Placer les clés les plus cherchées près de la racine, au mieux.'},
+ {id:'examen',tag:'Entraînement final',title:'Sujets blancs',desc:'8 sujets chronométrés au format du partiel, avec barème d\'auto-correction.'}
 ];
+// ===================== DONNÉES : arbres, palindrome, ABR de coût minimum =====================
+Object.assign(CODES, {
+ab_class: `static class AB{                 // arbre binaire
+    int vr; AB g, d;               // valeur de la racine, sous-arbres gauche et droit
+    AB(int vr, AB g, AB d){ this.vr = vr; this.g = g; this.d = d; }
+}
+static boolean vide(AB a){ return a == null; }   // l'arbre vide, c'est null
+static int vr(AB a){ return a.vr; }              // valeur de la racine
+static AB sag(AB a){ return a.g; }               // sous-arbre gauche
+static AB sad(AB a){ return a.d; }               // sous-arbre droit`,
+ab_th: `static int taille(AB a){             // nombre de valeurs
+    if (vide(a)) return 0;
+    return 1 + taille(sag(a)) + taille(sad(a));
+}
+static int hauteur(AB a){            // nombre de niveaux
+    if (vide(a)) return 0;
+    return 1 + Math.max(hauteur(sag(a)), hauteur(sad(a)));
+}`,
+ab_hauteur: `static int hauteur(AB a){            // nombre de niveaux
+    if (vide(a)) return 0;
+    return 1 + Math.max(hauteur(sag(a)), hauteur(sad(a)));
+}`,
+ab_feuilles: `static int nbFeuilles(AB a){
+    if (vide(a)) return 0;
+    if (vide(sag(a)) && vide(sad(a))) return 1;     // a est une feuille
+    return nbFeuilles(sag(a)) + nbFeuilles(sad(a));
+}`,
+ab_parcours: `static void prefixe(AB a){           // racine, gauche, droite
+    if (vide(a)) return;
+    System.out.print(vr(a) + " ");
+    prefixe(sag(a));
+    prefixe(sad(a));
+}
+static void infixe(AB a){            // gauche, racine, droite (= ac du contrôle 2)
+    if (vide(a)) return;
+    infixe(sag(a));
+    System.out.print(vr(a) + " ");
+    infixe(sad(a));
+}
+static void suffixe(AB a){           // gauche, droite, racine
+    if (vide(a)) return;
+    suffixe(sag(a));
+    suffixe(sad(a));
+    System.out.print(vr(a) + " ");
+}`,
+ab_appartient: `static boolean appartient(int x, AB a){   // a est un ABR
+    if (vide(a)) return false;
+    if (x == vr(a)) return true;
+    if (x < vr(a)) return appartient(x, sag(a));   // x ne peut être qu'à gauche
+    return appartient(x, sad(a));                  // x ne peut être qu'à droite
+}`,
+ab_max: `static int max(AB a){                // a est un ABR non vide
+    if (vide(sad(a))) return vr(a);    // rien de plus grand à droite
+    return max(sad(a));
+}`,
+ab_ins: `static AB insérer(int x, AB a){
+    if (vide(a)) return new AB(x, null, null);       // place libre : nouvelle feuille
+    if (x == vr(a)) return a;                         // déjà présent
+    if (x < vr(a)) return new AB(vr(a), insérer(x, sag(a)), sad(a));
+    return new AB(vr(a), sag(a), insérer(x, sad(a)));
+}`,
+ab_hmin: `static AB abrhmin(int i, int j){      // ABR de hauteur min sur [i:j]
+    if (i >= j) return null;           // intervalle vide
+    int m = (i + j) / 2;               // le milieu à la racine
+    return new AB(m, abrhmin(i, m), abrhmin(m+1, j));
+}`,
+pal_P: `static boolean[][] calculerP(String S){ int n = S.length();
+    boolean[][] P = new boolean[n+1][n+1];      // P[i][j] = p(i,j)
+    for (int i = 0; i < n+1; i++) P[i][i] = true;    // base : chaîne vide
+    for (int i = 0; i < n; i++) P[i][i+1] = true;    // base : une lettre
+    for (int d = 2; d < n+1; d++)                    // longueur d = j - i croissante
+        for (int i = 0; i + d < n+1; i++){
+            int j = i + d;
+            P[i][j] = S.charAt(i) == S.charAt(j-1) && P[i+1][j-1];
+        }
+    return P;
+}   // temps : Theta(n²)`,
+pal_res: `static String plscp(String S){ int n = S.length();
+    boolean[][] P = calculerP(S);
+    int bi = 0, bj = 0;                     // meilleure sous-chaîne : S[bi:bj]
+    for (int i = 0; i < n+1; i++)
+        for (int j = i; j < n+1; j++)
+            if (P[i][j] && j - i > bj - bi){ bi = i; bj = j; }
+    return S.substring(bi, bj);
+}`,
+ao_MA: `static int[][][] calculerMA(int[] F){ int n = F.length;
+    int[] S = new int[n+1];                    // S[k] = F[0] + ... + F[k-1]
+    for (int k = 0; k < n; k++) S[k+1] = S[k] + F[k];
+    int[][] M = new int[n+1][n+1], A = new int[n+1][n+1];
+    for (int i = 0; i < n+1; i++) M[i][i] = 0;          // base : intervalle vide
+    for (int d = 1; d < n+1; d++)                       // longueur d = j - i croissante
+        for (int i = 0; i + d < n+1; i++){ int j = i + d;
+            M[i][j] = Integer.MAX_VALUE;
+            for (int r = i; r < j; r++){                // r = racine essayée
+                int m = M[i][r] + M[r+1][j];
+                if (m < M[i][j]){ M[i][j] = m; A[i][j] = r; }
+            }
+            M[i][j] = M[i][j] + (S[j] - S[i]);          // + sigma(i,j)
+        }
+    return new int[][][] {M, A};
+}   // temps : de l'ordre de n³`,
+ao_abr: `static AB abrOpt(int[][] A, int i, int j){   // ABR de coût min sur [i:j]
+    if (i >= j) return null;                  // intervalle vide
+    int r = A[i][j];                          // la meilleure racine
+    return new AB(r, abrOpt(A, i, r), abrOpt(A, r+1, j));
+}`,
+rec_pal: `p(i,j) = vrai si la sous-chaîne S[i:j] (lettres i à j-1) est un palindrome.
+Base :      p(i,i) = vrai       pour 0 ≤ i ≤ n   (chaîne vide)
+            p(i,i+1) = vrai     pour 0 ≤ i < n   (une seule lettre)
+Hérédité :  pour 0 ≤ i, j ≤ n, j - i ≥ 2 :
+            p(i,j) = ( S[i] == S[j-1] ) et p(i+1, j-1)
+On remplit par longueur j - i croissante.
+Réponse : le plus grand j - i tel que p(i,j) est vrai.`,
+rec_ao: `m(i,j) = coût minimum d'un ABR construit sur les clés [i:j] (i à j-1).
+sigma(i,j) = f(i) + f(i+1) + ... + f(j-1)
+Base :      m(i,i) = 0          (intervalle vide, arbre vide)
+Hérédité :  pour 0 ≤ i < j ≤ n :
+            m(i,j) = sigma(i,j) + min sur i ≤ r < j de ( m(i,r) + m(r+1,j) )
+            a(i,j) = le r qui donne ce minimum (la racine)`,
+ans_pal1: `BANANAS : ANANA (S[1:6], longueur 5)
+ABCCBX  : BCCB  (S[1:5], longueur 4)`,
+ans_ao1: `Arbre équilibré, racine 1 : 5×2 + 1×1 + 1×2 = 13
+Racine 0, puis 1 à droite, puis 2 à droite : 5×1 + 1×2 + 1×3 = 10
+Le second est meilleur : la clé 0, très demandée, est à la racine.`
+});
+
+Object.assign(CHECKS, {
+ab_th: [['taille : vide → 0, sinon 1 + taille(sag) + taille(sad)',2],['hauteur : vide → 0, sinon 1 + max des deux hauteurs',2]],
+ab_hauteur: [['Cas vide : return 0',1],['1 + Math.max(hauteur(sag(a)), hauteur(sad(a)))',2],['Fonction récursive sur les deux sous-arbres, sans boucle',1]],
+ab_feuilles: [['Cas vide : 0',1],['Feuille (sag et sad vides) : 1',1.5],['Sinon : nbFeuilles(sag) + nbFeuilles(sad)',1.5]],
+ab_parcours: [['Cas vide : return',1],['Infixe : gauche, racine, droite',1.5],['Préfixe (racine d\'abord) et suffixe (racine à la fin)',1.5]],
+ab_appartient: [['Cas vide : false',1],['x == vr(a) : true',1],['Ne descend que d\'un côté selon x < vr(a)',2]],
+ab_ins: [['Vide → new AB(x, null, null)',1],['x == vr(a) → a',0.5],['x < vr : new AB(vr(a), insérer(x, sag(a)), sad(a))',1.5],['Sinon : new AB(vr(a), sag(a), insérer(x, sad(a)))',1]],
+ab_hmin: [['i ≥ j → null',1],['m = (i + j) / 2',1],['new AB(m, abrhmin(i, m), abrhmin(m+1, j))',2]],
+pal_P: [['P = new boolean[n+1][n+1]',1],['Bases : P[i][i] et P[i][i+1] à vrai',1.5],['Boucle sur la longueur d croissante, puis i, avec j = i + d ≤ n',2],['P[i][j] = S.charAt(i) == S.charAt(j−1) && P[i+1][j−1]',2],['return P',0.5]],
+pal_res: [['Appelle calculerP(S)',0.5],['Parcourt tous les couples i ≤ j',1.5],['Garde le plus grand j − i avec P[i][j] vrai, et ses bornes',2],['Retourne S.substring(bi, bj)',1]],
+rec_pal: [['Définition : p(i,j) vrai si S[i:j] est un palindrome',1],['Bases : p(i,i) et p(i,i+1) vrais',1.5],['Hérédité : S[i] == S[j−1] et p(i+1, j−1)',2],['Ordre par longueur croissante / condition j − i ≥ 2',0.5]],
+ans_pal1: [['BANANAS → ANANA',1.5],['ABCCBX → BCCB',1.5]],
+ao_MA: [['Sommes cumulées (ou calcul de σ)',1],['M et A de taille [n+1][n+1], base M[i][i] = 0',1],['Boucles : longueur d croissante, puis i, avec j = i + d',1.5],['Boucle r de i à j−1 : M[i][r] + M[r+1][j], garde le min et A[i][j] = r',1.5],['Ajoute σ(i,j), retourne {M, A}',1]],
+ao_abr: [['i ≥ j → null',1.5],['r = A[i][j]',1],['new AB(r, abrOpt(A, i, r), abrOpt(A, r+1, j))',2.5]],
+rec_ao: [['Définition de m(i,j) sur l\'intervalle [i:j]',1],['Base : m(i,i) = 0',1],['Hérédité : σ(i,j) + min sur i ≤ r < j de m(i,r) + m(r+1,j)',2.5],['σ(i,j) = f(i) + … + f(j−1)',0.5]],
+ans_ao1: [['Arbre équilibré : coût 13',1.5],['Arbre 0 → 1 → 2 : coût 10',1.5],['Conclusion : le second est meilleur',1]]
+});
+
+Object.assign(QCM, {
+arbres: [
+ ['Une feuille est un nœud…',['dont les deux sous-arbres sont vides','qui n\'a pas de valeur','qui est la racine','qui a exactement un fils'],'Une feuille est tout en bas : rien à gauche, rien à droite.'],
+ ['Dans un ABR, toutes les valeurs du sous-arbre gauche d\'un nœud sont…',['plus petites que ce nœud','plus grandes que ce nœud','paires','quelconques'],'Plus petit à gauche, plus grand à droite, et ce pour chaque nœud.'],
+ ['Le parcours infixe d\'un ABR affiche les valeurs…',['dans l\'ordre croissant','dans l\'ordre d\'insertion','dans l\'ordre décroissant','niveau par niveau'],'Gauche (les plus petits), puis la racine, puis droite (les plus grands), récursivement.'],
+ ['Pour a non vide, taille(a) = ?',['1 + taille(sag(a)) + taille(sad(a))','taille(sag(a)) + taille(sad(a))','1 + max( taille(sag(a)), taille(sad(a)) )','2 × taille(sag(a))'],'On compte la racine (1) plus tout ce qu\'il y a à gauche et à droite.'],
+ ['Pour a non vide, hauteur(a) = ?',['1 + max( hauteur(sag(a)), hauteur(sad(a)) )','1 + hauteur(sag(a)) + hauteur(sad(a))','max( hauteur(sag(a)), hauteur(sad(a)) )','taille(a) − 1'],'Le niveau de la racine, plus le plus haut des deux sous-arbres.'],
+ ['On insère 50, 30, 70, 20, 40 dans un ABR vide. Parcours préfixe ?',['50 30 20 40 70','20 30 40 50 70','20 40 30 70 50','50 30 70 20 40'],'Racine 50, puis tout le sous-arbre gauche (30, puis 20, puis 40), puis le droit (70).'],
+ ['abrhmin(0, 7) met à la racine…',['3, le milieu (0 + 7) / 2','0','7','4'],'Division entière : 7 / 2 = 3. L\'intervalle [0:7] contient 0 à 6, dont le milieu est 3.'],
+ ['Chercher une valeur dans un ABR bien équilibré de n valeurs demande environ…',['log₂(n) comparaisons','n comparaisons','n² comparaisons','1 comparaison'],'Chaque comparaison élimine la moitié des valeurs restantes, comme au jeu « plus grand, plus petit ».'],
+ ['Dans insérer(x, a), si x < vr(a), on retourne…',['new AB(vr(a), insérer(x, sag(a)), sad(a))','insérer(x, sag(a))','new AB(x, sag(a), sad(a))','new AB(vr(a), sag(a), insérer(x, sad(a)))'],'On recrée la racine avec sa valeur et son sous-arbre droit, et un sous-arbre gauche qui contient x. Retourner seulement insérer(x, sag(a)) perdrait la racine.']
+],
+palindrome: [
+ ['Laquelle est une sous-chaîne de ALGORITHME ?',['GORI','AGRT','LOGA','EMHT'],'GORI est un morceau d\'un seul tenant. AGRT saute des lettres : c\'est une sous-séquence, pas une sous-chaîne.'],
+ ['Plus longue sous-chaîne palindrome de BANANAS ?',['ANANA','BANANAB','NAN','ANA'],'ANANA (indices 1 à 5) se lit dans les deux sens. BANANAB n\'est pas dans le mot.'],
+ ['Pour j − i ≥ 2, p(i,j) = ?',['( S[i] == S[j−1] ) et p(i+1, j−1)','S[i] == S[j]','p(i+1, j) ou p(i, j−1)','( S[i] == S[j−1] ) ou p(i+1, j−1)'],'Les deux lettres du bord doivent être égales ET l\'intérieur doit être un palindrome. j est exclu, donc la dernière lettre est S[j−1].'],
+ ['Pourquoi remplit-on P par longueur d = j − i croissante ?',['p(i,j) utilise p(i+1, j−1), une sous-chaîne plus courte de 2 lettres','Pour aller plus vite','Parce que i doit être croissant','C\'est imposé par Java'],'Quand on calcule une case, la case de l\'intérieur (plus courte) doit déjà être remplie.'],
+ ['Les cas de base sont…',['p(i,i) = vrai (vide) et p(i,i+1) = vrai (une lettre)','p(i,i) = faux','p(0,n) = vrai','il n\'y a pas de base'],'Le vide et une lettre seule se lisent pareil dans les deux sens.'],
+ ['Complexité du calcul de P ?',['Θ(n²)','Θ(n)','Θ(n³)','Θ(2ⁿ)'],'Environ n²/2 cases, chacune en temps constant.'],
+ ['Quelle différence entre sous-chaîne et sous-séquence ?',['Une sous-chaîne est d\'un seul tenant : on ne saute pas de lettre','Aucune','Une sous-séquence est toujours plus courte','Une sous-chaîne peut changer l\'ordre des lettres'],'Dans la PLSC (sous-séquence) on pouvait sauter des lettres ; ici non.'],
+ ['S.substring(i, j) donne…',['les lettres d\'indices i à j−1','les lettres d\'indices i à j','j lettres à partir de i','la lettre i et la lettre j'],'La borne j est exclue, comme dans la notation [i:j] du prof.']
+],
+abropt: [
+ ['Le coût d\'un ABR, c\'est…',['Σ f(k) × (profondeur(k) + 1), le nombre total de comparaisons','sa hauteur','son nombre de nœuds','la somme des clés'],'Une clé à la profondeur p coûte p + 1 comparaisons à chacune de ses f(k) recherches.'],
+ ['Pourquoi l\'arbre le plus équilibré (abrhmin) n\'est-il pas toujours optimal ?',['Une clé très demandée gagne à être près de la racine, même si l\'arbre devient penché','Il est toujours optimal','Ce n\'est pas un ABR','Il est trop haut'],'Avec f = [5, 1, 1], l\'arbre équilibré coûte 13 et l\'arbre racine 0 coûte 10.'],
+ ['Si la racine de l\'ABR sur [i:j] est r, le sous-arbre gauche contient…',['les clés [i:r], de i à r−1','les clés [i:j]','les clés r+1 à j−1','les clés plus grandes que r'],'C\'est un ABR : à gauche tout ce qui est plus petit que r dans l\'intervalle.'],
+ ['Dans m(i,j) = σ(i,j) + min(…), à quoi sert σ(i,j) ?',['Chaque clé de [i:j] fait une comparaison avec la racine : on ajoute toutes leurs fréquences','À compter les nœuds','À calculer la hauteur','À rien, on peut l\'enlever'],'En accrochant les sous-arbres sous r, chaque clé descend d\'un niveau ; r elle-même coûte 1 par recherche.'],
+ ['Que vaut m(i,i) ?',['0 : intervalle vide, arbre vide','f(i)','1','+∞'],'Il n\'y a aucune clé, donc aucune recherche à payer.'],
+ ['Dans quel ordre remplit-on M ?',['Par longueur d = j − i croissante','Par i croissant, puis j croissant','Par j décroissant','Dans n\'importe quel ordre'],'m(i,j) utilise m(i,r) et m(r+1,j), des intervalles plus courts.'],
+ ['Complexité de calculerMA ?',['De l\'ordre de n³','De l\'ordre de n²','De l\'ordre de n','De l\'ordre de n log n'],'Environ n²/2 intervalles et jusqu\'à n racines essayées pour chacun.'],
+ ['abrOpt(A, i, j) ressemble à abrhmin(i, j), sauf que…',['la racine est A[i][j] au lieu du milieu (i + j) / 2','on trie les clés avant','on n\'utilise pas la récursivité','les sous-arbres sont inversés'],'Même structure récursive : seule la façon de choisir la racine change.']
+]
+});
+
+TROUS.push(
+ {id:'tr-taille',topic:'arbres',title:'taille',code:`static int taille(AB a){
+    if (⟦vide(a)‖a == null⟧) return ⟦0⟧;
+    return ⟦1⟧ + taille(⟦sag(a)⟧) + taille(⟦sad(a)⟧);
+}`},
+ {id:'tr-hauteur',topic:'arbres',title:'hauteur',code:`static int hauteur(AB a){
+    if (vide(a)) return ⟦0⟧;
+    return ⟦1⟧ + ⟦Math.max⟧(hauteur(⟦sag(a)⟧), hauteur(⟦sad(a)⟧));
+}`},
+ {id:'tr-appartient',topic:'arbres',title:'appartient (dans un ABR)',code:`static boolean appartient(int x, AB a){
+    if (vide(a)) return ⟦false⟧;
+    if (x == vr(a)) return ⟦true⟧;
+    if (⟦x < vr(a)‖vr(a) > x⟧) return appartient(x, ⟦sag(a)⟧);
+    return appartient(x, ⟦sad(a)⟧);
+}`},
+ {id:'tr-inserer',topic:'arbres',title:'insérer',code:`static AB insérer(int x, AB a){
+    if (vide(a)) return ⟦new AB(x, null, null)⟧;
+    if (x == vr(a)) return ⟦a⟧;
+    if (x < vr(a)) return new AB(vr(a), ⟦insérer(x, sag(a))⟧, ⟦sad(a)⟧);
+    return new AB(vr(a), ⟦sag(a)⟧, ⟦insérer(x, sad(a))⟧);
+}`},
+ {id:'tr-hmin',topic:'arbres',title:'abrhmin',code:`static AB abrhmin(int i, int j){
+    if (⟦i >= j‖j <= i‖i == j⟧) return null;
+    int m = ⟦(i + j) / 2⟧;
+    return new AB(⟦m⟧, abrhmin(⟦i⟧, ⟦m⟧), abrhmin(⟦m+1⟧, ⟦j⟧));
+}`},
+ {id:'tr-calcP',topic:'palindrome',title:'calculerP',code:`static boolean[][] calculerP(String S){ int n = ⟦S.length()⟧;
+    boolean[][] P = new boolean[⟦n+1⟧][n+1];
+    for (int i = 0; i < n+1; i++) P[i][i] = ⟦true⟧;
+    for (int i = 0; i < n; i++) P[i][⟦i+1⟧] = true;
+    for (int d = ⟦2⟧; d < n+1; d++)
+        for (int i = 0; i + d < n+1; i++){
+            int j = ⟦i + d‖d + i⟧;
+            P[i][j] = S.charAt(⟦i⟧) == S.charAt(⟦j-1⟧) && P[⟦i+1⟧][⟦j-1⟧];
+        }
+    return P;
+}`},
+ {id:'tr-plscp',topic:'palindrome',title:'plscp',code:`static String plscp(String S){ int n = S.length();
+    boolean[][] P = ⟦calculerP(S)⟧;
+    int bi = 0, bj = 0;
+    for (int i = 0; i < n+1; i++)
+        for (int j = ⟦i⟧; j < n+1; j++)
+            if (⟦P[i][j]‖P[i][j] == true⟧ && j - i > ⟦bj - bi⟧){ bi = i; bj = j; }
+    return S.substring(⟦bi⟧, ⟦bj⟧);
+}`},
+ {id:'tr-aoMA',topic:'abropt',title:'le cœur de calculerMA',code:`for (int d = 1; d < n+1; d++)
+    for (int i = 0; i + d < n+1; i++){ int j = ⟦i + d‖d + i⟧;
+        M[i][j] = Integer.MAX_VALUE;
+        for (int r = ⟦i⟧; r < ⟦j⟧; r++){
+            int m = M[i][⟦r⟧] + M[⟦r+1⟧][j];
+            if (m < M[i][j]){ M[i][j] = m; A[i][j] = ⟦r⟧; }
+        }
+        M[i][j] = M[i][j] + ⟦S[j] - S[i]⟧;
+    }`},
+ {id:'tr-aoAbr',topic:'abropt',title:'abrOpt',code:`static AB abrOpt(int[][] A, int i, int j){
+    if (⟦i >= j‖j <= i‖i == j⟧) return null;
+    int r = ⟦A[i][j]⟧;
+    return new AB(⟦r⟧, abrOpt(A, ⟦i⟧, ⟦r⟧), abrOpt(A, ⟦r+1⟧, ⟦j⟧));
+}`}
+);
+
+WRITES.push(
+ {id:'wr-hauteur',topic:'arbres',sol:'ab_hauteur',title:'Écris hauteur(AB a)',enonce:'Écris <code>int hauteur(AB a)</code> qui retourne le nombre de niveaux de l\'arbre (0 pour l\'arbre vide). Repère : 4 lignes.'},
+ {id:'wr-feuilles',topic:'arbres',sol:'ab_feuilles',title:'Écris nbFeuilles(AB a)',enonce:'Écris <code>int nbFeuilles(AB a)</code> qui retourne le nombre de feuilles de l\'arbre a.'},
+ {id:'wr-appartient',topic:'arbres',sol:'ab_appartient',title:'Écris appartient(int x, AB a)',enonce:'a est un ABR. Écris <code>boolean appartient(int x, AB a)</code> qui dit si x est dans a, sans parcourir tout l\'arbre.'},
+ {id:'wr-inserer',topic:'arbres',sol:'ab_ins',title:'Écris insérer(int x, AB a)',enonce:'Écris <code>AB insérer(int x, AB a)</code> qui retourne l\'ABR a dans lequel x a été inséré. Distingue 4 cas : vide(a), x == vr(a), x &lt; vr(a), x &gt; vr(a). Repère : 6 lignes.'},
+ {id:'wr-calcP',topic:'palindrome',sol:'pal_P',title:'Écris calculerP(String S)',enonce:'Écris <code>boolean[][] calculerP(String S)</code> qui retourne P[0:n+1][0:n+1] avec P[i][j] vrai si S[i:j] est un palindrome.'},
+ {id:'wr-plscp',topic:'palindrome',sol:'pal_res',title:'Écris plscp(String S)',enonce:'Écris <code>String plscp(String S)</code> qui retourne une plus longue sous-chaîne palindrome de S, en utilisant calculerP.'},
+ {id:'wr-aoMA',topic:'abropt',sol:'ao_MA',title:'Écris calculerMA(int[] F)',enonce:'Les fréquences des clés 0 à n−1 sont dans F[0:n]. Écris <code>int[][][] calculerMA(int[] F)</code> qui retourne M (M[i][j] = m(i,j)) et A (A[i][j] = racine optimale sur [i:j]).'},
+ {id:'wr-aoAbr',topic:'abropt',sol:'ao_abr',title:'Écris abrOpt(A, i, j)',enonce:'Écris <code>AB abrOpt(int[][] A, int i, int j)</code> qui retourne l\'ABR de coût minimum sur les clés [i:j]. Appel principal : <code>abrOpt(A, 0, n)</code>.'}
+);
+
+// sujets blancs (ajoutés après les autres ; le palindrome est mis en avant)
+SUJETS.splice(1, 0,
+ {id:'pa',tag:'Hors TD · recommandé par le prof',titre:'Plus longue sous-chaîne palindrome',desc:'À faire en conditions réelles : 90 minutes, seul, sans téléphone. Exemples à la main, récurrence, calculerP, plscp.',intro:'<p>Un palindrome est une chaîne qui se lit de la même façon de gauche à droite et de droite à gauche (RADAR, KAYAK). Une sous-chaîne de S est une suite de lettres <b>consécutives</b> de S. La chaîne S a n lettres ; S[i:j] désigne la sous-chaîne des lettres d\'indices i à j−1 (en Java : <code>S.substring(i, j)</code>). On cherche une plus longue sous-chaîne de S qui soit un palindrome.</p><p class="note">Sujet blanc écrit à partir de la méthode classique ; l\'énoncé du prof peut nommer les choses autrement.</p>',q:[
+  {pts:3,enonce:'Donner une plus longue sous-chaîne palindrome de BANANAS, puis de ABCCBX.',sol:'ans_pal1'},
+  {pts:5,enonce:'On note p(i,j) la valeur « S[i:j] est un palindrome », 0 ≤ i ≤ j ≤ n. Donner l\'équation de récurrence de p(i,j) : cas de base et hérédité. Dans quel ordre faut-il calculer les valeurs ?',sol:'rec_pal'},
+  {pts:7,enonce:'Écrire <code>boolean[][] calculerP(String S)</code> qui calcule et retourne le tableau P[0:n+1][0:n+1] de terme général P[i][j] = p(i,j).',sol:'pal_P'},
+  {pts:5,enonce:'Écrire <code>String plscp(String S)</code> qui retourne une plus longue sous-chaîne palindrome de S.',sol:'pal_res'}
+ ]}
+);
+SUJETS.push(
+ {id:'ab',tag:'Sujet blanc · hors TD',titre:'Arbres binaires',desc:'Cinq petites fonctions récursives : taille et hauteur, recherche, parcours, insertion, abrhmin.',intro:'<p>On utilise la classe <code>AB</code> du cours, avec <code>vide(a)</code>, <code>vr(a)</code>, <code>sag(a)</code> et <code>sad(a)</code>. Un arbre binaire de recherche (ABR) est un arbre où, pour chaque nœud, les valeurs du sous-arbre gauche sont plus petites et celles du sous-arbre droit plus grandes.</p>',q:[
+  {pts:4,enonce:'Écrire <code>int taille(AB a)</code> (nombre de valeurs) et <code>int hauteur(AB a)</code> (nombre de niveaux, 0 pour l\'arbre vide).',sol:'ab_th'},
+  {pts:4,enonce:'a est un ABR. Écrire <code>boolean appartient(int x, AB a)</code> sans parcourir tout l\'arbre.',sol:'ab_appartient'},
+  {pts:4,enonce:'Écrire les trois parcours <code>prefixe</code>, <code>infixe</code> et <code>suffixe</code> qui affichent les valeurs de a. Lequel affiche un ABR dans l\'ordre croissant ?',sol:'ab_parcours'},
+  {pts:4,enonce:'Écrire <code>AB insérer(int x, AB a)</code> qui retourne l\'ABR a dans lequel x a été inséré. Distinguer 4 cas.',sol:'ab_ins'},
+  {pts:4,enonce:'Écrire <code>AB abrhmin(int i, int j)</code> qui retourne un ABR de hauteur minimum construit sur l\'intervalle [i:j].',sol:'ab_hmin'}
+ ]},
+ {id:'ao',tag:'Sujet blanc · cours',titre:'ABR de coût minimum',desc:'Coût d\'un arbre à la main, récurrence de m(i,j), calculerMA, construction de l\'arbre.',intro:'<p>Les clés 0, 1, …, n−1 sont recherchées f(0), f(1), …, f(n−1) fois. Chercher une clé à la profondeur p coûte p + 1 comparaisons (la racine est à profondeur 0). Le coût d\'un ABR est la somme des f(k) × (profondeur(k) + 1). Les fréquences sont dans F[0:n]. On cherche un ABR de coût minimum.</p>',q:[
+  {pts:4,enonce:'Trois clés, F = [5, 1, 1]. Calculer le coût de l\'ABR équilibré (racine 1), puis celui de l\'ABR de racine 0 dont le fils droit est 1 et le petit-fils droit est 2. Lequel est le meilleur ?',sol:'ans_ao1'},
+  {pts:5,enonce:'On note m(i,j) le coût minimum d\'un ABR construit sur les clés [i:j]. Donner l\'équation de récurrence (base et hérédité) en justifiant brièvement le terme ajouté.',sol:'rec_ao'},
+  {pts:6,enonce:'Écrire <code>int[][][] calculerMA(int[] F)</code> qui retourne M[0:n+1][0:n+1] (M[i][j] = m(i,j)) et A (A[i][j] = racine d\'un ABR de coût minimum sur [i:j]).',sol:'ao_MA'},
+  {pts:5,enonce:'Écrire <code>AB abrOpt(int[][] A, int i, int j)</code> qui retourne un ABR de coût minimum sur [i:j].',sol:'ao_abr'}
+ ]}
+);
 // ===================== OUTILS =====================
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -1724,8 +2385,9 @@ function renderTrous(el) {
 }
 
 // ===================== ÉCRIRE SOI-MÊME =====================
-function checklistHTML(key, name) {
-  return `<ul class="checklist">${(CHECKS[key] || []).map(([t, p], i) => `<li><label><input type="checkbox" data-pts="${p}" name="${name}-${i}" id="${name}-${i}"><span>${esc(t)}</span><span class="pts">${p} pt${p > 1 ? 's' : ''}</span></label></li>`).join('')}</ul>`;
+function checklistHTML(key, name, target) {
+  const list = CHECKS[key] || [], tot = list.reduce((s, c) => s + c[1], 0), k = target && tot ? target / tot : 1;
+  return `<ul class="checklist">${list.map(([t, p0], i) => { const p = Math.round(p0 * k * 100) / 100; return `<li><label><input type="checkbox" data-pts="${p}" name="${name}-${i}" id="${name}-${i}"><span>${esc(t)}</span><span class="pts">${p} pt${p > 1 ? 's' : ''}</span></label></li>`; }).join('')}</ul>`;
 }
 function tabInTextarea(ta) { ta.addEventListener('keydown', e => { if (e.key === 'Tab' && !e.shiftKey) { e.preventDefault(); const s = ta.selectionStart; ta.value = ta.value.slice(0, s) + '    ' + ta.value.slice(ta.selectionEnd); ta.selectionStart = ta.selectionEnd = s + 4; } }); }
 function renderWrite(el) {
@@ -1881,7 +2543,7 @@ function examStart(id) {
     clearInterval(examTimer); $('[data-a=submit]', root).hidden = true; $('[data-a=pause]', root).hidden = true;
     s.q.forEach((q, i) => {
       const box = $(`[data-qi="${i}"] .corr`, root); const mine = $(`#ex-${s.id}-${i}`).value;
-      box.innerHTML = `<div class="two-col" style="margin-top:10px"><div><h5>Ta réponse</h5><pre class="code">${mine.trim() ? hl(mine) : '<span class="c">// (vide)</span>'}</pre></div><div><h5>Corrigé</h5><pre class="code">${hl(CODES[q.sol])}</pre></div></div><h5 style="margin-top:12px">Barème : coche ce que tu as vraiment écrit</h5>${checklistHTML(q.sol, `ck-${s.id}-${i}`)}`;
+      box.innerHTML = `<div class="two-col" style="margin-top:10px"><div><h5>Ta réponse</h5><pre class="code">${mine.trim() ? hl(mine) : '<span class="c">// (vide)</span>'}</pre></div><div><h5>Corrigé</h5><pre class="code">${hl(CODES[q.sol])}</pre></div></div><h5 style="margin-top:12px">Barème : coche ce que tu as vraiment écrit</h5>${checklistHTML(q.sol, `ck-${s.id}-${i}`, q.pts)}`;
       $$('input', box).forEach(c => c.dataset.bonus = q.bonus ? 1 : 0);
       box.hidden = false;
     });
@@ -1899,11 +2561,12 @@ function examStart(id) {
 }
 
 // ===================== NAVIGATION =====================
-const VIEWS = ['accueil', 'methode', 'chemins', 'juliette', 'plsc', 'plssc', 'examen'];
+const VIEWS = ['accueil', 'methode', 'chemins', 'juliette', 'plsc', 'plssc', 'arbres', 'palindrome', 'abropt', 'examen', 'urgence'];
 function route() {
   let h = location.hash.slice(1); if (!VIEWS.includes(h)) h = 'accueil';
   $$('.view').forEach(v => v.hidden = v.id !== 'v-' + h);
   $$('.nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + h));
+  $('#sos-btn')?.classList.toggle('hide', h === 'urgence');
   window.scrollTo(0, 0);
 }
 function setSub(sec, key) {
@@ -1917,14 +2580,15 @@ function init() {
   Store.load();
   $('#home-cards').innerHTML = TOPICS.map(t => `<a class="card" href="#${t.id}"><p class="tag">${esc(t.tag)}</p><h3>${esc(t.title)}</h3><p>${esc(t.desc)}</p><p class="small" data-count="${t.id}"></p><div class="bar"><i data-bar="${t.id}"></i></div></a>`).join('');
   $$('pre[data-code]').forEach(p => p.innerHTML = hl(CODES[p.dataset.code] || ''));
+  initUrgence();
   renderStaticDags();
   $$('[data-qcm]').forEach(renderQCM);
   $$('[data-trous]').forEach(renderTrous);
   $$('[data-write]').forEach(renderWrite);
-  const H = { chemins: handChemins, juliette: handJuliette, plsc: handPlsc, plssc: handPlssc };
+  const H = { chemins: handChemins, juliette: handJuliette, plsc: handPlsc, plssc: handPlssc, arbres: handArbres, palindrome: handPal, abropt: handAo };
   $$('[data-hand]').forEach(el => handShell(el, 'hx-' + el.dataset.hand, el.dataset.hand, H[el.dataset.hand]));
   SUJETS.forEach(s => register('examen', 'exam-' + s.id));
-  initChemins(); initJuliette(); initPlsc(); initPlssc();
+  initChemins(); initJuliette(); initPlsc(); initPlssc(); initArbres(); initPal(); initAo();
   examList();
   $('#exam-root').addEventListener('click', e => { const b = e.target.closest('[data-start]'); if (b) examStart(b.dataset.start); });
   document.addEventListener('click', e => {
@@ -1934,6 +2598,291 @@ function init() {
   $('#reset-prog').addEventListener('click', () => { Store.data = {}; Store.save(); updateProgress(); examList(); });
   window.addEventListener('hashchange', route);
   route(); updateProgress();
+}
+// ===================== ARBRES : outils =====================
+const T = {
+  ins(t, x) { if (!t) return { v: x, g: null, d: null }; if (x === t.v) return t; return x < t.v ? { v: t.v, g: T.ins(t.g, x), d: t.d } : { v: t.v, g: t.g, d: T.ins(t.d, x) }; },
+  size(t) { return t ? 1 + T.size(t.g) + T.size(t.d) : 0; },
+  height(t) { return t ? 1 + Math.max(T.height(t.g), T.height(t.d)) : 0; },
+  pre(t, o = []) { if (t) { o.push(t.v); T.pre(t.g, o); T.pre(t.d, o); } return o; },
+  inf(t, o = []) { if (t) { T.inf(t.g, o); o.push(t.v); T.inf(t.d, o); } return o; },
+  post(t, o = []) { if (t) { T.post(t.g, o); T.post(t.d, o); o.push(t.v); } return o; },
+  leaves(t) { return !t ? 0 : (!t.g && !t.d ? 1 : T.leaves(t.g) + T.leaves(t.d)); },
+  hmin(i, j) { if (i >= j) return null; const m = Math.floor((i + j) / 2); return { v: m, g: T.hmin(i, m), d: T.hmin(m + 1, j) }; },
+  depths(t, d = 0, o = {}) { if (t) { o[t.v] = d; T.depths(t.g, d + 1, o); T.depths(t.d, d + 1, o); } return o; },
+  fromList(vals) { let t = null; vals.forEach(v => t = T.ins(t, v)); return t; }
+};
+function drawTree(t, o = {}) {
+  const nodes = []; let k = 0;
+  (function w(a, d, par) { if (!a) return; const me = { v: a.v, d, par }; w(a.g, d + 1, me); me.x = k++; nodes.push(me); w(a.d, d + 1, me); })(t, 0, null);
+  if (!nodes.length) return '<p class="note" style="margin:10px">Arbre vide</p>';
+  const gx = 46, gy = 60, r = 17, pad = 30, maxD = Math.max(...nodes.map(n => n.d));
+  const W = Math.max(120, pad * 2 + gx * (nodes.length - 1)), H = pad * 2 + gy * maxD + (o.sub ? 18 : 0);
+  const off = (W - (pad * 2 + gx * (nodes.length - 1))) / 2;
+  const X = n => off + pad + gx * n.x, Y = n => pad + gy * n.d;
+  let s = `<svg class="dag" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Arbre binaire de ${nodes.length} nœuds">`;
+  nodes.filter(n => n.par).forEach(n => { s += `<line class="edge ${o.edgeClass ? o.edgeClass(n.par.v, n.v) : ''}" x1="${X(n.par)}" y1="${Y(n.par)}" x2="${X(n)}" y2="${Y(n)}"/>`; });
+  nodes.forEach(n => {
+    s += `<g class="node ${o.nodeClass ? o.nodeClass(n.v) : ''}"><circle cx="${X(n)}" cy="${Y(n)}" r="${r}"/><text x="${X(n)}" y="${Y(n) + 5}" class="nin">${o.label ? o.label(n.v) : n.v}</text>`;
+    if (o.sub) s += `<text x="${X(n)}" y="${Y(n) + r + 15}" class="nsub">${o.sub(n.v, n.d)}</text>`;
+    s += '</g>';
+  });
+  return s + '</svg>';
+}
+function renderStaticTrees() {
+  const make = {
+    demo: () => drawTree(T.fromList([50, 30, 70, 20, 40, 60, 80, 35]), { nodeClass: v => [20, 35, 60, 80].includes(v) ? 'path' : '' }),
+    'ao-eq': () => drawTree(T.fromList([1, 0, 2]), { sub: (v, d) => `f=${[5, 1, 1][v]}, p=${d}` }),
+    'ao-opt': () => drawTree(T.fromList([0, 1, 2]), { sub: (v, d) => `f=${[5, 1, 1][v]}, p=${d}`, nodeClass: v => v === 0 ? 'path' : '' })
+  };
+  $$('[data-tree]').forEach(d => { if (make[d.dataset.tree]) d.innerHTML = make[d.dataset.tree](); });
+}
+
+// ===================== ARBRES : simulateurs =====================
+function abSteps(vals) {
+  let t = null; const steps = [{ tree: null, path: [], cur: null, msg: `On part d'un arbre vide et on insère les valeurs une par une : ${vals.join(', ')}.` }];
+  for (const x of vals) {
+    const path = [], lines = []; let a = t, dup = false;
+    while (a) { path.push(a.v); if (x === a.v) { lines.push(`${x} = ${a.v} : déjà présent, l'arbre ne change pas.`); dup = true; break; } if (x < a.v) { lines.push(`${x} &lt; ${a.v} → on descend à gauche`); a = a.g; } else { lines.push(`${x} &gt; ${a.v} → on descend à droite`); a = a.d; } }
+    if (!dup) lines.push(t ? `sous-arbre vide : on accroche la nouvelle feuille ${x} ici.` : `l'arbre est vide : ${x} devient la racine.`);
+    t = T.ins(t, x);
+    steps.push({ tree: t, path: [...path, x], cur: x, msg: `<b>insérer(${x})</b><ul class="cands">${lines.map(l => `<li>${l}</li>`).join('')}</ul>` });
+  }
+  steps.push({ tree: t, path: [], cur: null, msg: `Arbre terminé. taille = <b>${T.size(t)}</b>, hauteur = <b>${T.height(t)}</b>, feuilles = <b>${T.leaves(t)}</b>.<div class="out">préfixe : ${T.pre(t).join(' ')}\ninfixe  : ${T.inf(t).join(' ')}   ← ordre croissant\nsuffixe : ${T.post(t).join(' ')}</div>` });
+  return steps;
+}
+function abRender(st) {
+  const P = new Set(st.path);
+  $('#sim-ab .sim-view').innerHTML = `<div class="dag-wrap">${drawTree(st.tree, { nodeClass: v => v === st.cur ? 'cur' : P.has(v) ? 'path' : '', edgeClass: (a, b) => P.has(a) && P.has(b) ? 'path' : '' })}</div>`;
+}
+function initArbres() {
+  renderStaticTrees();
+  const P = Player($('#sim-ab'), abRender);
+  function run() {
+    const vals = $('#ab-vals').value.split(/[\s,;]+/).filter(Boolean).map(Number);
+    const err = !vals.length ? 'Entre au moins une valeur.' : vals.some(isNaN) ? 'Il ne faut que des nombres.' : vals.length > 20 ? '20 valeurs maximum.' : '';
+    $('#ab-err').textContent = err; if (!err) P.load(abSteps(vals));
+  }
+  $('#ab-load').addEventListener('click', run);
+  $('#ab-sorted').addEventListener('click', () => { $('#ab-vals').value = '10 20 30 40 50 60'; run(); });
+  run();
+  function hm() {
+    const i = +$('#hm-i').value, j = +$('#hm-j').value;
+    if (!Number.isInteger(i) || !Number.isInteger(j) || j - i > 31 || i < 0) { $('#hm-err').textContent = 'Choisis des entiers avec 0 ≤ i et j − i ≤ 31.'; return; }
+    $('#hm-err').textContent = '';
+    const out = []; (function tr(a, b, dep) { out.push('    '.repeat(dep) + `abrhmin(${a}, ${b})` + (a >= b ? ' → vide' : ` → racine ${Math.floor((a + b) / 2)}`)); if (a < b) { const m = Math.floor((a + b) / 2); tr(a, m, dep + 1); tr(m + 1, b, dep + 1); } })(i, j, 0);
+    const t = T.hmin(i, j);
+    $('#sim-hmin .sim-view').innerHTML = `<div class="dag-wrap">${drawTree(t)}</div><p>Hauteur ${T.height(t)} pour ${Math.max(0, j - i)} valeur${j - i > 1 ? 's' : ''}. Les appels récursifs :</p><pre class="mini">${out.join('\n')}</pre>`;
+  }
+  $('#hm-go').addEventListener('click', hm); hm();
+}
+
+// ===================== PALINDROME =====================
+function palSolve(S) {
+  const n = S.length; const P = [...Array(n + 1)].map(() => Array(n + 1).fill(false));
+  for (let i = 0; i <= n; i++) P[i][i] = true; for (let i = 0; i < n; i++) P[i][i + 1] = true;
+  for (let d = 2; d <= n; d++) for (let i = 0; i + d <= n; i++) { const j = i + d; P[i][j] = S[i] === S[j - 1] && P[i + 1][j - 1]; }
+  let bi = 0, bj = 0; for (let i = 0; i <= n; i++) for (let j = i; j <= n; j++) if (P[i][j] && j - i > bj - bi) { bi = i; bj = j; }
+  return { P, bi, bj };
+}
+function palSteps(S) {
+  const n = S.length; const P = [...Array(n + 1)].map(() => Array(n + 1).fill(null));
+  const snap = x => Object.assign({ S, P: P.map(r => r.slice()), cur: null, dep: null, cmp: [], inner: null, best: null }, x);
+  const steps = [snap({ msg: `La case (i, j) dira si S[i:j], les lettres d'indices i à j−1, est un palindrome. Seules les cases avec i ≤ j ont un sens.` })];
+  for (let i = 0; i <= n; i++) P[i][i] = true;
+  steps.push(snap({ msg: `<b>Base, longueur 0</b> : P[i][i] = V. La chaîne vide est un palindrome.` }));
+  for (let i = 0; i < n; i++) P[i][i + 1] = true;
+  steps.push(snap({ msg: `<b>Base, longueur 1</b> : P[i][i+1] = V. Une lettre seule se lit pareil dans les deux sens.` }));
+  for (let d = 2; d <= n; d++) for (let i = 0; i + d <= n; i++) {
+    const j = i + d, a = S[i], b = S[j - 1], eq = a === b; P[i][j] = eq && P[i + 1][j - 1];
+    const sub = esc(S.slice(i, j)), inn = esc(S.slice(i + 1, j - 1));
+    const msg = `<b>p(${i},${j})</b> : S[${i}:${j}] = « ${sub} ». Lettres du bord : S[${i}] = '${esc(a)}' et S[${j - 1}] = '${esc(b)}' ${eq ? 'sont égales' : 'sont <b>différentes</b>'}.` + (eq ? ` L'intérieur « ${inn || 'vide'} » est-il un palindrome ? P[${i + 1}][${j - 1}] = ${P[i + 1][j - 1] ? 'V' : 'F'}.` : ' Inutile de regarder l\'intérieur.') + ` Donc P[${i}][${j}] = <b>${P[i][j] ? 'V' : 'F'}</b>.`;
+    steps.push(snap({ cur: [i, j], dep: eq ? [i + 1, j - 1] : null, cmp: [i, j - 1], inner: [i + 1, j - 1], msg }));
+  }
+  const { bi, bj } = palSolve(S);
+  steps.push(snap({ best: [bi, bj], msg: `<b>plscp</b> : parmi les cases à V, celle où j − i est le plus grand est (${bi}, ${bj}).<div class="out">S.substring(${bi}, ${bj}) = ${esc(S.slice(bi, bj))}</div>Longueur ${bj - bi}.` }));
+  return steps;
+}
+function palRender(st) {
+  const { S, P } = st, n = S.length;
+  const strip = `<div class="strip">${[...S].map((c, i) => { let k = ''; if (st.best && i >= st.best[0] && i < st.best[1]) k = 'best'; else if (st.cmp.includes(i)) k = 'cmp'; else if (st.inner && i >= st.inner[0] && i < st.inner[1]) k = 'in'; return `<span class="${k}"><b>${esc(c)}</b><small>${i}</small></span>`; }).join('')}</div>`;
+  let h = `<div class="tblwrap"><table class="grid"><caption>Tableau P (lignes i, colonnes j)</caption><tr><th>i \\ j</th>${[...Array(n + 1).keys()].map(j => `<th>${j}</th>`).join('')}</tr>`;
+  for (let i = 0; i <= n; i++) {
+    h += `<tr><th>${i}</th>`;
+    for (let j = 0; j <= n; j++) {
+      if (j < i) { h += '<td class="na"></td>'; continue; }
+      const v = P[i][j]; let c = v === true ? 'tv' : v === false ? 'fv' : '';
+      if (st.cur && st.cur[0] === i && st.cur[1] === j) c += ' cur'; else if (st.best && st.best[0] === i && st.best[1] === j) c += ' path'; else if (st.dep && st.dep[0] === i && st.dep[1] === j) c += ' dep';
+      h += `<td class="${c}">${v === null ? '' : v ? 'V' : 'F'}</td>`;
+    }
+    h += '</tr>';
+  }
+  $('#sim-pal .sim-view').innerHTML = strip + h + '</table></div>';
+}
+function initPal() {
+  const P = Player($('#sim-pal'), palRender); const ex = ['BANANAS', 'ABACABAD', 'RADARS', 'ELLEESTLA', 'ABCCBX'];
+  function run() { const S = $('#pal-S').value.trim(); const err = !S ? 'Entre une chaîne.' : S.length > 14 ? '14 lettres maximum.' : ''; $('#pal-err').textContent = err; if (!err) P.load(palSteps(S)); }
+  $('#pal-load').addEventListener('click', run);
+  $('#pal-ex').addEventListener('click', () => { const cur = $('#pal-S').value.trim(); $('#pal-S').value = ex[(ex.indexOf(cur) + 1) % ex.length]; run(); });
+  run();
+}
+
+// ===================== ABR DE COÛT MINIMUM =====================
+function aoSolve(F) {
+  const n = F.length, S = [0]; F.forEach((f, k) => S.push(S[k] + f));
+  const M = [...Array(n + 1)].map(() => Array(n + 1).fill(0)), A = [...Array(n + 1)].map(() => Array(n + 1).fill(0));
+  for (let d = 1; d <= n; d++) for (let i = 0; i + d <= n; i++) { const j = i + d; let best = INF; for (let r = i; r < j; r++) { const m = M[i][r] + M[r + 1][j]; if (m < best) { best = m; A[i][j] = r; } } M[i][j] = best + S[j] - S[i]; }
+  return { M, A, S };
+}
+function aoBuild(A, i, j) { if (i >= j) return null; const r = A[i][j]; return { v: r, g: aoBuild(A, i, r), d: aoBuild(A, r + 1, j) }; }
+function aoSteps(F) {
+  const n = F.length, Sx = [0]; F.forEach((f, k) => Sx.push(Sx[k] + f));
+  const M = [...Array(n + 1)].map(() => Array(n + 1).fill(null)), A = [...Array(n + 1)].map(() => Array(n + 1).fill(null));
+  const snap = x => Object.assign({ F, M: M.map(r => r.slice()), A: A.map(r => r.slice()), cur: null, deps: [], best: [], path: [], tree: null }, x);
+  const steps = [snap({ msg: `Clés 0 à ${n - 1}, fréquences f = [${F.join(', ')}]. La case (i, j) contiendra le coût minimum d'un ABR sur les clés [i:j], c'est-à-dire de i à j−1.` })];
+  for (let i = 0; i <= n; i++) M[i][i] = 0;
+  steps.push(snap({ msg: `<b>Base</b> : m(i,i) = 0. Un intervalle vide donne l'arbre vide, qui ne coûte rien.` }));
+  for (let d = 1; d <= n; d++) for (let i = 0; i + d <= n; i++) {
+    const j = i + d, sig = Sx[j] - Sx[i]; let best = INF, br = i; const lines = [];
+    for (let r = i; r < j; r++) { const m = M[i][r] + M[r + 1][j]; lines.push({ r, a: M[i][r], b: M[r + 1][j], m }); if (m < best) { best = m; br = r; } }
+    M[i][j] = best + sig; A[i][j] = br;
+    const msg = `<b>m(${i},${j})</b> : clés ${i} à ${j - 1}. σ(${i},${j}) = ${F.slice(i, j).join(' + ')} = ${sig}. On essaie chaque racine r :<ul class="cands">${lines.map(l => `<li class="${l.r === br ? 'best' : ''}">r = ${l.r} : m(${i},${l.r}) + m(${l.r + 1},${j}) = ${l.a} + ${l.b} = <b>${l.m}</b>${l.r === br ? ' ← minimum' : ''}</li>`).join('')}</ul>M[${i}][${j}] = ${best} + ${sig} = <b>${M[i][j]}</b>, A[${i}][${j}] = ${br}.`;
+    steps.push(snap({ cur: [i, j], deps: lines.flatMap(l => [[i, l.r], [l.r + 1, j]]), best: [[i, br], [br + 1, j]], msg }));
+  }
+  const order = []; (function rec(i, j) { if (i >= j) return; const r = A[i][j]; order.push({ i, j, r }); rec(i, r); rec(r + 1, j); })(0, n);
+  order.forEach((o, k) => steps.push(snap({ cur: [o.i, o.j], path: order.slice(0, k + 1).map(x => [x.i, x.j]), tree: T.fromList(order.slice(0, k + 1).map(x => x.r)), msg: `<b>abrOpt(${o.i},${o.j})</b> : A[${o.i}][${o.j}] = ${o.r}, la clé ${o.r} est la racine de ce sous-arbre. À gauche abrOpt(${o.i},${o.r})${o.r === o.i ? ' (vide)' : ''}, à droite abrOpt(${o.r + 1},${o.j})${o.r + 1 === o.j ? ' (vide)' : ''}.` })));
+  const tree = aoBuild(A, 0, n), dep = T.depths(tree);
+  const parts = F.map((f, k) => `${f}×${dep[k] + 1}`), tot = F.reduce((s, f, k) => s + f * (dep[k] + 1), 0);
+  steps.push(snap({ tree, path: order.map(x => [x.i, x.j]), msg: `Arbre terminé. Vérification du coût, Σ f(k) × (profondeur + 1) :<div class="out">${parts.join(' + ')} = ${tot}</div>C'est bien M[0][${n}] = ${M[0][n]}.` }));
+  return steps;
+}
+function aoRender(st) {
+  const n = st.F.length; const has = (L, a, b) => L.some(x => x[0] === a && x[1] === b);
+  const tbl = (Tb, name, full) => {
+    let h = `<div class="tblwrap"><table class="grid"><caption>${name}</caption><tr><th>i \\ j</th>${[...Array(n + 1).keys()].map(j => `<th>${j}</th>`).join('')}</tr>`;
+    for (let i = 0; i <= n; i++) {
+      h += `<tr><th>${i}</th>`;
+      for (let j = 0; j <= n; j++) {
+        if (j < i || (!full && j === i)) { h += '<td class="na"></td>'; continue; }
+        let c = ''; if (st.cur && st.cur[0] === i && st.cur[1] === j) c = 'cur'; else if (has(st.path, i, j)) c = 'path'; else if (full && has(st.best, i, j)) c = 'best'; else if (full && has(st.deps, i, j)) c = 'dep';
+        h += `<td class="${c}">${Tb[i][j] == null ? '' : Tb[i][j]}</td>`;
+      }
+      h += '</tr>';
+    }
+    return h + '</table></div>';
+  };
+  const ftbl = `<div class="tblwrap"><table class="grid"><caption>Fréquences</caption><tr><th>clé</th>${st.F.map((_, k) => `<th>${k}</th>`).join('')}</tr><tr><th>f</th>${st.F.map(f => `<td>${f}</td>`).join('')}</tr></table></div>`;
+  const tree = st.tree ? `<div class="dag-wrap">${drawTree(st.tree, { sub: v => 'f=' + st.F[v] })}</div>` : '';
+  $('#sim-ao .sim-view').innerHTML = `<div class="tables">${ftbl}${tbl(st.M, 'Tableau M : m(i,j)', true)}${tbl(st.A, 'Tableau A : racines', false)}</div>${tree}`;
+}
+function initAo() {
+  const P = Player($('#sim-ao'), aoRender);
+  function run() {
+    const F = $('#ao-F').value.split(/[\s,;]+/).filter(Boolean).map(Number);
+    const err = !F.length ? 'Entre au moins une fréquence.' : F.some(x => isNaN(x) || x < 0) ? 'Il ne faut que des nombres positifs.' : F.length > 8 ? '8 clés maximum pour que les tableaux restent lisibles.' : '';
+    $('#ao-err').textContent = err; if (!err) P.load(aoSteps(F));
+  }
+  $('#ao-load').addEventListener('click', run);
+  $('#ao-ex').addEventListener('click', () => { $('#ao-F').value = '5 1 1'; run(); });
+  run();
+}
+
+// ===================== EXERCICES À LA MAIN =====================
+const seqOk = (v, arr) => v.split(/[\s,;]+/).filter(Boolean).map(Number).join(' ') === arr.join(' ');
+function handArbres(body) {
+  const vals = []; while (vals.length < 7) { const x = rnd(1, 99); if (!vals.includes(x)) vals.push(x); }
+  const t = T.fromList(vals);
+  const ans = { size: T.size(t), height: T.height(t), pre: T.pre(t), inf: T.inf(t), post: T.post(t) };
+  body.innerHTML = `<p>Valeurs insérées dans cet ordre : <b>${vals.join(', ')}</b></p>
+  <div class="row"><button type="button" class="btn ghost" data-show="1">Afficher l'arbre (après l'avoir dessiné toi-même)</button></div><div class="dag-wrap" data-treebox hidden></div>
+  <div class="tables"><div class="tblwrap"><table class="grid">
+  <tr><th>taille</th><td class="inp">${cellIn('size')}</td></tr><tr><th>hauteur</th><td class="inp">${cellIn('height')}</td></tr>
+  <tr><th>préfixe</th><td class="inp">${cellIn('pre', 230)}</td></tr><tr><th>infixe</th><td class="inp">${cellIn('inf', 230)}</td></tr><tr><th>suffixe</th><td class="inp">${cellIn('post', 230)}</td></tr></table></div></div>`;
+  const box = $('[data-treebox]', body); box.innerHTML = drawTree(t);
+  $('[data-show]', body).addEventListener('click', () => { box.hidden = false; });
+  return {
+    check() { const ok = markCells(body, (k, v) => k === 'size' || k === 'height' ? parseNum(v) === ans[k] : seqOk(v, ans[k])); return ok || 'Il reste des erreurs. Rappel : préfixe = racine d\'abord, infixe = ordre croissant, suffixe = racine à la fin.'; },
+    solve() { ['size', 'height'].forEach(k => $(`[data-k=${k}]`, body).value = ans[k]); ['pre', 'inf', 'post'].forEach(k => $(`[data-k=${k}]`, body).value = ans[k].join(' ')); box.hidden = false; $$('input.cell', body).forEach(i => i.classList.remove('good', 'bad')); }
+  };
+}
+const isPal = s => s === [...s].reverse().join('');
+function handPal(body) {
+  const n = 6; const S = [...Array(n)].map(() => 'AB'[rnd(0, 1)]).join(''); const { P, bi, bj } = palSolve(S);
+  let h = `<div class="strip">${[...S].map((c, i) => `<span><b>${c}</b><small>${i}</small></span>`).join('')}</div><div class="tblwrap"><table class="grid"><caption>P[i][j] : S[i:j] est-il un palindrome ?</caption><tr><th>i \\ j</th>${[...Array(n + 1).keys()].map(j => `<th>${j}</th>`).join('')}</tr>`;
+  for (let i = 0; i <= n; i++) { h += `<tr><th>${i}</th>`; for (let j = 0; j <= n; j++) { if (j < i) h += '<td class="na"></td>'; else if (j - i < 2) h += '<td class="tv">V</td>'; else h += `<td class="inp">${cellIn(`P${i}_${j}`, 40)}</td>`; } h += '</tr>'; }
+  body.innerHTML = h + `</table></div><p>Une plus longue sous-chaîne palindrome de ${S} : ${cellIn('res', 120)}</p>`;
+  const bool = v => { v = v.trim().toLowerCase(); return ['v', 'vrai', 'true', 't', '1'].includes(v) ? true : ['f', 'faux', 'false', '0'].includes(v) ? false : null; };
+  return {
+    check() { const ok = markCells(body, (k, v) => { if (k === 'res') { const s = v.toUpperCase().replace(/\s/g, ''); return s.length === bj - bi && isPal(s) && S.includes(s); } const [i, j] = k.slice(1).split('_').map(Number); return bool(v) === P[i][j]; }); return ok || 'Il reste des erreurs. P[i][j] est V seulement si S[i] = S[j−1] ET si la case P[i+1][j−1] (en bas à gauche) est V.'; },
+    solve() { for (let i = 0; i <= n; i++) for (let j = i + 2; j <= n; j++) $(`[data-k=P${i}_${j}]`, body).value = P[i][j] ? 'V' : 'F'; $('[data-k=res]', body).value = S.slice(bi, bj); $$('input.cell', body).forEach(i => i.classList.remove('good', 'bad')); }
+  };
+}
+function handAo(body) {
+  const n = 4, F = [...Array(n)].map(() => rnd(1, 9)); const { M, A } = aoSolve(F);
+  let h = `<div class="tables"><div class="tblwrap"><table class="grid"><caption>Fréquences</caption><tr><th>clé</th>${F.map((_, k) => `<th>${k}</th>`).join('')}</tr><tr><th>f</th>${F.map(f => `<td>${f}</td>`).join('')}</tr></table></div><div class="tblwrap"><table class="grid"><caption>Tableau M</caption><tr><th>i \\ j</th>${[...Array(n + 1).keys()].map(j => `<th>${j}</th>`).join('')}</tr>`;
+  for (let i = 0; i <= n; i++) { h += `<tr><th>${i}</th>`; for (let j = 0; j <= n; j++) { if (j < i) h += '<td class="na"></td>'; else if (j === i) h += '<td>0</td>'; else h += `<td class="inp">${cellIn(`M${i}_${j}`, 44)}</td>`; } h += '</tr>'; }
+  body.innerHTML = h + `</table></div></div><p>Racine de l'ABR de coût minimum sur toutes les clés : ${cellIn('root')}</p>`;
+  return {
+    check() {
+      const ok = markCells(body, (k, v) => {
+        if (k === 'root') { const r = parseNum(v); return Number.isInteger(r) && r >= 0 && r < n && M[0][r] + M[r + 1][n] + F.reduce((a, b) => a + b, 0) === M[0][n]; }
+        const [i, j] = k.slice(1).split('_').map(Number); return parseNum(v) === M[i][j];
+      });
+      return ok || 'Il reste des erreurs. m(i,j) = σ(i,j) + le plus petit m(i,r) + m(r+1,j). Par exemple m(i,i+1) = f(i).';
+    },
+    solve() { for (let i = 0; i < n; i++) for (let j = i + 1; j <= n; j++) $(`[data-k=M${i}_${j}]`, body).value = M[i][j]; $('[data-k=root]', body).value = A[0][n]; $$('input.cell', body).forEach(i => i.classList.remove('good', 'bad')); }
+  };
+}
+
+// ===================== URGENCE =====================
+Object.assign(CODES, {
+sk_calcul: `static int[][] calculerMA( les données ){ int n = ...;
+    int[] M = new int[n], A = new int[n];      // n+1 si un cas « 0 élément » existe
+    M[0] = ...; A[0] = -1;                     // 1) LA BASE de la récurrence
+    for (int j = 1; j < n; j++){               // 2) petits sous-problèmes d'abord
+        int mj = Integer.MAX_VALUE, aj = -1;   //    (MIN_VALUE et > pour un max)
+        for ( chaque cas possible i ){         // 3) tous les cas de « supposons résolu »
+            int m = M[i] + coût(i, j);         //    la formule de l'hérédité
+            if (m < mj){ mj = m; aj = i; }     // 4) le meilleur ET son arg
+        }
+        M[j] = mj; A[j] = aj;
+    }
+    return new int[][] {M, A};                 // 5) les deux tableaux
+}`,
+sk_affiche: `static void afficher(int[] A, ..., int j){
+    if (j == 0){ afficher la base; return; }   // 1) cas de base
+    int i = A[j];                              // 2) lire la décision dans A
+    afficher(A, ..., i);                       // 3) appel récursif D'ABORD
+    System.out.print( le morceau de j );       // 4) afficher APRÈS
+}`
+});
+const URG = [
+ ['Chemins · deux lignes (TD2 ex. 2)','m(j) = coût min de 0 à j. Base ? Hérédité ?','m(0) = 0 ;  m(1) = d1(0)\nm(j) = min( m(j−1) + d1(j−1), m(j−2) + d2(j−2) )\npour 2 ≤ j < n\nPas de A : on reteste M[j] == M[j−1] + D1[j−1]'],
+ ['Chemins · graphe (TD2 ex. 3, contrôle 2)','m(j) = coût min de 0 à j. Base ? Hérédité ?','m(0) = 0,  a(0) = −1\nm(j) = min sur i ∈ pred(j) de ( m(i) + c(i,j) )\npour 1 ≤ j < n\npred(j) = la liste Gp[j] du graphe symétrique'],
+ ['Juliette (TD3)','Problème connu ? m(k,t) ? Base ? Hérédité ?','Variante du sac à dos\nm(k,t) = meilleure somme pondérée, t heures\n         sur les k premières unités\nm(0,t) = 0\nm(k,t) = max sur 0 ≤ h ≤ t de\n         m(k−1, t−h) + c(k−1)·e(k−1, h)\n1 ≤ k ≤ n, 0 ≤ t ≤ H ; M[n+1][H+1]'],
+ ['PLSC (TD4)','l(p,q) ? Base ? Les deux cas ?','l(p,q) = longueur d\'une plsc des p et q préfixes\nl(0,q) = 0 ;  l(p,0) = 0\nsi t(p−1) = u(q−1) : 1 + l(p−1, q−1)\nsinon : max( l(p−1, q), l(p, q−1) )\nL[m+1][n+1] ; Θ(m·n)'],
+ ['PLSSC (TD6)','Flèche i → j ? l(j) ? Où est la réponse ?','flèche i → j ssi i < j et S[i] < S[j]\nl(j) = longueur d\'une plssc qui finit en j\npred(j) = ∅ : l(j) = 1, A[j] = −1\nsinon : l(j) = 1 + max sur i ∈ pred(j) de l(i)\nRéponse : le MAX des l(j), pas l(n−1)'],
+ ['Sous-chaîne palindrome','p(i,j) ? Base ? Hérédité ? Ordre ?','p(i,j) = vrai si S[i:j] est un palindrome\np(i,i) = vrai ;  p(i,i+1) = vrai\np(i,j) = S[i] == S[j−1] et p(i+1, j−1)\npour j − i ≥ 2\nordre : longueur d = j − i croissante ; Θ(n²)'],
+ ['ABR de coût minimum','m(i,j) ? Base ? Hérédité ? σ ?','m(i,j) = coût min d\'un ABR sur les clés [i:j]\nm(i,i) = 0\nm(i,j) = σ(i,j) + min sur i ≤ r < j de\n         m(i,r) + m(r+1,j)\nσ(i,j) = f(i) + … + f(j−1) ;  A[i][j] = r\nordre : longueur croissante ; n³'],
+ ['Arbres binaires','taille ? hauteur ? règle de l\'ABR ? parcours ?','taille : vide → 0, sinon 1 + taille(g) + taille(d)\nhauteur : vide → 0, sinon 1 + max(h(g), h(d))\nABR : gauche < racine < droite\npréfixe : R G D   infixe : G R D   suffixe : G D R\ninfixe d\'un ABR = ordre croissant']
+];
+function initUrgence() {
+  const box = $('#urg-cards');
+  box.innerHTML = URG.map((c, i) => `<article class="fcard" data-i="${i}"><h4>${esc(c[0])}</h4><p class="fq">${esc(c[1])}</p><pre class="fa masked">${esc(c[2])}</pre><div class="row"><button type="button" class="btn" data-a="flip">Voir la réponse</button><button type="button" class="btn ghost" data-a="know">Je sais</button></div></article>`).join('');
+  const sync = () => {
+    let k = 0;
+    $$('.fcard', box).forEach(c => { const on = Store.is('urg-' + c.dataset.i); if (on) k++; c.classList.toggle('known', on); $('[data-a=know]', c).textContent = on ? '✓ Je sais' : 'Je sais'; });
+    $('#urg-count').textContent = `${k} / ${URG.length} cartes sues`;
+  };
+  const flip = (c, show) => { const fa = $('.fa', c); const s = show ?? fa.classList.contains('masked'); fa.classList.toggle('masked', !s); $('[data-a=flip]', c).textContent = s ? 'Cacher' : 'Voir la réponse'; };
+  box.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return; const c = b.closest('.fcard');
+    if (b.dataset.a === 'flip') flip(c);
+    else { const id = 'urg-' + c.dataset.i; if (Store.is(id)) { delete Store.data[id]; Store.save(); } else Store.done(id); sync(); }
+  });
+  $('#urg-hide').addEventListener('click', () => $$('.fcard', box).forEach(c => flip(c, false)));
+  $('#urg-show').addEventListener('click', () => $$('.fcard', box).forEach(c => flip(c, true)));
+  sync();
 }
 init();
 </script>
