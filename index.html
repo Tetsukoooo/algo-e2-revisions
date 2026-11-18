@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Algo E2 · Révisions du partiel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Mise en page : barre latérale de navigation + colonne de lecture large, outils (tableaux, graphes) en pleine largeur */
+  --bg:#f2f3f8; --surface:#ffffff; --surface-2:#f7f8fc; --ink:#161b31; --muted:#596080;
+  --line:#dcdfea; --line-strong:#b4bad0;
+  --accent:#3b3dcf; --accent-ink:#ffffff; --accent-soft:#e6e7fc;
+  --hot:#cc7f00; --hot-soft:#fff0cc; --ok:#15804f; --ok-soft:#d8f2e5; --bad:#c22f3d; --bad-soft:#fbe0e3;
+  --code-bg:#f0f1f8; --c-kw:#3b3dcf; --c-type:#0c7383; --c-str:#9c4417; --c-com:#767c97; --c-num:#a92f74;
+  --font-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10121d; --surface:#181b2a; --surface-2:#1e2234; --ink:#e7e9f4; --muted:#a0a6c2;
+    --line:#2b3047; --line-strong:#4a516f;
+    --accent:#8e90ff; --accent-ink:#10121d; --accent-soft:#262951;
+    --hot:#f0b13a; --hot-soft:#3a2e11; --ok:#4cc88b; --ok-soft:#163426; --bad:#ff6b79; --bad-soft:#3c1b22;
+    --code-bg:#141726; --c-kw:#a0a2ff; --c-type:#5ecfdd; --c-str:#f0a272; --c-com:#7d84a4; --c-num:#f08cc2;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10121d; --surface:#181b2a; --surface-2:#1e2234; --ink:#e7e9f4; --muted:#a0a6c2;
+  --line:#2b3047; --line-strong:#4a516f;
+  --accent:#8e90ff; --accent-ink:#10121d; --accent-soft:#262951;
+  --hot:#f0b13a; --hot-soft:#3a2e11; --ok:#4cc88b; --ok-soft:#163426; --bad:#ff6b79; --bad-soft:#3c1b22;
+  --code-bg:#141726; --c-kw:#a0a2ff; --c-type:#5ecfdd; --c-str:#f0a272; --c-com:#7d84a4; --c-num:#f08cc2;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.55}
+a{color:var(--accent)}
+h1,h2,h3,h4,h5{font-family:var(--font-display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:2.15rem;font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.5rem;font-weight:700;margin-top:2.2rem}
+h3{font-size:1.2rem;font-weight:700;margin-top:1.6rem}
+h4{font-size:1.05rem;font-weight:700}
+h5{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.4rem}
+p{margin:.6rem 0}
+code{font-family:var(--font-mono);font-size:.86em;background:var(--code-bg);padding:.08em .35em;border-radius:4px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.app{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;background:var(--surface);border-right:1px solid var(--line);padding:22px 14px;display:flex;flex-direction:column;gap:20px}
+.brand{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--ink);padding:0 8px}
+.brand .logo{font-family:var(--font-mono);font-weight:600;font-size:.95rem;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:7px 8px}
+.brand b{display:block;font-family:var(--font-display);font-size:1.1rem}
+.brand small{display:block;color:var(--muted);font-size:.82rem}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:8px;padding:9px 10px;border-radius:9px;color:var(--ink);text-decoration:none;font-weight:600}
+.nav a small{grid-column:1;font-weight:400;color:var(--muted);font-size:.8rem;line-height:1.2}
+.nav a .chip{grid-row:1/span 2;grid-column:2}
+.nav a:hover{background:var(--surface-2)}
+.nav a.active{background:var(--accent-soft);color:var(--accent)}
+.chip{font-style:normal;font-family:var(--font-mono);font-size:.72rem;border:1px solid var(--line);border-radius:99px;padding:1px 7px;color:var(--muted);background:var(--surface);white-space:nowrap}
+.chip.full{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.side-foot{margin-top:auto;font-size:.82rem;color:var(--muted);padding:0 8px}
+.side-foot button{font:inherit;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+
+.main{padding:34px clamp(16px,4vw,48px) 80px;min-width:0}
+.view{max-width:1020px;margin:0 auto}
+.prose{max-width:70ch}
+.eyebrow{font-family:var(--font-mono);font-size:.78rem;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin:0 0 .5rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:66ch}
+.sec-head{margin-bottom:18px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:22px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink)}
+a.card:hover{border-color:var(--accent)}
+.card .tag{font-family:var(--font-mono);font-size:.74rem;color:var(--muted);margin:0}
+.card h3{margin:0;font-size:1.15rem}
+.card p{margin:0;color:var(--muted);font-size:.95rem}
+.bar{height:6px;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:auto}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.card .small{font-size:.82rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.panel h3{margin-top:0}
+.panel ol,.panel ul{padding-left:1.2rem;margin:.5rem 0}
+.panel li{margin:.3rem 0}
+
+.subtabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:8px 0 22px;position:sticky;top:0;background:var(--bg);z-index:5;padding-top:6px}
+.subtabs button{font:inherit;font-weight:600;background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;color:var(--muted);cursor:pointer}
+.subtabs button.on{color:var(--accent);border-bottom-color:var(--accent)}
+.subtabs button:hover{color:var(--ink)}
+
+.formula,.rec{font-family:var(--font-mono);font-size:.92rem;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px;margin:12px 0;overflow-x:auto;line-height:1.7}
+.rec{display:grid;grid-template-columns:auto 1fr;gap:4px 16px}
+.rec b{font-family:var(--font-body);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);padding-top:.15em}
+.callout{background:var(--accent-soft);border-radius:10px;padding:12px 16px;margin:14px 0}
+.callout.warn{background:var(--hot-soft)}
+.analogy{border-left:4px solid var(--hot);background:var(--surface);padding:10px 14px;border-radius:0 10px 10px 0;margin:14px 0}
+.analogy::before{content:"Dans la vraie vie · ";font-weight:700;color:var(--hot)}
+.note{font-size:.93rem;color:var(--muted)}
+.recipe{counter-reset:r;list-style:none;padding:0;display:grid;gap:10px}
+.recipe li{counter-increment:r;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px 12px 58px;position:relative}
+.recipe li::before{content:counter(r);position:absolute;left:16px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--font-display);font-weight:800}
+.recipe p{margin:.2rem 0 0}
+table.notes,table.recap{border-collapse:collapse;width:100%;background:var(--surface);border-radius:10px;overflow:hidden;font-size:.94rem}
+table.notes td,table.recap td,table.recap th{border-bottom:1px solid var(--line);padding:8px 12px;vertical-align:top;text-align:left}
+table.recap th{background:var(--surface-2);font-family:var(--font-display);font-size:.88rem}
+table.notes td:first-child{white-space:nowrap;width:1%}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.scroll table{border-radius:0}
+
+pre.code{font-family:var(--font-mono);font-size:.84rem;line-height:1.6;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;margin:10px 0;tab-size:4;white-space:pre}
+pre.code .k{color:var(--c-kw);font-weight:600}
+pre.code .t{color:var(--c-type)}
+pre.code .s{color:var(--c-str)}
+pre.code .c{color:var(--c-com);font-style:italic}
+pre.code .n{color:var(--c-num)}
+pre.mini{font-family:var(--font-mono);font-size:.8rem;background:var(--code-bg);border-radius:8px;padding:8px 10px;margin:0;line-height:1.5;overflow-x:auto}
+.codeblock{margin:18px 0 26px}
+.codeblock h3{margin-top:0}
+.explain{font-size:.95rem;color:var(--muted);margin:.3rem 0}
+
+.btn{font:inherit;font-weight:600;font-size:.94rem;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:9px;padding:8px 14px;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08);color:var(--accent-ink)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.next-sub{margin-top:26px}
+
+.sim{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.sim-inputs{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.sim-inputs label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;font-weight:600;color:var(--muted)}
+.sim-inputs label.grow{flex:1 1 280px}
+input[type=text],input[type=number],select,textarea{font:inherit;font-size:.95rem;color:var(--ink);background:var(--surface-2);border:1px solid var(--line-strong);border-radius:8px;padding:7px 9px}
+textarea{font-family:var(--font-mono);font-size:.85rem;resize:vertical}
+.err{color:var(--bad);font-weight:600;min-height:0;margin:6px 0}
+.err:empty{display:none}
+.pbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:14px 0 8px;padding-top:12px;border-top:1px dashed var(--line)}
+.pbar .pinfo{margin-left:auto;font-family:var(--font-mono);font-size:.8rem;color:var(--muted)}
+.pmsg{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-height:56px;font-size:.96rem}
+.pmsg .out{font-family:var(--font-mono);background:var(--code-bg);padding:6px 10px;border-radius:6px;margin:6px 0;overflow-x:auto;white-space:pre}
+ul.cands{margin:6px 0;padding-left:1.1rem;font-family:var(--font-mono);font-size:.82rem}
+ul.cands.cols{columns:2 260px}
+ul.cands li.best{color:var(--accent);font-weight:600}
+.sim-view{margin-top:14px;display:grid;gap:14px}
+.dag-wrap{overflow-x:auto;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:6px}
+svg.dag{display:block;margin:0 auto}
+.dag .arc path{fill:none;stroke:var(--line-strong);stroke-width:1.5}
+.dag .arc polygon{fill:var(--line-strong)}
+.dag .arc.cons path{stroke:var(--hot);stroke-width:2.2}
+.dag .arc.cons polygon{fill:var(--hot)}
+.dag .arc.chosen path{stroke:var(--accent);stroke-width:3}
+.dag .arc.chosen polygon{fill:var(--accent)}
+.dag .arc.path path{stroke:var(--ok);stroke-width:3.4}
+.dag .arc.path polygon{fill:var(--ok)}
+.dag .alab{font-family:var(--font-mono);font-size:11px;fill:var(--muted);text-anchor:middle;paint-order:stroke;stroke:var(--surface-2);stroke-width:4px}
+.dag .arc.cons .alab,.dag .arc.chosen .alab,.dag .arc.path .alab{fill:var(--ink);font-weight:600}
+.dag .node circle{fill:var(--surface);stroke:var(--line-strong);stroke-width:1.6}
+.dag .node .nin{font-family:var(--font-mono);font-size:13px;font-weight:600;fill:var(--ink);text-anchor:middle}
+.dag .node .nsub{font-family:var(--font-mono);font-size:11px;fill:var(--muted);text-anchor:middle}
+.dag .node.cur circle{fill:var(--hot-soft);stroke:var(--hot);stroke-width:2.6}
+.dag .node.dep circle{stroke:var(--hot);stroke-dasharray:3 2}
+.dag .node.path circle{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.4}
+.tables{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
+.lists{display:flex;gap:12px;flex-wrap:wrap}
+.tblwrap{overflow-x:auto;max-width:100%}
+table.grid{border-collapse:separate;border-spacing:3px;font-family:var(--font-mono);font-size:.84rem;font-variant-numeric:tabular-nums}
+table.grid caption{text-align:left;font-family:var(--font-body);font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding-bottom:4px}
+table.grid th{color:var(--muted);font-weight:600;padding:3px 7px;text-align:center;white-space:nowrap}
+table.grid th.lbl{color:var(--ink);font-size:.95rem}
+table.grid th small{display:block;color:var(--muted);font-size:.68rem;font-weight:400}
+table.grid td{min-width:36px;height:32px;text-align:center;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:2px 5px;position:relative}
+table.grid td sup{font-size:.7rem;color:var(--muted);margin-left:2px}
+table.grid td.cur{background:var(--hot-soft);border-color:var(--hot);font-weight:700}
+table.grid td.dep{border-color:var(--hot);border-style:dashed}
+table.grid td.best{background:var(--accent-soft);border-color:var(--accent);font-weight:700}
+table.grid td.path{background:var(--ok-soft);border-color:var(--ok);font-weight:700}
+table.grid td.keep{background:var(--ok);color:var(--surface);border-color:var(--ok);font-weight:700}
+table.grid td.used{background:var(--accent-soft);border-color:var(--accent);font-weight:700}
+table.grid td.na{background:transparent;border-color:transparent;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.82rem;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid var(--line)}
+.legend .l-cur::before{background:var(--hot-soft);border-color:var(--hot)}
+.legend .l-dep::before{border:1px dashed var(--hot)}
+.legend .l-best::before{background:var(--accent-soft);border-color:var(--accent)}
+.legend .l-path::before{background:var(--ok-soft);border-color:var(--ok)}
+
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:16px 0}
+.ex > h4{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ex .kind{font-family:var(--font-mono);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;background:var(--accent-soft);color:var(--accent);border-radius:99px;padding:2px 9px}
+.ex .done-mark{font-size:.78rem;color:var(--ok);font-weight:700}
+.ex .done-mark:empty{display:none}
+.feedback{font-weight:600;margin:8px 0 0}
+.feedback.good{color:var(--ok)} .feedback.bad{color:var(--bad)}
+input.hole{font-family:var(--font-mono);font-size:.84rem;background:var(--surface);border:1px dashed var(--accent);border-radius:4px;padding:0 3px;color:var(--ink);height:1.45em;vertical-align:baseline}
+input.hole.good,input.cell.good{border:1px solid var(--ok);background:var(--ok-soft)}
+input.hole.bad,input.cell.bad{border:1px solid var(--bad);background:var(--bad-soft)}
+input.cell{width:52px;font-family:var(--font-mono);font-size:.85rem;text-align:center;padding:4px 2px;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);color:var(--ink)}
+table.grid td.inp{padding:1px;background:transparent;border:0}
+.hx-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.hx-body{display:grid;gap:12px;margin-top:12px}
+.qcm{display:grid;gap:12px}
+.q{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface-2)}
+.q p.qt{margin:0 0 8px;font-weight:600}
+.q .opts{display:grid;gap:6px}
+.q .opts button{font:inherit;text-align:left;background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;padding:7px 11px;cursor:pointer;color:var(--ink)}
+.q .opts button:hover{border-color:var(--accent)}
+.q .opts button.right{background:var(--ok-soft);border-color:var(--ok)}
+.q .opts button.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.q .expl{margin:8px 0 0;font-size:.94rem}
+.q .expl:empty{display:none}
+textarea.answer{width:100%;min-height:200px;background:var(--code-bg);line-height:1.55}
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.two-col pre.code{margin:0;max-height:480px}
+ul.checklist{list-style:none;padding:0;display:grid;gap:6px}
+ul.checklist label{display:flex;gap:10px;align-items:flex-start;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer}
+ul.checklist input{margin-top:.3em;accent-color:var(--ok);width:16px;height:16px}
+ul.checklist .pts{margin-left:auto;font-family:var(--font-mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
+.enonce{background:var(--surface-2);border-radius:10px;padding:10px 14px;margin:8px 0}
+
+.exam-top{position:sticky;top:0;z-index:6;background:var(--bg);display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:16px}
+.timer{font-family:var(--font-mono);font-size:1.4rem;font-weight:600;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px 12px}
+.timer.low{color:var(--bad);border-color:var(--bad)}
+.score-big{font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:var(--accent)}
+.qexam{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0}
+.qexam h4 .pts{font-family:var(--font-mono);font-size:.8rem;color:var(--muted);font-weight:400;margin-left:6px}
+.bonus{font-family:var(--font-mono);font-size:.7rem;background:var(--hot-soft);color:var(--hot);border-radius:99px;padding:1px 8px;margin-left:6px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:12px 0}
+details summary{cursor:pointer;font-weight:600}
+
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{position:sticky;top:0;height:auto;z-index:10;flex-direction:row;align-items:center;padding:8px 10px;gap:10px;border-right:0;border-bottom:1px solid var(--line);overflow-x:auto}
+  .brand small,.side-foot{display:none}
+  .nav{flex-direction:row;gap:2px}
+  .nav a{display:block;white-space:nowrap;padding:7px 10px}
+  .nav a small,.nav a .chip{display:none}
+  .subtabs{top:52px}
+  h1{font-size:1.7rem}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <a class="brand" href="#accueil"><span class="logo">m(j)</span><span><b>Algo E2</b><small>Révisions du partiel</small></span></a>
+  <nav class="nav" aria-label="Chapitres">
+    <a href="#accueil"><span>Accueil</span></a>
+    <a href="#methode"><span>La méthode</span><small>À lire en premier</small><i class="chip" data-prog="methode"></i></a>
+    <a href="#chemins"><span>Chemins de coût min</span><small>TD2 ex. 2-3 · Contrôle 2</small><i class="chip" data-prog="chemins"></i></a>
+    <a href="#juliette"><span>Juliette</span><small>TD3 · répartir ses heures</small><i class="chip" data-prog="juliette"></i></a>
+    <a href="#plsc"><span>PLSC</span><small>TD4 · séquence commune</small><i class="chip" data-prog="plsc"></i></a>
+    <a href="#plssc"><span>PLSSC</span><small>TD6 · sous-séquence croissante</small><i class="chip" data-prog="plssc"></i></a>
+    <a href="#examen"><span>Sujets blancs</span><small>Format partiel, chronométré</small><i class="chip" data-prog="examen"></i></a>
+  </nav>
+  <div class="side-foot">Ta progression est gardée dans ce navigateur. <button type="button" id="reset-prog">Tout remettre à zéro</button></div>
+</aside>
+
+<main class="main">
+
+<!-- ============ ACCUEIL ============ -->
+<section class="view" id="v-accueil">
+  <header class="sec-head">
+    <p class="eyebrow">ESIEE · Algorithmique E2 · Programmation dynamique</p>
+    <h1>Réviser le partiel d'algo, depuis zéro</h1>
+    <p class="lead">Quatre problèmes au programme, une seule méthode pour tous les résoudre. Chaque chapitre explique l'idée avec des exemples de tous les jours, montre l'algorithme qui remplit son tableau case par case, puis te fait écrire le code comme le jour du partiel.</p>
+  </header>
+  <div class="cards" id="home-cards"></div>
+  <div class="two">
+    <div class="panel">
+      <h3>Ce qui t'attend le jour J</h3>
+      <p>D'après le contrôle 2 : 90 minutes, sans document ni ordinateur, réponses courtes. Quatre questions de 5 points qui suivent presque toujours le même schéma :</p>
+      <ol>
+        <li><b>Une fonction utilitaire</b> : afficher un graphe, construire le graphe, le symétrique…</li>
+        <li><b>L'équation de récurrence</b> : la base, l'hérédité et l'intervalle des indices.</li>
+        <li><b>La fonction de calcul</b> (<code>calculerMA</code>, <code>calculerL</code>…) qui remplit le tableau.</li>
+        <li><b>La fonction récursive</b> qui affiche la solution (<code>acm</code>, <code>aro</code>, <code>plsc</code>…).</li>
+      </ol>
+      <p class="note">Le prof donne un repère en nombre de lignes. Si ta fonction en fait trois fois plus, c'est que tu t'es perdu.</p>
+    </div>
+    <div class="panel">
+      <h3>Ordre conseillé</h3>
+      <ol>
+        <li>Lis <a href="#methode">la méthode</a> en entier : c'est la clé de tout le reste.</li>
+        <li>Pour chaque TD : Comprendre → Simulateur → Le code → S'entraîner.</li>
+        <li>Refais les calculs « à la main » jusqu'à ne plus te tromper : c'est le meilleur moyen de retenir la récurrence.</li>
+        <li>Termine par un <a href="#examen">sujet blanc</a> chronométré, sans regarder le corrigé.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METHODE ============ -->
+<section class="view" id="v-methode" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">À lire en premier</p>
+    <h1>La méthode : la programmation dynamique</h1>
+    <p class="lead">Tous les exercices du partiel se résolvent avec la même recette. Une fois que tu l'as comprise sur un exemple, les autres TD ne sont que des variantes.</p>
+  </header>
+  <div class="subtabs" role="tablist">
+    <button type="button" data-sub="c" class="on">Comprendre</button>
+    <button type="button" data-sub="j">Boîte à outils Java</button>
+    <button type="button" data-sub="e">S'entraîner</button>
+  </div>
+
+  <div class="sub prose" data-sub="c">
+    <h2 style="margin-top:0">L'idée avec un escalier</h2>
+    <p>Tu dois monter un escalier de 10 marches. Chaque pas coûte un certain prix, et tu peux monter d'une ou de deux marches à la fois. Combien coûte, au minimum, d'arriver en haut ?</p>
+    <p>Essayer tous les trajets possibles serait très long (il y en a des dizaines). On se pose une question beaucoup plus simple : <b>quel a été ton dernier pas ?</b> Pour finir sur la marche 10, tu venais forcément de la marche 9 ou de la marche 8. Donc :</p>
+    <div class="formula">coût min(10) = le plus petit entre<br>&nbsp;&nbsp;coût min(9) + prix du pas 9 → 10<br>&nbsp;&nbsp;coût min(8) + prix du pas 8 → 10</div>
+    <p>Et coût min(9) se calcule de la même façon à partir des marches 8 et 7, et ainsi de suite jusqu'à la marche 0, qui coûte 0. Si on calcule les marches <b>dans l'ordre 0, 1, 2, …</b> et qu'on écrit chaque résultat dans un tableau, chaque case se calcule en lisant deux cases déjà remplies. Fini.</p>
+    <p>C'est ça, la <b>programmation dynamique</b> : la solution d'un gros problème se construit avec les solutions de problèmes plus petits, qu'on range dans un tableau pour ne jamais les recalculer.</p>
+    <div class="callout"><b>Pourquoi on a le droit ?</b> Si le meilleur trajet vers la marche 10 passe par la marche 8, alors son morceau 0 → 8 est forcément le meilleur trajet vers la 8. Sinon on le remplacerait par un trajet moins cher et on paierait encore moins pour arriver en 10, ce qui contredit « meilleur trajet ». C'est le principe d'optimalité.</div>
+
+    <h2>La recette du prof, en 5 étapes</h2>
+    <p>À apprendre par cœur. Elle sert pour chaque exercice.</p>
+    <ol class="recipe">
+      <li><h4>Nommer la valeur cherchée</h4><p>Une phrase précise : « m(j) est le coût minimum d'un chemin de la ville 0 à la ville j ». Les paramètres (j, ou k et t, ou p et q) décrivent un <i>sous-problème</i>, une version plus petite du problème.</p></li>
+      <li><h4>« Supposons le problème résolu »</h4><p>On imagine qu'on a déjà la meilleure solution et on regarde <b>sa dernière décision</b> : la dernière ville avant l'arrivée, les heures données à la dernière matière, les dernières lettres des deux mots… On liste <b>tous les cas possibles</b>.</p></li>
+      <li><h4>Écrire l'équation de récurrence</h4><p><b>Base</b> : le cas minuscule qu'on sait résoudre sans réfléchir (la ville 0, aucune matière, un mot vide). <b>Hérédité</b> : la valeur est le min (ou le max) sur tous les cas de l'étape 2. Toujours donner <b>l'intervalle</b> des indices, par exemple 1 ≤ j &lt; n.</p></li>
+      <li><h4>Remplir le tableau</h4><p>La fonction <code>calculerM</code> ou <code>calculerMA</code> crée le tableau, écrit la base, puis remplit les cases <b>dans un ordre où tout ce dont on a besoin est déjà calculé</b> (j croissant, k croissant…). En même temps, on remplit A, le tableau des <b>arg</b> : pour chaque case, la décision qui a donné le meilleur résultat.</p></li>
+      <li><h4>Reconstruire la solution</h4><p>Une fonction <b>récursive</b> part de la dernière case, lit dans A la décision prise, s'appelle sur la case d'avant, puis affiche sa partie. On affiche <b>après</b> l'appel récursif pour que la solution sorte dans l'ordre, du début à la fin.</p></li>
+    </ol>
+    <p>Question bonus fréquente, la <b>complexité</b> : (nombre de cases du tableau) × (travail pour une case). Pour Juliette : (n+1)(H+1) cases, et jusqu'à H+1 essais par case, donc de l'ordre de n·H².</p>
+
+    <h2>Le tableau A, ou les cailloux du Petit Poucet</h2>
+    <p>M te dit <i>combien</i> coûte la meilleure solution, pas <i>comment</i> on l'obtient. Alors, comme le Petit Poucet qui sème des cailloux, on note dans A d'où l'on vient pour chaque case : la ville précédente, le nombre d'heures choisi… À la fin, il suffit de suivre les cailloux à l'envers depuis l'arrivée.</p>
+    <p><b>arg m(j)</b> se lit « l'argument de m(j) » : c'est la valeur de i pour laquelle le minimum est atteint.</p>
+
+    <h2>La récursivité sans prise de tête</h2>
+    <p>Tu es dans une file d'attente et tu veux écrire la liste de tous les gens devant toi, dans l'ordre. Tu ne connais que la personne juste devant toi (c'est A[j]). Tu lui dis : « écris d'abord ta liste à toi ». Quand elle a fini, tu ajoutes ton nom. Elle fait pareil avec la personne devant elle… jusqu'au premier de la file (la base, j = 0), qui écrit juste son nom.</p>
+    <pre class="code" data-code="ch_ctl_acm"></pre>
+    <p>Si on mettait le <code>printf</code> <b>avant</b> l'appel récursif, le chemin s'afficherait de la fin vers le début.</p>
+
+    <h2>Lire les notations du prof</h2>
+    <div class="scroll"><table class="notes">
+      <tr><td><code>T[0:n]</code></td><td>un tableau de n cases, d'indices 0, 1, …, n−1. La borne de droite est <b>exclue</b>.</td></tr>
+      <tr><td><code>M[0:n+1]</code></td><td>n+1 cases, d'indices 0 à n. La case en plus sert au cas de base « 0 élément ».</td></tr>
+      <tr><td><code>0 ≤ j &lt; n+1</code></td><td>j va de 0 à n inclus. En Java : <code>for (int j = 0; j &lt; n+1; j++)</code>.</td></tr>
+      <tr><td>terme général</td><td>« M de terme général M[j] = m(j) » : la case j du tableau contient la valeur m(j).</td></tr>
+      <tr><td>qqsoit, ∀</td><td>pour tout.</td></tr>
+      <tr><td>arg m(j)</td><td>la décision (l'indice) qui réalise le min ou le max.</td></tr>
+      <tr><td>+∞</td><td>« impossible ». En Java : <code>Integer.MAX_VALUE</code>, ou <code>MAX_VALUE/2</code> pour pouvoir lui ajouter un coût sans débordement.</td></tr>
+      <tr><td>k-ième élément</td><td>il porte le numéro k−1, car on compte à partir de 0. D'où tous les <code>k-1</code>, <code>p-1</code>, <code>q-1</code> du code.</td></tr>
+      <tr><td>préfixe</td><td>le p-préfixe de T, ce sont ses p premières lettres : <code>T.substring(0, p)</code>.</td></tr>
+    </table></div>
+
+    <h2>Les 4 problèmes en un tableau</h2>
+    <div class="scroll"><table class="recap">
+      <tr><th>Problème</th><th>Valeur</th><th>Base</th><th>Hérédité</th><th>Temps</th></tr>
+      <tr><td>Chemin, 2 lignes (TD2 ex. 2)</td><td>m(j) : coût min de 0 à j</td><td>m(0) = 0<br>m(1) = d1(0)</td><td>m(j) = min( m(j−1)+d1(j−1), m(j−2)+d2(j−2) ), 2 ≤ j &lt; n</td><td>α·n</td></tr>
+      <tr><td>Chemin, graphe (TD2 ex. 3, Contrôle 2)</td><td>m(j) : coût min de 0 à j</td><td>m(0) = 0</td><td>m(j) = min sur i ∈ pred(j) de m(i)+c(i,j), 1 ≤ j &lt; n</td><td>α·n² (ex. 3)</td></tr>
+      <tr><td>Juliette (TD3)</td><td>m(k,t) : meilleure somme pondérée, t heures sur les k premières unités</td><td>m(0,t) = 0</td><td>m(k,t) = max sur 0 ≤ h ≤ t de m(k−1,t−h) + c(k−1)·e(k−1,h)</td><td>α·n·H²</td></tr>
+      <tr><td>PLSC (TD4)</td><td>l(p,q) : longueur d'une plsc des p et q préfixes</td><td>l(0,q) = l(p,0) = 0</td><td>égales : 1+l(p−1,q−1)<br>sinon : max( l(p−1,q), l(p,q−1) )</td><td>Θ(m·n)</td></tr>
+      <tr><td>PLSSC (TD6)</td><td>l(j) : longueur d'une plssc qui finit en j</td><td>pred(j) = ∅ : l(j) = 1</td><td>l(j) = 1 + max sur i ∈ pred(j) de l(i)<br>réponse = max des l(j)</td><td>α·n²</td></tr>
+    </table></div>
+    <button type="button" class="btn primary next-sub" data-go="j">Suite : la boîte à outils Java →</button>
+  </div>
+
+  <div class="sub prose" data-sub="j" hidden>
+    <h2 style="margin-top:0">Les listes : un train de wagons</h2>
+    <p>Une <code>Liste</code> est un train. Le <b>premier</b> wagon contient un entier et il est accroché au <b>reste</b> du train, qui est lui-même un train (plus court). Le train vide, c'est <code>null</code>.</p>
+    <pre class="code" data-code="liste"></pre>
+    <p>Exemple : <code>new Liste(1, new Liste(3, new Liste(4, null)))</code> est le train 1 → 3 → 4.</p>
+    <h3>Parcourir une liste</h3>
+    <pre class="code" data-code="parcours"></pre>
+    <p>Traduction : je pars de la locomotive (<code>l = G[i]</code>) ; tant que le train n'est pas fini (<code>!vide(l)</code>) ; je passe au wagon suivant (<code>l = reste(l)</code>). Cette ligne revient dans <b>tous</b> les sujets avec graphe : apprends-la par cœur.</p>
+    <h3>Ajouter en tête</h3>
+    <p><code>G[i] = new Liste(j, G[i]);</code> accroche un nouveau wagon j <b>devant</b> le train existant. C'est rapide (une seule opération), mais l'ordre s'inverse : le dernier ajouté sort en premier. C'est pour ça que dans les exécutions du prof, G′ affiche « 4 : 3 2 1 0 ».</p>
+
+    <h2>Un graphe = un tableau de listes</h2>
+    <p>Pense au panneau d'un arrêt de bus : à l'arrêt i, on lit la liste des villes qu'on peut atteindre directement. <code>G[i]</code> est cette liste, les <b>successeurs</b> de i. Le graphe entier est un <code>Liste[] G</code> de taille n.</p>
+    <div class="dag-wrap" data-dag="ctl"></div>
+    <pre class="mini">G[0] : 1 3 4      G[1] : 2 4      G[2] : 3 4      G[3] : 4      G[4] : (vide)</pre>
+    <h3>Afficher un graphe (question 1 du contrôle 2)</h3>
+    <pre class="code" data-code="afficher"></pre>
+
+    <h2>Le graphe symétrique : « qui vient chez moi ? »</h2>
+    <p>Pour calculer m(j) ou l(j), on a besoin des sommets qui <b>arrivent</b> en j (les prédécesseurs, pred(j)), pas de ceux où l'on va depuis j. Or G ne donne que les départs. On fabrique donc G′ (Gp, Gprime), le même graphe avec toutes les flèches retournées : <code>Gp[j]</code> est la liste des prédécesseurs de j.</p>
+    <p class="analogy">Dans une gare, il y a le tableau des départs et le tableau des arrivées. Ce sont les mêmes trains, vus de l'autre côté. G, c'est les départs ; G′, c'est les arrivées.</p>
+    <pre class="code" data-code="symetrique"></pre>
+
+    <h2>Retourner deux tableaux à la fois</h2>
+    <p>Une fonction Java ne retourne qu'une chose. Pour rendre M et A, on les met dans un tableau de tableaux :</p>
+    <pre class="code" data-code="retour2"></pre>
+    <p>Pour deux tableaux à deux dimensions (Juliette) : <code>return new int[][][] {M, A};</code></p>
+
+    <h2>Les chaînes (String)</h2>
+    <div class="scroll"><table class="notes">
+      <tr><td><code>S.length()</code></td><td>longueur de la chaîne. Avec des parenthèses : c'est une méthode.</td></tr>
+      <tr><td><code>T.length</code></td><td>longueur d'un <b>tableau</b>. Sans parenthèses : c'est une variable du tableau.</td></tr>
+      <tr><td><code>S.charAt(i)</code></td><td>le caractère d'indice i (un <code>char</code>, on compare avec <code>==</code>).</td></tr>
+      <tr><td><code>S.substring(i, j)</code></td><td>la sous-chaîne S[i:j], de i inclus à j exclu. <code>S.substring(p-1, p)</code> est la lettre d'indice p−1, sous forme de String.</td></tr>
+      <tr><td><code>S1 + S2</code></td><td>concaténation : "bon" + "jour" donne "bonjour".</td></tr>
+    </table></div>
+
+    <h2>Afficher</h2>
+    <p><code>System.out.print(x)</code> affiche sans retour à la ligne, <code>println</code> avec. <code>System.out.printf("--(%d)-->%d", c, j)</code> remplace chaque <code>%d</code> par un entier, dans l'ordre : avec c = 5 et j = 1, on obtient <code>--(5)-->1</code>.</p>
+    <button type="button" class="btn primary next-sub" data-go="e">Suite : s'entraîner →</button>
+  </div>
+
+  <div class="sub" data-sub="e" hidden>
+    <div class="ex"><h4><span class="kind">QCM</span>Les bases de la méthode <span class="done-mark" data-done="qcm-methode"></span></h4><div class="qcm" data-qcm="methode"></div></div>
+    <div data-trous="tr-afficher"></div>
+    <div data-trous="tr-sym"></div>
+    <div data-write="wr-afficher"></div>
+    <div data-write="wr-sym"></div>
+  </div>
+</section>
+
+<!-- ============ CHEMINS ============ -->
+<section class="view" id="v-chemins" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">TD2 ex. 2 et 3 · Contrôle 2</p>
+    <h1>Chemins de coût minimum</h1>
+    <p class="lead">Aller de la ville 0 à la ville n−1 en payant le moins possible, et savoir par où passer. Trois versions, de plus en plus générales, une seule méthode.</p>
+  </header>
+  <div class="subtabs" role="tablist">
+    <button type="button" data-sub="c" class="on">Comprendre</button>
+    <button type="button" data-sub="s">Simulateur</button>
+    <button type="button" data-sub="k">Le code</button>
+    <button type="button" data-sub="e">S'entraîner</button>
+  </div>
+
+  <div class="sub prose" data-sub="c">
+    <h2 style="margin-top:0">Le problème</h2>
+    <p>Des villes numérotées 0, 1, …, n−1 sont reliées par des lignes de bus, toujours dans le sens des numéros croissants : on ne revient jamais en arrière. Chaque trajet direct a un prix. On cherche le trajet le moins cher de 0 à n−1.</p>
+    <p class="analogy">C'est ce que fait une appli de transport quand tu demandes le billet le moins cher avec correspondances.</p>
+
+    <h3>Version 1 · deux lignes de bus (TD2 ex. 2)</h3>
+    <p>Depuis la ville i, on peut aller en i+1 avec la ligne 1 (prix d1(i)) ou directement en i+2 avec la ligne 2 (prix d2(i)). C'est exactement l'escalier de la méthode.</p>
+    <div class="dag-wrap" data-dag="ex2"></div>
+    <p><b>Supposons le problème résolu.</b> Le chemin le moins cher arrive en n−1 soit depuis n−2 (ligne 1), soit depuis n−3 (ligne 2). On prend le moins cher des deux :</p>
+    <div class="formula">m(n−1) = min( m(n−2) + d1(n−2) , m(n−3) + d2(n−3) )</div>
+    <div class="rec"><b>Base</b><span>m(0) = 0<br>m(1) = d1(0) &nbsp;(on n'arrive en 1 que depuis 0, par la ligne 1)</span><b>Hérédité</b><span>∀ j, 2 ≤ j &lt; n :<br>m(j) = min( m(j−1) + d1(j−1) , m(j−2) + d2(j−2) )</span></div>
+    <p class="note">Les coûts sont indicés par la ville de <b>départ</b> : le trajet j−1 → j coûte d1(j−1), le trajet j−2 → j coûte d2(j−2). Attention, le commentaire en haut du fichier Exercice2.java contient des fautes de frappe ; la bonne équation est celle-ci, c'est celle que le code utilise.</p>
+    <p>Ici, pas besoin de tableau A : pour savoir d'où l'on vient en j, on refait le test <code>M[j] == M[j-1] + D1[j-1]</code>. Si c'est vrai, on venait de j−1, sinon de j−2.</p>
+    <p>Exemple du TD : D1 = [10, 20, 100, 30], D2 = [40, 50, 60] donne M = [0, 10, 30, 60, 90] et le chemin <code>0--(10)-->1--(50)-->3--(30)-->4</code>.</p>
+
+    <h3>Version 2 · toutes les lignes existent (TD2 ex. 3)</h3>
+    <p>Maintenant, pour tous i &lt; j, il existe un trajet direct de i à j au prix d(i,j). Pour arriver en j, le dernier trajet peut partir de <b>n'importe quelle</b> ville i avant j. On les essaie toutes :</p>
+    <div class="rec"><b>Base</b><span>m(0) = 0</span><b>Hérédité</b><span>∀ j, 1 ≤ j &lt; n :<br>m(j) = min sur 0 ≤ i &lt; j de ( m(i) + d(i,j) )<br>a(j) = arg min : le i qui donne ce minimum</span></div>
+    <p>On ne peut plus retrouver la ville précédente avec deux tests, alors on la range dans A[j].</p>
+    <p><b>Temps</b> : pour chaque j on essaie j villes, soit 1 + 2 + … + (n−1) = n(n−1)/2 essais : de l'ordre de α·n².</p>
+    <p>Exemple du TD : M = [0, 40, 40, 80, 130] et le chemin <code>0--(40)-->2--(40)-->3--(50)-->4</code>.</p>
+
+    <h3>Version 3 · un vrai réseau (Contrôle 2)</h3>
+    <p>Toutes les lignes n'existent pas. Pour arriver en j, on ne peut venir que d'une ville qui a une ligne vers j : ses <b>prédécesseurs</b>, notés pred(j). Dans l'exemple, pred(3) = {0, 2}.</p>
+    <div class="dag-wrap" data-dag="ctl"></div>
+    <div class="rec"><b>Base</b><span>m(0) = 0, &nbsp;a(0) = −1 (pas de ville avant 0)</span><b>Hérédité</b><span>∀ j, 1 ≤ j &lt; n :<br>m(j) = min sur i ∈ pred(j) de ( m(i) + c(i,j) )<br>(m(j) = +∞ si pred(j) est vide)</span></div>
+    <p>En Java, pred(j) se parcourt avec le graphe symétrique : <code>Gp[j]</code> est exactement la liste des prédécesseurs de j. C'est pour ça que <code>calculerMA</code> reçoit Gp et pas G.</p>
+    <p>Exemple de l'énoncé : M = [0, 5, 10, 20, 25], A = [−1, 0, 1, 2, 1] et <code>acm(A,C,4)</code> affiche <code>0--(5)-->1--(20)-->4</code>.</p>
+    <div class="callout">Les trois versions ne diffèrent que par la réponse à « d'où peut-on venir ? » : {j−1, j−2}, puis {0, …, j−1}, puis pred(j). Si tu as compris ça, tu as compris tout le chapitre.</div>
+    <button type="button" class="btn primary next-sub" data-go="s">Voir l'algorithme tourner →</button>
+  </div>
+
+  <div class="sub" data-sub="s" hidden>
+    <p class="prose">Choisis un exemple (ou entre le tien), puis avance pas à pas. À chaque ville j, les flèches orange sont les trajets possibles pour arriver en j, la bleue est celle qui donne le minimum. À la fin, le chemin optimal s'affiche en vert.</p>
+    <div class="sim" id="sim-ch">
+      <div class="sim-inputs">
+        <label for="ch-preset">Exemple
+          <select id="ch-preset">
+            <option value="controle">Contrôle 2 (réseau de bus)</option>
+            <option value="ex2">TD2 ex. 2 (deux lignes)</option>
+            <option value="ex3">TD2 ex. 3 (toutes les lignes)</option>
+            <option value="custom">Le mien…</option>
+          </select></label>
+        <label for="ch-n">Nombre de villes n <input id="ch-n" type="number" min="2" max="10" value="5"></label>
+        <label class="grow" for="ch-arcs">Trajets directs : « départ arrivée coût », un par ligne <textarea id="ch-arcs" rows="4"></textarea></label>
+        <button type="button" class="btn primary" id="ch-load">Lancer</button>
+      </div>
+      <p class="err" id="ch-err"></p>
+      <div class="pbar"></div><div class="pmsg"></div>
+      <div class="legend"><span class="l-cur">case calculée</span><span class="l-dep">cases utilisées</span><span class="l-path">chemin optimal</span></div>
+      <div class="sim-view"></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="k" hidden>
+    <div class="prose">
+    <div class="codeblock"><h3>TD2 ex. 2 · calculerM</h3><p class="explain">La base remplit M[0] et M[1], puis chaque M[j] est le moins cher des deux trajets possibles.</p><pre class="code" data-code="ch_ex2_M"></pre></div>
+    <div class="codeblock"><h3>TD2 ex. 2 · afficherCheminMinimum</h3><p class="explain">Pas de tableau A : on retrouve la ville précédente en testant quelle formule a donné M[j].</p><pre class="code" data-code="ch_ex2_aff"></pre></div>
+    <div class="codeblock"><h3>TD2 ex. 3 · calculerMA</h3><p class="explain">Deux boucles : j pour la ville d'arrivée, i pour la dernière étape. On garde le minimum et le i qui l'atteint.</p><pre class="code" data-code="ch_ex3_MA"></pre></div>
+    <div class="codeblock"><h3>TD2 ex. 3 · afficherCheminMinimum</h3><pre class="code" data-code="ch_ex3_aff"></pre></div>
+    <div class="codeblock"><h3>Contrôle 2 · calculerMA (repère : 16 lignes)</h3><p class="explain">Même chose que l'ex. 3, mais la boucle sur i devient un parcours de la liste Gp[j].</p><pre class="code" data-code="ch_ctl_MA"></pre></div>
+    <div class="codeblock"><h3>Contrôle 2 · acm (repère : 9 lignes)</h3><pre class="code" data-code="ch_ctl_acm"></pre></div>
+    <div class="codeblock"><h3>Contrôle 2 · afficher (repère : 10 lignes)</h3><pre class="code" data-code="afficher"></pre></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="e" hidden>
+    <div class="ex"><h4><span class="kind">À la main</span>Remplis M et A <span class="done-mark" data-done="hx-chemins"></span></h4><p>Comme au brouillon : calcule chaque case de gauche à droite. Pour A, toute ville qui donne le minimum est acceptée (A[0] = −1).</p><div data-hand="chemins"></div></div>
+    <div class="ex"><h4><span class="kind">QCM</span>Chemins de coût minimum <span class="done-mark" data-done="qcm-chemins"></span></h4><div class="qcm" data-qcm="chemins"></div></div>
+    <div data-trous="tr-ex2M"></div>
+    <div data-trous="tr-ex3"></div>
+    <div data-trous="tr-ctlMA"></div>
+    <div data-trous="tr-acm"></div>
+    <div data-write="wr-ctlMA"></div>
+    <div data-write="wr-acm"></div>
+  </div>
+</section>
+
+<!-- ============ JULIETTE ============ -->
+<section class="view" id="v-juliette" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">TD3</p>
+    <h1>Juliette optimise ses révisions</h1>
+    <p class="lead">H heures, n matières, et pour chaque matière la note qu'on espère selon le temps passé dessus. Combien d'heures donner à chacune pour la meilleure moyenne ?</p>
+  </header>
+  <div class="subtabs" role="tablist">
+    <button type="button" data-sub="c" class="on">Comprendre</button>
+    <button type="button" data-sub="s">Simulateur</button>
+    <button type="button" data-sub="k">Le code</button>
+    <button type="button" data-sub="e">S'entraîner</button>
+  </div>
+
+  <div class="sub prose" data-sub="c">
+    <h2 style="margin-top:0">Le problème</h2>
+    <p>Juliette a H heures pour réviser n unités (matières). Pour chaque unité i, elle a estimé la note e(i,h) qu'elle aurait en y passant h heures. Chaque unité a un coefficient c(i). Elle veut la plus grande <b>somme pondérée</b> c(0)·note(0) + c(1)·note(1) + …, ce qui revient à la meilleure moyenne.</p>
+    <p class="analogy">Tu as 10 jetons à dépenser dans 3 stands d'une fête foraine. Chaque stand donne plus ou moins de points selon le nombre de jetons, et certains stands comptent double. Tout mettre dans un seul stand est rarement le mieux : les premiers jetons rapportent souvent beaucoup, les suivants presque plus rien.</p>
+    <p>L'exemple du TD (H = 10, coefficients 4, 3, 4) :</p>
+    <div class="tblwrap" id="ju-example"></div>
+
+    <h3>À quel problème connu ça ressemble ? (question 1)</h3>
+    <p>Au <b>sac à dos</b>. Le sac a une contenance (ici les H heures), on y met des choses qui prennent de la place (des heures données à une unité) et qui rapportent de la valeur (des points pondérés). Différence : pour chaque unité on ne choisit pas « dedans ou dehors », on choisit <b>combien</b> d'heures elle prend.</p>
+
+    <h3>Supposons le problème résolu (question 2)</h3>
+    <p>Dans la meilleure répartition, la dernière unité (n−1) reçoit un certain nombre h d'heures. On ne sait pas lequel, donc on les essaie tous : h = 0, 1, …, H. Si elle reçoit h heures :</p>
+    <ul>
+      <li>elle rapporte c(n−1) × e(n−1, h) points ;</li>
+      <li>il reste H − h heures pour les n−1 premières unités, à répartir au mieux : c'est m(n−1, H−h).</li>
+    </ul>
+    <div class="formula">m(n,H) = max sur 0 ≤ h ≤ H de ( m(n−1, H−h) + c(n−1) × e(n−1, h) )</div>
+
+    <h3>Équation de récurrence (question 3)</h3>
+    <p><b>m(k,t)</b> = somme pondérée maximum des notes des <b>k premières</b> unités (les unités 0 à k−1) quand on répartit <b>t</b> heures entre elles.</p>
+    <div class="rec"><b>Base</b><span>∀ t, 0 ≤ t &lt; H+1 : m(0,t) = 0 &nbsp;(aucune unité, aucun point)</span><b>Hérédité</b><span>∀ k, 1 ≤ k &lt; n+1, ∀ t, 0 ≤ t &lt; H+1 :<br>m(k,t) = max sur 0 ≤ h &lt; t+1 de ( m(k−1, t−h) + c(k−1) × e(k−1, h) )<br>a(k,t) = arg max : le h choisi</span></div>
+    <p class="note">La k-ième unité porte le numéro k−1, d'où les <code>C[k-1]</code> et <code>E[k-1]</code> dans le code.</p>
+    <p>Le tableau M a n+1 lignes (k = 0 à n) et H+1 colonnes (t = 0 à H). On le remplit ligne par ligne : la ligne k n'utilise que la ligne k−1. La réponse est la case M[n][H].</p>
+    <p><b>Temps</b> : (n+1)(H+1) cases, et pour chacune jusqu'à H+1 valeurs de h : de l'ordre de α·n·H².</p>
+
+    <h3>Reconstruire la répartition : aro (question 5)</h3>
+    <p>A[k][t] dit combien d'heures la k-ième unité reçoit dans la meilleure répartition de t heures. On part de (n, H) : l'unité n−1 reçoit h = A[n][H] heures, puis on recommence avec (n−1, H−h), jusqu'à k = 0.</p>
+    <p>Sur l'exemple : 4×12 + 3×18 + 4×18 = 174, soit une moyenne de 174/11 ≈ 15,82. Et Juliette remarque qu'avec 6 heures seulement, M[3][6] = 160, déjà 14,54 de moyenne.</p>
+    <details><summary>La « version 2 » du corrigé (pour info)</summary>
+      <p>Certains groupes ont défini m(k,t) comme la somme pondérée des notes des <b>n</b> unités quand seules les k premières reçoivent des heures (les autres ont la note à 0 heure). La base devient m(0,t) = c(0)e(0,0) + … + c(n−1)e(n−1,0), et l'hérédité ajoute le <i>gain</i> c(k−1)·(e(k−1,h) − e(k−1,0)). Le résultat final est le même. Au partiel, la version 1 suffit.</p>
+    </details>
+    <button type="button" class="btn primary next-sub" data-go="s">Voir le tableau se remplir →</button>
+  </div>
+
+  <div class="sub" data-sub="s" hidden>
+    <p class="prose">Chaque case m(k,t) essaie tous les h possibles : les cases orange de la ligne du dessus sont les m(k−1, t−h) utilisés, la bleue est celle du meilleur choix. Dans E, la note retenue est surlignée.</p>
+    <div class="sim" id="sim-ju">
+      <div class="sim-inputs">
+        <label for="ju-C">Coefficients C <input id="ju-C" type="text" value="4, 3, 4"></label>
+        <label class="grow" for="ju-E">Notes estimées E : une ligne par unité, de h = 0 à H <textarea id="ju-E" rows="3">8 10 10 12 12 12 12 12 12 16 16
+16 16 18 20 20 20 20 20 20 20 20
+8 12 14 14 16 18 18 18 18 20 20</textarea></label>
+        <label for="ju-T">Heures à répartir à la fin <input id="ju-T" type="number" min="0" value="10"></label>
+        <button type="button" class="btn primary" id="ju-load">Lancer</button>
+      </div>
+      <p class="err" id="ju-err"></p>
+      <div class="pbar"></div><div class="pmsg"></div>
+      <div class="legend"><span class="l-cur">case calculée</span><span class="l-dep">cases essayées</span><span class="l-best">meilleur choix</span><span class="l-path">reconstruction (aro)</span></div>
+      <div class="sim-view"></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="k" hidden>
+    <div class="prose">
+    <div class="codeblock"><h3>calculerMA (version 1)</h3><p class="explain">Trois boucles imbriquées : k (les unités), t (les heures disponibles), h (les heures données à l'unité k−1).</p><pre class="code" data-code="ju_MA"></pre></div>
+    <div class="codeblock"><h3>aro : afficher une répartition optimale</h3><p class="explain">Appel principal : <code>aro(A, E, C, n, H)</code>. Pour 6 heures : <code>aro(A, E, C, n, 6)</code>.</p><pre class="code" data-code="ju_aro"></pre></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="e" hidden>
+    <div class="ex"><h4><span class="kind">À la main</span>Remplis le tableau M <span class="done-mark" data-done="hx-juliette"></span></h4><p>2 unités, 4 heures. Pour chaque case, essaie tous les h et garde le maximum.</p><div data-hand="juliette"></div></div>
+    <div class="ex"><h4><span class="kind">QCM</span>Juliette <span class="done-mark" data-done="qcm-juliette"></span></h4><div class="qcm" data-qcm="juliette"></div></div>
+    <div data-trous="tr-juMA"></div>
+    <div data-trous="tr-aro"></div>
+    <div data-write="wr-juMA"></div>
+    <div data-write="wr-aro"></div>
+  </div>
+</section>
+
+<!-- ============ PLSC ============ -->
+<section class="view" id="v-plsc" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">TD4</p>
+    <h1>Plus longue séquence commune (PLSC)</h1>
+    <p class="lead">Le plus long mot qu'on peut obtenir en barrant des lettres dans deux mots à la fois. C'est la base de la commande <code>diff</code> et de la comparaison de brins d'ADN.</p>
+  </header>
+  <div class="subtabs" role="tablist">
+    <button type="button" data-sub="c" class="on">Comprendre</button>
+    <button type="button" data-sub="s">Simulateur</button>
+    <button type="button" data-sub="k">Le code</button>
+    <button type="button" data-sub="e">S'entraîner</button>
+  </div>
+
+  <div class="sub prose" data-sub="c">
+    <h2 style="margin-top:0">Sous-séquence : on peut sauter, pas mélanger</h2>
+    <p>Une sous-séquence de ALGORITHME s'obtient en barrant des lettres, sans changer l'ordre des autres : AGRT, LOI, ALGO en sont. LOGA n'en est pas, car le A est avant le L.</p>
+    <p>La <b>plus longue sous-séquence commune</b> (plsc) de deux mots T et U est le plus long mot qui est sous-séquence des deux. Exemple du TD : plsc(aligatorithme, algorithmique) = algorithme.</p>
+    <p class="analogy">Deux amis te racontent la même soirée. Chacun a oublié certains détails et en a ajouté d'autres. La plsc, c'est le plus long récit commun, raconté dans le même ordre par les deux.</p>
+
+    <h3>Supposons le problème résolu</h3>
+    <p>T a m lettres, U en a n. On regarde leurs <b>dernières lettres</b>, t(m−1) et u(n−1).</p>
+    <ul>
+      <li><b>Elles sont égales</b> (ALGO et LOGO finissent toutes deux par O) : on garde cette lettre à la fin de la plsc, et il reste à trouver une plsc des deux mots sans leur dernière lettre. <br><code>l(m,n) = 1 + l(m−1, n−1)</code></li>
+      <li><b>Elles sont différentes</b> : elles ne peuvent pas être toutes les deux la dernière lettre de la plsc, donc l'une des deux ne sert à rien. Soit on jette la dernière lettre de T, soit celle de U, et on garde le meilleur. <br><code>l(m,n) = max( l(m−1, n), l(m, n−1) )</code></li>
+    </ul>
+    <p class="note">Le TD liste aussi le cas « on jette les deux », l(m−1, n−1). Il disparaît car il n'est jamais meilleur que les deux autres : jeter une lettre de plus ne peut pas allonger la plsc.</p>
+
+    <h3>Équation de récurrence</h3>
+    <p><b>l(p,q)</b> = longueur d'une plsc au p-préfixe de T (ses p premières lettres) et au q-préfixe de U.</p>
+    <div class="rec"><b>Base</b><span>∀ q, 0 ≤ q &lt; n+1 : l(0,q) = 0<br>∀ p, 0 ≤ p &lt; m+1 : l(p,0) = 0 &nbsp;(un mot vide n'a rien en commun)</span><b>Hérédité</b><span>∀ p, 1 ≤ p &lt; m+1, ∀ q, 1 ≤ q &lt; n+1 :<br>si t(p−1) = u(q−1) : l(p,q) = 1 + l(p−1, q−1)<br>sinon : l(p,q) = max( l(p−1, q), l(p, q−1) )</span></div>
+
+    <h3>Le tableau L est une grille</h3>
+    <p>L a m+1 lignes (une par préfixe de T, y compris le vide) et n+1 colonnes. Chaque case dépend de la case en haut à gauche (↖), de celle du dessus (↑) et de celle de gauche (←). On remplit donc ligne par ligne, de gauche à droite. La réponse est L[m][n].</p>
+    <p><b>Temps</b> : Θ(m × n), chaque case se calcule en temps constant.</p>
+
+    <h3>Reconstruire une plsc</h3>
+    <p>On part de la case (m, n) et on remonte. Si les lettres sont égales, on garde la lettre et on va en diagonale. Sinon on va vers la plus grande des cases ↑ et ← (vers le haut en cas d'égalité, comme dans le corrigé). On s'arrête quand p ou q vaut 0.</p>
+    <p>La fonction <code>plsc</code> colle la lettre <b>après</b> l'appel récursif : <code>plsc(T, U, L, p-1, q-1) + T.substring(p-1, p)</code>. Les lettres sortent donc dans le bon ordre.</p>
+    <button type="button" class="btn primary next-sub" data-go="s">Voir la grille se remplir →</button>
+  </div>
+
+  <div class="sub" data-sub="s" hidden>
+    <p class="prose">Les lignes correspondent aux lettres de T, les colonnes à celles de U. La petite flèche dans chaque case indique d'où vient la valeur. À la fin, le chemin de reconstruction s'affiche en vert, et les lettres gardées en vert foncé.</p>
+    <div class="sim" id="sim-lcs">
+      <div class="sim-inputs">
+        <label for="lcs-T">Séquence T <input id="lcs-T" type="text" value="BANANE" maxlength="16"></label>
+        <label for="lcs-U">Séquence U <input id="lcs-U" type="text" value="ANANAS" maxlength="16"></label>
+        <button type="button" class="btn primary" id="lcs-load">Lancer</button>
+        <button type="button" class="btn ghost" id="lcs-ex1">Exemple du TD</button>
+      </div>
+      <p class="err" id="lcs-err"></p>
+      <div class="pbar"></div><div class="pmsg"></div>
+      <div class="legend"><span class="l-cur">case calculée</span><span class="l-dep">cases utilisées</span><span class="l-path">reconstruction</span></div>
+      <div class="sim-view"></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="k" hidden>
+    <div class="prose">
+    <div class="codeblock"><h3>calculerL</h3><p class="explain">La base met des 0 sur la ligne 0 et la colonne 0, puis deux boucles remplissent la grille.</p><pre class="code" data-code="lcs_L"></pre></div>
+    <div class="codeblock"><h3>plsc : reconstruire une plsc</h3><p class="explain">Appel principal : <code>String S = plsc(T, U, L, m, n);</code></p><pre class="code" data-code="lcs_plsc"></pre></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="e" hidden>
+    <div class="ex"><h4><span class="kind">À la main</span>Remplis la grille L <span class="done-mark" data-done="hx-plsc"></span></h4><p>La ligne 0 et la colonne 0 valent 0. Remplis ligne par ligne, puis donne une plsc.</p><div data-hand="plsc"></div></div>
+    <div class="ex"><h4><span class="kind">QCM</span>PLSC <span class="done-mark" data-done="qcm-plsc"></span></h4><div class="qcm" data-qcm="plsc"></div></div>
+    <div data-trous="tr-lcsL"></div>
+    <div data-trous="tr-lcs"></div>
+    <div data-write="wr-lcsL"></div>
+    <div data-write="wr-lcs"></div>
+  </div>
+</section>
+
+<!-- ============ PLSSC ============ -->
+<section class="view" id="v-plssc" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">TD6</p>
+    <h1>Plus longue sous-séquence strictement croissante (PLSSC)</h1>
+    <p class="lead">Garder le plus de nombres possible, sans changer leur ordre, pour qu'ils montent toujours. On le résout comme un plus long chemin dans un graphe.</p>
+  </header>
+  <div class="subtabs" role="tablist">
+    <button type="button" data-sub="c" class="on">Comprendre</button>
+    <button type="button" data-sub="s">Simulateur</button>
+    <button type="button" data-sub="k">Le code</button>
+    <button type="button" data-sub="e">S'entraîner</button>
+  </div>
+
+  <div class="sub prose" data-sub="c">
+    <h2 style="margin-top:0">Le problème</h2>
+    <p>Avec S = [6, 5, 1, 2, 3, 4, 5, 2, 7, 6, 8, 0, 1], on peut garder 1, 2, 3, 4, 5, 6, 8 (indices 2, 3, 4, 5, 6, 9, 10) : 7 nombres strictement croissants, et on ne peut pas faire mieux.</p>
+    <p class="analogy">Tu montes un sentier et tu notes l'altitude à chaque borne. Tu veux choisir le plus de bornes possible pour un album où chaque photo est prise plus haut que la précédente. Tu peux sauter des bornes, mais pas revenir en arrière.</p>
+
+    <h3>Le graphe G(S)</h3>
+    <p>Chaque indice i devient un sommet. On trace une flèche <b>i → j</b> si <b>i &lt; j et S[i] &lt; S[j]</b>, ce qui veut dire : « S[j] peut venir juste après S[i] dans une suite croissante ». Une sous-séquence croissante est alors un chemin du graphe, et la plssc est le <b>plus long chemin</b>.</p>
+    <p>Exemple : S = [10, 1, 20, 2, 30, 1, 2]. Le sommet 1 (valeur 1) envoie des flèches vers 2, 3, 4 et 6.</p>
+    <div class="dag-wrap" data-dag="lis"></div>
+    <p>C'est le même schéma que le chemin de coût minimum du contrôle 2, avec un max au lieu d'un min, et on compte les sommets au lieu d'additionner des coûts.</p>
+
+    <h3>Équation de récurrence</h3>
+    <p><b>l(j)</b> = longueur d'une plus longue sous-séquence croissante <b>qui finit à l'indice j</b> (S[j] est son dernier nombre). pred(j) = les indices i qui envoient une flèche sur j.</p>
+    <div class="rec"><b>Base</b><span>si pred(j) = ∅ : l(j) = 1 &nbsp;(rien ne peut venir avant S[j], la suite est S[j] tout seul)</span><b>Hérédité</b><span>si pred(j) ≠ ∅ : l(j) = 1 + max sur i ∈ pred(j) de l(i)<br>a(j) = arg max (−1 si pred(j) = ∅)</span></div>
+    <p>On a besoin des prédécesseurs, donc on calcule G′ = symetrique(G).</p>
+    <div class="callout warn"><b>Piège classique :</b> la plssc ne finit pas forcément au dernier indice. La longueur cherchée est le <b>maximum de tous les l(j)</b>. Le corrigé prend le premier indice j* où ce maximum est atteint (fonction argmax), puis reconstruit la plssc qui finit en j*.</div>
+
+    <h3>Reconstruire la plssc</h3>
+    <p>A[j] est le prédécesseur choisi (−1 si S[j] est le début). On part de j*, on remonte avec A jusqu'à un −1, et la récursivité affiche dans l'ordre.</p>
+    <p>Sur l'exemple : L = [1, 1, 2, 2, 3, 1, 2], A = [−1, −1, 1, 1, 3, −1, 5], j* = 4, et la plssc est <code>S[1]=1 S[3]=2 S[4]=30</code>.</p>
+    <p><b>Temps</b> : construire G demande n(n−1)/2 comparaisons, donc de l'ordre de α·n². Le calcul de L parcourt chaque flèche une fois.</p>
+    <button type="button" class="btn primary next-sub" data-go="s">Voir l'algorithme tourner →</button>
+  </div>
+
+  <div class="sub" data-sub="s" hidden>
+    <p class="prose">Chaque cercle affiche la valeur S[i], avec son indice et son l(i) dessous. Pour chaque j, les flèches orange viennent des prédécesseurs, la bleue est celle du plus grand l(i).</p>
+    <div class="sim" id="sim-lis">
+      <div class="sim-inputs">
+        <label class="grow" for="lis-S">Séquence S (nombres séparés par des espaces) <input id="lis-S" type="text" value="10 1 20 2 30 1 2"></label>
+        <button type="button" class="btn primary" id="lis-load">Lancer</button>
+        <button type="button" class="btn ghost" id="lis-ex1">Exemple de la feuille 6</button>
+      </div>
+      <p class="err" id="lis-err"></p>
+      <div class="pbar"></div><div class="pmsg"></div>
+      <div class="legend"><span class="l-cur">sommet calculé</span><span class="l-dep">prédécesseurs</span><span class="l-path">plssc</span></div>
+      <div class="sim-view"></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="k" hidden>
+    <div class="prose">
+    <div class="codeblock"><h3>graphe(S)</h3><p class="explain">Pour chaque couple i &lt; j, on ajoute la flèche i → j si S[i] &lt; S[j].</p><pre class="code" data-code="lis_graphe"></pre></div>
+    <div class="codeblock"><h3>symetrique(G)</h3><pre class="code" data-code="symetrique"></pre></div>
+    <div class="codeblock"><h3>calculerLA</h3><p class="explain">Pour chaque j : si personne n'arrive, L[j] = 1 ; sinon on cherche le plus grand L[i] parmi les prédécesseurs, puis on ajoute 1.</p><pre class="code" data-code="lis_LA"></pre></div>
+    <div class="codeblock"><h3>plssc(A, S, j)</h3><pre class="code" data-code="lis_plssc"></pre></div>
+    <div class="codeblock"><h3>argmax et plssc(S)</h3><p class="explain">Le corrigé écrit argmax avec une boucle while et des invariants ; cette version avec for fait exactement la même chose.</p><pre class="code" data-code="lis_argmax"></pre><pre class="code" data-code="lis_plsscS"></pre></div>
+    </div>
+  </div>
+
+  <div class="sub" data-sub="e" hidden>
+    <div class="ex"><h4><span class="kind">À la main</span>Calcule L et A <span class="done-mark" data-done="hx-plssc"></span></h4><p>Pour chaque j, regarde les i &lt; j avec S[i] &lt; S[j]. Pour A, tout prédécesseur qui donne le maximum est accepté (−1 si aucun).</p><div data-hand="plssc"></div></div>
+    <div class="ex"><h4><span class="kind">QCM</span>PLSSC <span class="done-mark" data-done="qcm-plssc"></span></h4><div class="qcm" data-qcm="plssc"></div></div>
+    <div data-trous="tr-graphe"></div>
+    <div data-trous="tr-LA"></div>
+    <div data-trous="tr-plssc"></div>
+    <div data-trous="tr-argmax"></div>
+    <div data-write="wr-graphe"></div>
+    <div data-write="wr-LA"></div>
+    <div data-write="wr-plssc"></div>
+  </div>
+</section>
+
+<!-- ============ EXAMEN ============ -->
+<section class="view" id="v-examen" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">Entraînement final</p>
+    <h1>Sujets blancs</h1>
+    <p class="lead">Au format du partiel : 90 minutes, 4 questions, sans regarder le cours. Écris tes réponses, rends ta copie, puis corrige-toi avec le barème détaillé.</p>
+  </header>
+  <div id="exam-root"></div>
+</section>
+
+</main>
+</div>
+<script>
+// ===================== DONNÉES =====================
+const CODES = {
+liste: `static class Liste{          // un train de wagons
+    int p; Liste r;           // p = premier wagon, r = reste du train
+    Liste(int p, Liste r){ this.p = p; this.r = r; }
+}
+static boolean vide(Liste l){ return l == null; }   // le train vide, c'est null
+static int premier(Liste l){ return l.p; }
+static Liste reste(Liste l){ return l.r; }`,
+parcours: `for (Liste l = G[i]; !vide(l); l = reste(l)){
+    int j = premier(l);       // j est un successeur de i
+    // ... on fait quelque chose avec j
+}`,
+afficher: `static void afficher(Liste[] G){ int n = G.length;
+    for (int i = 0; i < n; i++){
+        System.out.print(i + " : ");
+        for (Liste l = G[i]; !vide(l); l = reste(l))
+            System.out.print(premier(l) + " ");
+        System.out.println();
+    }
+}`,
+symetrique: `static Liste[] symetrique(Liste[] G){ int n = G.length;
+    Liste[] Gp = new Liste[n];
+    for (int j = 0; j < n; j++) Gp[j] = null;   // au départ, aucune flèche
+    for (int i = 0; i < n; i++)
+        for (Liste l = G[i]; !vide(l); l = reste(l)){
+            int j = premier(l);                  // flèche i --> j dans G
+            Gp[j] = new Liste(i, Gp[j]);         // donc flèche j --> i dans Gp
+        }
+    return Gp;
+}`,
+retour2: `// à la fin de la fonction de calcul :
+return new int[][] {M, A};
+
+// à l'appel (dans le main) :
+int[][] MA = calculerMA(Gp, C);
+int[] M = MA[0], A = MA[1];`,
+ch_ex2_M: `static int[] calculerM(int[] D1, int[] D2){ int n = D1.length;
+    int[] M = new int[n];              // M[j] = m(j) = coût min de 0 à j
+    M[0] = 0;                          // base : de 0 à 0, ça ne coûte rien
+    M[1] = D1[0];                      // base : on n'arrive en 1 que depuis 0
+    for (int j = 2; j < n; j++)        // hérédité, j croissant
+        M[j] = min(M[j-1] + D1[j-1],   // arrivée par la ligne 1, depuis j-1
+                   M[j-2] + D2[j-2]);  // arrivée par la ligne 2, depuis j-2
+    return M;
+}
+static int min(int x, int y){ if (x <= y) return x; return y; }`,
+ch_ex2_aff: `static void afficherCheminMinimum(int[] M, int[] D1, int[] D2, int j){
+    if (j == 0){                          // chemin réduit à la ville 0
+        System.out.print("0");
+    }
+    else if (j == 1){                     // seul chemin possible : 0 --> 1
+        afficherCheminMinimum(M, D1, D2, 0);
+        System.out.printf("--(%d)-->1", D1[0]);
+    }
+    else if (M[j] == M[j-1] + D1[j-1]){   // on venait de j-1 (ligne 1)
+        afficherCheminMinimum(M, D1, D2, j-1);
+        System.out.printf("--(%d)-->%d", D1[j-1], j);
+    }
+    else {                                // sinon on venait de j-2 (ligne 2)
+        afficherCheminMinimum(M, D1, D2, j-2);
+        System.out.printf("--(%d)-->%d", D2[j-2], j);
+    }
+}`,
+ch_ex3_MA: `static int[][] calculerMA(int[][] D){ int n = D.length;
+    int[] M = new int[n], A = new int[n];
+    M[0] = 0;                                 // base
+    for (int j = 1; j < n; j++){              // hérédité, j croissant
+        int mj = Integer.MAX_VALUE, aj = -1;
+        for (int i = 0; i < j; i++){          // dernière étape avant j : la ville i
+            int mprime = M[i] + D[i][j];
+            if (mprime < mj){ mj = mprime; aj = i; }
+        }
+        M[j] = mj; A[j] = aj;                 // aj = arg m(j)
+    }
+    return new int[][] {M, A};
+}   // temps : 1 + 2 + ... + (n-1) = n(n-1)/2 essais, de l'ordre de n²`,
+ch_ex3_aff: `static void afficherCheminMinimum(int[] A, int[][] D, int j){
+    if (j == 0){ System.out.print(j); return; }       // chemin réduit à 0
+    int aj = A[j];                                    // ville juste avant j
+    afficherCheminMinimum(A, D, aj);                  // chemin min de 0 à aj
+    System.out.printf("--(%d)-->%d", D[aj][j], j);    // puis le dernier trajet
+}`,
+ch_ctl_MA: `static int[][] calculerMA(Liste[] Gp, int[][] C){ int n = Gp.length;
+    int infini = Integer.MAX_VALUE;
+    int[] M = new int[n], A = new int[n];
+    M[0] = 0; A[0] = -1;                      // base
+    for (int j = 1; j < n; j++){              // hérédité, j croissant
+        int mj = infini, aj = -1;
+        for (Liste l = Gp[j]; !vide(l); l = reste(l)){
+            int i = premier(l);               // i est un prédécesseur de j
+            int m = M[i] + C[i][j];           // coût si on arrive en j depuis i
+            if (m < mj){ mj = m; aj = i; }
+        }
+        M[j] = mj; A[j] = aj;
+    }
+    return new int[][] {M, A};
+}`,
+ch_ctl_acm: `static void acm(int[] A, int[][] C, int j){  // chemin min de 0 à j
+    if (j == 0){                    // base : le chemin de 0 à 0
+        System.out.print("0");
+        return;
+    }
+    int i = A[j];                   // la ville juste avant j
+    acm(A, C, i);                   // 1) affiche le chemin min de 0 à i
+    System.out.printf("--(%d)-->%d", C[i][j], j);   // 2) puis i --> j
+}`,
+ju_MA: `static int[][][] calculerMA(int[][] E, int[] C){
+    int n = E.length, H = E[0].length - 1;
+    int[][] M = new int[n+1][H+1], A = new int[n+1][H+1];
+    for (int t = 0; t < H+1; t++) M[0][t] = 0;      // base : 0 unité, 0 point
+    for (int k = 1; k < n+1; k++)                   // k croissant
+        for (int t = 0; t < H+1; t++){              // pour chaque nombre d'heures t
+            M[k][t] = Integer.MIN_VALUE;
+            for (int h = 0; h < t+1; h++){          // h heures pour l'unité k-1
+                int mkth = C[k-1] * E[k-1][h] + M[k-1][t-h];
+                if (mkth > M[k][t]){
+                    M[k][t] = mkth;
+                    A[k][t] = h;                    // arg m(k,t)
+                }
+            }
+        }
+    return new int[][][] {M, A};
+}   // temps : de l'ordre de n × H²`,
+ju_aro: `static void aro(int[][] A, int[][] E, int[] C, int k, int t){
+    if (k == 0) return;                // plus d'unité : rien à afficher
+    int h = A[k][t];                   // heures données à l'unité k-1
+    aro(A, E, C, k-1, t-h);            // d'abord les k-1 premières unités
+    System.out.printf("C[%d] * e(%d,%d) = %d * %d = %d\\n",
+        k-1, k-1, h, C[k-1], E[k-1][h], C[k-1]*E[k-1][h]);
+}`,
+lcs_L: `static int[][] calculerL(String T, String U){ int m = T.length(), n = U.length();
+    int[][] L = new int[m+1][n+1];
+    for (int q = 0; q < n+1; q++) L[0][q] = 0;      // base : T vide
+    for (int p = 0; p < m+1; p++) L[p][0] = 0;      // base : U vide
+    for (int p = 1; p < m+1; p++)
+        for (int q = 1; q < n+1; q++)
+            if (T.charAt(p-1) == U.charAt(q-1))      // dernières lettres égales
+                L[p][q] = 1 + L[p-1][q-1];
+            else                                     // différentes
+                L[p][q] = Math.max(L[p-1][q], L[p][q-1]);
+    return L;   // calcul en Theta(m x n)
+}`,
+lcs_plsc: `static String plsc(String T, String U, int[][] L, int p, int q){
+    if (p == 0 || q == 0) return "";                // un préfixe vide
+    if (T.charAt(p-1) == U.charAt(q-1))              // lettre gardée
+        return plsc(T, U, L, p-1, q-1) + T.substring(p-1, p);
+    if (L[p-1][q] >= L[p][q-1])                      // on jette la lettre de T
+        return plsc(T, U, L, p-1, q);
+    return plsc(T, U, L, p, q-1);                    // on jette la lettre de U
+}`,
+lis_graphe: `static Liste[] graphe(int[] S){ int n = S.length;
+    Liste[] G = new Liste[n];
+    for (int i = 0; i < n; i++) G[i] = null;
+    for (int j = 1; j < n; j++)
+        for (int i = 0; i < j; i++)
+            if (S[i] < S[j])                   // S[j] peut suivre S[i]
+                G[i] = new Liste(j, G[i]);     // flèche i --> j
+    return G;
+}`,
+lis_LA: `static int[][] calculerLA(Liste[] Gprime){ int n = Gprime.length;
+    int[] L = new int[n], A = new int[n];
+    for (int j = 0; j < n; j++)
+        if (vide(Gprime[j])){                  // base : aucun prédécesseur
+            L[j] = 1;
+            A[j] = -1;
+        }
+        else {
+            L[j] = -1;                         // cherche max(L[i]) sur pred(j)
+            for (Liste l = Gprime[j]; !vide(l); l = reste(l)){
+                int i = premier(l);            // i est un prédécesseur de j
+                if (L[i] > L[j]){ L[j] = L[i]; A[j] = i; }
+            }
+            L[j] = 1 + L[j];                   // on ajoute S[j] au bout
+        }
+    return new int[][] {L, A};
+}`,
+lis_plssc: `static String plssc(int[] A, int[] S, int j){
+    if (A[j] == -1)                    // S[j] est le début de la suite
+        return "S[" + j + "]=" + S[j] + " ";
+    return plssc(A, S, A[j]) + "S[" + j + "]=" + S[j] + " ";
+}`,
+lis_argmax: `static int argmax(int[] L){         // indice du premier maximum de L
+    int jstar = 0;
+    for (int j = 1; j < L.length; j++)
+        if (L[j] > L[jstar]) jstar = j;  // strictement : on garde le premier
+    return jstar;
+}`,
+lis_plsscS: `static String plssc(int[] S){ int n = S.length;
+    if (n == 0) return "";                 // séquence vide
+    Liste[] G = graphe(S);
+    Liste[] Gprime = symetrique(G);
+    int[][] LA = calculerLA(Gprime);
+    int[] L = LA[0], A = LA[1];
+    int jstar = argmax(L);                 // indice où finit une plssc
+    return plssc(A, S, jstar);
+}`,
+abr_hmin: `static AB abrhmin(int i, int j){       // ABR de hauteur min sur [i:j]
+    if (i >= j) return null;            // intervalle vide
+    int m = (i + j) / 2;                // le milieu à la racine
+    return new AB(m, abrhmin(i, m), abrhmin(m+1, j));
+}`,
+abr_ac: `static void ac(AB a){                  // parcours infixe = ordre croissant
+    if (vide(a)) return;
+    ac(sag(a));
+    System.out.print(vr(a) + " ");
+    ac(sad(a));
+}`,
+abr_taille: `int taille(AB a){
+    if (vide(a)) return 0;
+    return 1 + taille(sag(a)) + taille(sad(a));
+}`,
+abr_ins: `AB insérer(int x, AB a){
+    if (vide(a)) return new AB(x, null, null);
+    if (x == vr(a)) return a;
+    if (x < vr(a)) return new AB(vr(a), insérer(x, sag(a)), sad(a));
+    return new AB(vr(a), sag(a), insérer(x, sad(a)));
+}`,
+rec_ctl: `Base :      m(0) = 0
+Hérédité :  pour tout j, 1 ≤ j < n :
+            m(j) = min { m(i) + c(i,j) }   pour i ∈ pred(j)
+            (m(j) = +∞ si pred(j) est vide)`,
+rec_ex2: `Base :      m(0) = 0
+            m(1) = d1(0)
+Hérédité :  pour tout j, 2 ≤ j < n :
+            m(j) = min( m(j-1) + d1(j-1) , m(j-2) + d2(j-2) )`,
+rec_ju1: `Variante du problème du sac à dos.
+m(n,H) = max sur 0 ≤ h ≤ H de ( m(n-1, H-h) + c(n-1) × e(n-1, h) )
+(la dernière unité reçoit h heures, il en reste H-h pour les n-1 autres)`,
+rec_ju: `m(k,t) = somme pondérée max des notes des k premières unités
+         pour t heures réparties sur ces k unités.
+Base :      pour tout t, 0 ≤ t < H+1 :  m(0,t) = 0
+Hérédité :  pour tout k, 1 ≤ k < n+1, pour tout t, 0 ≤ t < H+1 :
+            m(k,t) = max sur 0 ≤ h < t+1 de ( m(k-1,t-h) + c(k-1) × e(k-1,h) )`,
+rec_lcs: `l(p,q) = longueur d'une plsc aux p et q préfixes de T et U.
+Base :      pour tout q, 0 ≤ q < n+1 : l(0,q) = 0
+            pour tout p, 0 ≤ p < m+1 : l(p,0) = 0
+Hérédité :  pour tout p, 1 ≤ p < m+1, pour tout q, 1 ≤ q < n+1 :
+            si t(p-1) = u(q-1) : l(p,q) = 1 + l(p-1,q-1)
+            sinon              : l(p,q) = max( l(p-1,q), l(p,q-1) )`,
+rec_lis: `l(j) = longueur d'une plssc finissant à l'indice j.
+Base :      si pred(j) = ∅ : l(j) = 1
+Hérédité :  si pred(j) ≠ ∅ : l(j) = 1 + max { l(i) : i ∈ pred(j) }
+La longueur d'une plssc de S est le maximum des l(j), 0 ≤ j < n
+(elle ne finit pas forcément en n-1).`,
+ans_lcs1: `plsc(BANANE, ANANAS) = ANAN, de longueur 4.
+(B A N A N E  et  A N A N A S : on garde A N A N dans les deux.)`,
+ans_ex2h: `M[0] = 0
+M[1] = D1[0] = 5
+M[2] = min(M[1]+D1[1], M[0]+D2[0]) = min(5+30, 0+20) = 20
+M[3] = min(M[2]+D1[2], M[1]+D2[1]) = min(20+10, 5+10) = 15
+M[4] = min(M[3]+D1[3], M[2]+D2[2]) = min(15+20, 20+40) = 35
+M = [0, 5, 20, 15, 35]
+Chemin : 0--(5)-->1--(10)-->3--(20)-->4, coût 35`
+};
+
+const CHECKS = {
+afficher: [['Récupère n = G.length et fait une boucle i de 0 à n−1',1],['Affiche « i : » au début de chaque ligne',1],['Parcourt G[i] avec for (Liste l = G[i]; !vide(l); l = reste(l))',2],['Affiche premier(l) suivi d\'un espace, puis passe à la ligne',1]],
+symetrique: [['Crée Gp = new Liste[n] avec toutes les cases à null',1],['Double boucle : i de 0 à n−1, puis parcours de G[i]',1.5],['Récupère j = premier(l) (flèche i → j)',1],['Ajoute i en tête de Gp[j] : Gp[j] = new Liste(i, Gp[j]) ; return Gp',1.5]],
+ch_ctl_MA: [['Base : M[0] = 0 et A[0] = −1',1],['Boucle j de 1 à n−1 (j croissant)',1],['mj initialisé à l\'infini, aj à −1',0.5],['Parcours de la liste Gp[j] : les prédécesseurs i de j',1],['Calcule M[i] + C[i][j] et garde le min ET le i qui le donne',1],['Range M[j] et A[j], retourne new int[][]{M, A}',0.5]],
+ch_ctl_acm: [['Cas de base j == 0 : affiche « 0 » et return',1.5],['Récupère i = A[j]',1],['Appel récursif acm(A, C, i) AVANT l\'affichage',1.5],['Affiche --(C[i][j])-->j avec printf',1]],
+ju_MA: [['n = E.length et H = E[0].length − 1',1],['M et A de taille [n+1][H+1]',1],['Base : M[0][t] = 0 pour tout t',0.5],['Trois boucles : k de 1 à n, t de 0 à H, h de 0 à t',1.5],['Candidat C[k−1]·E[k−1][h] + M[k−1][t−h] ; garde le max et A[k][t] = h',1.5],['return new int[][][] {M, A}',0.5]],
+ju_aro: [['Base : k == 0 → return',1],['h = A[k][t]',1],['Appel récursif aro(A, E, C, k−1, t−h)',2],['Affiche l\'unité k−1 et ses h heures APRÈS l\'appel',1]],
+lcs_L: [['m = T.length(), n = U.length() (avec parenthèses)',0.5],['L = new int[m+1][n+1]',1],['Base : ligne 0 et colonne 0 à 0',1],['Double boucle p de 1 à m, q de 1 à n',1],['Si T.charAt(p−1) == U.charAt(q−1) : L[p][q] = 1 + L[p−1][q−1]',1.5],['Sinon Math.max(L[p−1][q], L[p][q−1]) ; return L',1]],
+lcs_plsc: [['Base : p == 0 || q == 0 → ""',1.5],['Lettres égales : plsc(…, p−1, q−1) + la lettre',2],['Sinon : on va vers la plus grande des cases L[p−1][q] et L[p][q−1]',2],['La lettre est collée APRÈS l\'appel récursif',0.5]],
+lis_graphe: [['G = new Liste[n], cases à null',1],['Double boucle sur tous les couples i < j',1.5],['Test S[i] < S[j]',1],['Ajout en tête : G[i] = new Liste(j, G[i])',1],['return G',0.5]],
+lis_LA: [['L et A de taille n',0.5],['Cas Gprime[j] vide : L[j] = 1 et A[j] = −1',1.5],['Parcourt Gprime[j], garde le plus grand L[i] et le i correspondant',2.5],['L[j] = 1 + ce maximum',1],['return new int[][] {L, A}',0.5]],
+lis_plssc: [['Base : A[j] == −1 → on retourne S[j] seul',2],['Sinon : plssc(A, S, A[j]) + S[j] (appel récursif d\'abord)',2.5],['Chaîne au format « S[j]=valeur »',0.5]],
+rec_ctl: [['Base : m(0) = 0',1.5],['Hérédité : m(j) = min sur i ∈ pred(j) de m(i) + c(i,j)',2.5],['Intervalle : 1 ≤ j < n',1]],
+rec_ex2: [['Base : m(0) = 0',1],['Base : m(1) = d1(0)',1],['Hérédité : min( m(j−1)+d1(j−1), m(j−2)+d2(j−2) )',2.5],['Intervalle : 2 ≤ j < n',0.5]],
+rec_ju1: [['Reconnaît le sac à dos',1],['m(n,H) = max sur h de ( m(n−1, H−h) + c(n−1)·e(n−1,h) ), 0 ≤ h ≤ H',3]],
+rec_ju: [['Définition de m(k,t) correcte',1],['Base : m(0,t) = 0 pour tout t, 0 ≤ t ≤ H',1.5],['Hérédité : max sur 0 ≤ h ≤ t de m(k−1,t−h) + c(k−1)·e(k−1,h)',2],['Intervalles : 1 ≤ k ≤ n et 0 ≤ t ≤ H',0.5]],
+rec_lcs: [['Définition de l(p,q) avec les préfixes',1],['Base : l(0,q) = 0 et l(p,0) = 0',1.5],['Si t(p−1) = u(q−1) : 1 + l(p−1,q−1)',1.5],['Sinon : max( l(p−1,q), l(p,q−1) )',1]],
+rec_lis: [['Base : pred(j) = ∅ → l(j) = 1',1.5],['Hérédité : l(j) = 1 + max des l(i), i ∈ pred(j)',1.5],['La longueur cherchée est le max des l(j), pas l(n−1)',1]],
+ans_lcs1: [['Une plsc correcte : ANAN',2],['Longueur 4',1]],
+ans_ex2h: [['M = [0, 5, 20, 15, 35]',2],['Chemin 0 → 1 → 3 → 4',1.5],['Coût 35',0.5]],
+ch_ex2_M: [['n = D1.length, M = new int[n]',1],['Base : M[0] = 0 et M[1] = D1[0]',1.5],['Boucle j de 2 à n−1',1],['M[j] = min(M[j−1]+D1[j−1], M[j−2]+D2[j−2])',1.5]],
+ch_ex2_aff: [['Cas j == 0 : affiche « 0 »',1],['Cas j == 1 : appel sur 0 puis --(D1[0])-->1',1],['Test M[j] == M[j−1] + D1[j−1] pour savoir d\'où l\'on vient',2],['Appel récursif sur j−1 ou j−2 AVANT l\'affichage du dernier trajet',1.5],['Bon coût affiché : D1[j−1] ou D2[j−2]',0.5]],
+abr_hmin: [['i ≥ j → null',0.5],['m = (i+j)/2 à la racine',0.5],['Sous-arbres abrhmin(i, m) et abrhmin(m+1, j)',1]],
+abr_ac: [['Arbre vide → return',0.5],['ac(sag), affiche vr, ac(sad) dans cet ordre',1.5]],
+abr_taille: [['Vide → 0',0.5],['1 + taille(sag) + taille(sad)',1.5]],
+abr_ins: [['Vide → new AB(x, null, null)',0.5],['x == vr(a) → a',0.5],['x < vr : insère à gauche, sinon à droite, en recréant le nœud',1]]
+};
+
+const QCM = {
+methode: [
+ ['À quoi sert la phrase « supposons le problème résolu » ?',['À regarder la dernière décision de la meilleure solution pour en tirer une équation','À deviner directement la réponse','À éviter d\'écrire la base de la récurrence','À prouver que le programme s\'arrête'],'On imagine la meilleure solution et on se demande comment elle se termine (dernière ville, dernières heures, dernières lettres…). Chaque cas possible donne un terme du min ou du max.'],
+ ['Le tableau A (les « arg ») sert à…',['Reconstruire la solution à la fin (le chemin, la répartition…)','Accélérer le calcul de M','Stocker les données du problème','Calculer la complexité'],'M donne la valeur optimale, A garde la décision qui l\'a produite : ce sont les cailloux du Petit Poucet.'],
+ ['Dans quel ordre remplit-on M[0:n] quand m(j) dépend des m(i) avec i < j ?',['j croissant : 0, 1, 2, …, n−1','j décroissant','N\'importe quel ordre','Les j pairs puis les impairs'],'Quand on calcule M[j], toutes les cases M[i] avec i < j doivent déjà être remplies.'],
+ ['Que fait la boucle for (Liste l = G[i]; !vide(l); l = reste(l)) ?',['Elle visite un par un tous les éléments de la liste G[i]','Elle visite toutes les cases du tableau G','Elle supprime les éléments de G[i]','Elle s\'arrête au premier élément'],'On part du premier wagon (l = G[i]) et on avance au suivant (l = reste(l)) tant que le train n\'est pas fini (!vide(l)).'],
+ ['Après l\'instruction G[i] = new Liste(j, G[i]); …',['j est ajouté au début de la liste G[i]','j est ajouté à la fin de la liste G[i]','G[i] ne contient plus que j','Rien ne change'],'On crée un nouveau wagon j accroché devant l\'ancien train G[i].'],
+ ['Pourquoi le contrôle 2 prend-il Integer.MAX_VALUE/2 comme « infini » dans les coûts ?',['Pour pouvoir lui ajouter un coût sans dépasser la capacité d\'un int','Parce que MAX_VALUE n\'existe pas','Pour diviser les coûts par deux','Ça ne change rien'],'MAX_VALUE + 5 « déborde » et devient un très grand nombre négatif. MAX_VALUE/2 + 5 reste grand et positif.'],
+ ['Dans une fonction récursive d\'affichage comme acm, pourquoi affiche-t-on APRÈS l\'appel récursif ?',['Pour que la solution sorte dans l\'ordre, du début vers la fin','Pour que le programme aille plus vite','Parce que Java interdit d\'afficher avant','Pour éviter une boucle infinie'],'L\'appel récursif affiche d\'abord tout le début du chemin, et seulement ensuite on ajoute le dernier morceau.'],
+ ['Un tableau noté T[0:n] a…',['n cases, d\'indices 0 à n−1','n+1 cases, d\'indices 0 à n','n−1 cases','ça dépend de T'],'Chez le prof, la borne de droite est exclue : [0:n] = {0, 1, …, n−1}.']
+],
+chemins: [
+ ['TD2 ex. 2 (deux lignes) : que vaut m(1) ?',['d1(0)','0','min( d1(0), d2(0) )','d2(0)'],'La seule façon d\'arriver en 1 est de partir de 0 avec la ligne 1. La ligne 2 partant de 0 mène en 2.'],
+ ['TD2 ex. 2 : pour 2 ≤ j < n, m(j) = ?',['min( m(j−1) + d1(j−1), m(j−2) + d2(j−2) )','min( m(j−1) + d1(j), m(j−2) + d2(j) )','m(j−1) + m(j−2)','max( m(j−1) + d1(j−1), m(j−2) + d2(j−2) )'],'On arrive en j depuis j−1 (ligne 1, coût d1(j−1)) ou depuis j−2 (ligne 2, coût d2(j−2)) : les coûts sont indicés par la ville de départ.'],
+ ['Contrôle 2 : pourquoi calculerMA reçoit-elle Gp et pas G ?',['m(j) a besoin des prédécesseurs de j, et Gp[j] est leur liste','Gp est plus petit que G','Pour afficher le chemin à l\'envers','G est détruit par symétrique'],'L\'hérédité parcourt pred(j). G donne les successeurs, Gp donne les prédécesseurs.'],
+ ['Contrôle 2, exemple de l\'énoncé : pred(4) = ?',['{0, 1, 2, 3}','{0, 1}','{3}','∅'],'Les lignes qui arrivent en 4 partent de 0, 1, 2 et 3 (G[0] = 1 3 4, G[1] = 2 4, G[2] = 3 4, G[3] = 4).'],
+ ['TD2 ex. 3 : combien d\'essais fait le calcul de M pour n villes ?',['n(n−1)/2, donc de l\'ordre de n²','n','2n','n³'],'Pour chaque j on essaie les j villes i < j : 1 + 2 + … + (n−1) = n(n−1)/2.'],
+ ['Que vaut A[0] dans le contrôle 2 ?',['−1','0','+∞','n−1'],'Il n\'y a pas de ville avant 0. −1 n\'est pas un numéro de ville : il signale « pas de précédent ».'],
+ ['Dans acm(A, C, j), le cas de base est…',['j == 0 : on affiche « 0 » et on s\'arrête','j == n−1','A[j] == 0','j < 0'],'Le chemin de 0 à 0 ne contient que la ville 0.'],
+ ['Si aucune ligne n\'arrive en j (pred(j) vide), m(j) vaut…',['+∞ : la ville est inaccessible','0','−1','m(j−1)'],'Le minimum sur un ensemble vide vaut +∞ : dans le code, mj garde sa valeur initiale infini.']
+],
+juliette: [
+ ['Le problème de Juliette est une variante de…',['Le sac à dos','La plus longue sous-séquence commune','Le tri par insertion','Le chemin de coût minimum'],'Une ressource limitée (H heures, comme la contenance du sac) à répartir pour maximiser une valeur (les points pondérés).'],
+ ['m(k,t) est…',['La somme pondérée maximum des notes des k premières unités, avec t heures réparties entre elles','La note de l\'unité k après t heures','Le nombre d\'heures optimal pour l\'unité k','La moyenne de Juliette'],'C\'est le sous-problème : moins d\'unités (k au lieu de n) et moins d\'heures (t au lieu de H).'],
+ ['Dans m(k,t) = max de ( m(k−1, t−h) + c(k−1)·e(k−1, h) ), h varie…',['de 0 à t','de 0 à H','de 1 à t','de 0 à k'],'L\'unité k−1 ne peut pas recevoir plus que les t heures disponibles, et elle peut n\'en recevoir aucune.'],
+ ['Si la k-ième unité reçoit h heures, combien en reste-t-il pour les k−1 premières ?',['t − h','H − h','h','t'],'On répartit t heures en tout : h pour la dernière, t − h pour les autres.'],
+ ['Que vaut m(0, t) ?',['0 pour tout t','t','e(0, t)','−∞'],'Sans aucune unité, on n\'a aucune note : la somme vaut 0.'],
+ ['A[k][t] contient…',['Les heures données à l\'unité k−1 dans la meilleure répartition de t heures sur les k premières unités','La note de l\'unité k','La meilleure somme pondérée','Le numéro de la meilleure unité'],'C\'est l\'arg max : le h qui a donné M[k][t].'],
+ ['Temps de calcul de calculerMA ?',['De l\'ordre de n·H²','De l\'ordre de n·H','De l\'ordre de n²','De l\'ordre de H'],'(n+1)(H+1) cases, et jusqu\'à H+1 essais de h pour chacune.'],
+ ['Dans aro(A, E, C, k, t), l\'appel récursif est…',['aro(A, E, C, k−1, t − A[k][t])','aro(A, E, C, k−1, t)','aro(A, E, C, k, t−1)','aro(A, E, C, k−1, A[k][t])'],'L\'unité k−1 a pris h = A[k][t] heures : il reste t − h heures pour les k−1 premières unités.']
+],
+plsc: [
+ ['Laquelle n\'est PAS une sous-séquence de ALGORITHME ?',['LOGA','ALGO','ARME','GOTH'],'Dans ALGORITHME, le A est avant le L : on ne peut pas garder L puis A.'],
+ ['Si t(p−1) = u(q−1), alors l(p,q) = ?',['1 + l(p−1, q−1)','l(p−1, q−1)','max( l(p−1,q), l(p,q−1) )','1 + max( l(p−1,q), l(p,q−1) )'],'On garde la lettre commune et on cherche une plsc des deux préfixes plus courts.'],
+ ['Si t(p−1) ≠ u(q−1), pourquoi le cas l(p−1,q−1) disparaît-il du max ?',['Parce qu\'il n\'est jamais plus grand que l(p−1,q) ni que l(p,q−1)','Parce qu\'il vaut toujours 0','Parce qu\'il sort du tableau','C\'est une erreur du TD'],'Enlever une lettre de plus ne peut pas allonger une plsc : l(p−1,q−1) ≤ l(p−1,q) et l(p−1,q−1) ≤ l(p,q−1).'],
+ ['Pourquoi L a-t-il m+1 lignes et n+1 colonnes ?',['Pour les préfixes vides (p = 0 ou q = 0)','Pour éviter une erreur d\'indice en Java','Parce que Java compte à partir de 1','Pour ranger la plsc elle-même'],'La ligne 0 et la colonne 0 représentent un mot vide : c\'est la base de la récurrence.'],
+ ['Pourquoi T.charAt(p−1) et pas T.charAt(p) ?',['Le p-préfixe (p premières lettres) se termine par la lettre d\'indice p−1','Pour sauter la première lettre','C\'est une erreur','Parce que charAt commence à 1'],'Les p premières lettres ont les indices 0 à p−1.'],
+ ['Temps de calcul de calculerL ?',['Θ(m × n)','Θ(m + n)','Θ(2^m)','Θ(m² × n²)'],'(m+1)(n+1) cases, chacune en temps constant.'],
+ ['Pour une String T et un tableau t, on écrit…',['T.length() et t.length','T.length et t.length()','T.length() et t.length()','T.length et t.length'],'length() est une méthode de String ; length est une variable des tableaux.'],
+ ['Pendant la reconstruction, si t(p−1) ≠ u(q−1) et L[p−1][q] ≥ L[p][q−1], on…',['remonte d\'une ligne : plsc(T, U, L, p−1, q)','va à gauche : plsc(T, U, L, p, q−1)','va en diagonale','s\'arrête'],'On suit la case qui a donné le max ; en cas d\'égalité le corrigé remonte.']
+],
+plssc: [
+ ['Dans G(S), il y a une flèche i → j si et seulement si…',['i < j et S[i] < S[j]','i < j','S[i] < S[j]','j = i + 1 et S[i] < S[j]'],'Il faut que S[j] soit après S[i] dans la séquence ET plus grand.'],
+ ['Que vaut l(j) si pred(j) est vide ?',['1','0','−1','j'],'La plus longue suite croissante qui finit en j est alors S[j] tout seul.'],
+ ['La longueur d\'une plssc de S est…',['Le maximum des l(j), 0 ≤ j < n','l(n−1)','l(0)','La somme des l(j)'],'La meilleure suite peut finir n\'importe où. Avec S = [1, 2, 3, 0], elle finit en j = 2.'],
+ ['S = [3, 1, 2]. Que vaut L ?',['[1, 1, 2]','[1, 2, 3]','[1, 1, 1]','[3, 1, 2]'],'Aucune flèche n\'arrive en 0 ni en 1 (3 > 1). En 2 arrive 1 → 2 (1 < 2), donc l(2) = 1 + l(1) = 2.'],
+ ['A[j] = −1 signifie que…',['S[j] est le premier nombre de la plssc qui finit en j','S[j] est négatif','j n\'appartient à aucune plssc','le calcul a échoué'],'Pas de prédécesseur : la suite commence à S[j].'],
+ ['Pourquoi calcule-t-on G′ = symetrique(G) ?',['La récurrence utilise pred(j), et G′[j] est la liste des prédécesseurs','Pour trier la séquence','Pour inverser la séquence','Pour supprimer des flèches'],'Même raison que dans le contrôle 2 : G donne les successeurs, G′ les prédécesseurs.'],
+ ['Combien de comparaisons S[i] < S[j] fait graphe(S) pour n nombres ?',['n(n−1)/2','n','n²','n − 1'],'Une par couple i < j.'],
+ ['Quel lien avec le chemin de coût minimum du contrôle 2 ?',['Même schéma sur un graphe : max sur les prédécesseurs au lieu de min','Aucun','C\'est exactement le même calcul','La plssc est un plus court chemin'],'Les deux parcourent pred(j) dans G′ et gardent le meilleur, avec un tableau A pour reconstruire.']
+]
+};
+
+// Codes à trous : ⟦réponse‖variante⟧
+const TROUS = [
+ {id:'tr-afficher',topic:'methode',title:'Afficher un graphe',code:`static void afficher(Liste[] G){ int n = ⟦G.length⟧;
+    for (int i = 0; i < n; i++){
+        System.out.print(i + " : ");
+        for (Liste l = ⟦G[i]⟧; ⟦!vide(l)⟧; l = ⟦reste(l)⟧)
+            System.out.print(⟦premier(l)⟧ + " ");
+        System.out.println();
+    }
+}`},
+ {id:'tr-sym',topic:'methode',title:'Le graphe symétrique',code:`static Liste[] symetrique(Liste[] G){ int n = G.length;
+    Liste[] Gp = new Liste[⟦n⟧];
+    for (int j = 0; j < n; j++) Gp[j] = ⟦null⟧;
+    for (int i = 0; i < n; i++)
+        for (Liste l = G[i]; !vide(l); l = reste(l)){
+            int j = ⟦premier(l)⟧;             // flèche i --> j dans G
+            Gp[j] = new Liste(⟦i⟧, ⟦Gp[j]⟧);    // flèche j --> i dans Gp
+        }
+    return ⟦Gp⟧;
+}`},
+ {id:'tr-ex2M',topic:'chemins',title:'TD2 ex. 2 · calculerM',code:`static int[] calculerM(int[] D1, int[] D2){ int n = D1.length;
+    int[] M = new int[n];
+    M[0] = ⟦0⟧;
+    M[1] = ⟦D1[0]⟧;
+    for (int j = ⟦2⟧; j < n; j++)
+        M[j] = min(M[j-1] + ⟦D1[j-1]⟧, M[j-2] + ⟦D2[j-2]⟧);
+    return M;
+}`},
+ {id:'tr-ex3',topic:'chemins',title:'TD2 ex. 3 · la double boucle de calculerMA',code:`for (int j = 1; j < n; j++){
+    int mj = Integer.MAX_VALUE, aj = -1;
+    for (int i = 0; ⟦i < j‖i <= j-1‖j > i⟧; i++){
+        int mprime = ⟦M[i] + D[i][j]‖D[i][j] + M[i]⟧;
+        if (⟦mprime < mj‖mj > mprime⟧){ mj = mprime; aj = ⟦i⟧; }
+    }
+    M[j] = mj; A[j] = ⟦aj⟧;
+}`},
+ {id:'tr-ctlMA',topic:'chemins',title:'Contrôle 2 · calculerMA',code:`static int[][] calculerMA(Liste[] Gp, int[][] C){ int n = Gp.length;
+    int infini = Integer.MAX_VALUE;
+    int[] M = new int[n], A = new int[n];
+    M[0] = 0; A[0] = ⟦-1⟧;
+    for (int j = ⟦1⟧; j < n; j++){
+        int mj = ⟦infini‖Integer.MAX_VALUE⟧, aj = -1;
+        for (Liste l = ⟦Gp[j]⟧; !vide(l); l = reste(l)){
+            int i = ⟦premier(l)⟧;
+            int m = ⟦M[i] + C[i][j]‖C[i][j] + M[i]⟧;
+            if (m < mj){ mj = m; aj = ⟦i⟧; }
+        }
+        M[j] = mj; A[j] = aj;
+    }
+    return ⟦new int[][] {M, A}‖new int[][]{M,A}⟧;
+}`},
+ {id:'tr-acm',topic:'chemins',title:'Contrôle 2 · acm',code:`static void acm(int[] A, int[][] C, int j){
+    if (j == ⟦0⟧){
+        System.out.print("0");
+        ⟦return⟧;
+    }
+    int i = ⟦A[j]⟧;
+    ⟦acm(A, C, i)‖acm(A,C,i)‖acm(A, C, A[j])⟧;
+    System.out.printf("--(%d)-->%d", ⟦C[i][j]⟧, j);
+}`},
+ {id:'tr-juMA',topic:'juliette',title:'calculerMA',code:`static int[][][] calculerMA(int[][] E, int[] C){
+    int n = E.length, H = ⟦E[0].length - 1‖E[0].length-1⟧;
+    int[][] M = new int[⟦n+1⟧][⟦H+1⟧], A = new int[n+1][H+1];
+    for (int t = 0; t < H+1; t++) M[0][t] = ⟦0⟧;
+    for (int k = ⟦1⟧; k < n+1; k++)
+        for (int t = 0; t < H+1; t++){
+            M[k][t] = Integer.MIN_VALUE;
+            for (int h = 0; h < ⟦t+1‖t + 1⟧; h++){
+                int mkth = C[⟦k-1⟧] * E[⟦k-1⟧][h] + M[⟦k-1⟧][⟦t-h⟧];
+                if (mkth > M[k][t]){ M[k][t] = mkth; A[k][t] = ⟦h⟧; }
+            }
+        }
+    return new int[][][] {M, A};
+}`},
+ {id:'tr-aro',topic:'juliette',title:'aro',code:`static void aro(int[][] A, int[][] E, int[] C, int k, int t){
+    if (k == ⟦0⟧) return;
+    int h = ⟦A[k][t]⟧;
+    aro(A, E, C, ⟦k-1⟧, ⟦t-h‖t - h⟧);
+    System.out.printf("C[%d] * e(%d,%d) = %d * %d = %d\\n",
+        k-1, k-1, h, C[k-1], E[k-1][h], ⟦C[k-1]*E[k-1][h]‖C[k-1] * E[k-1][h]‖E[k-1][h]*C[k-1]⟧);
+}`},
+ {id:'tr-lcsL',topic:'plsc',title:'calculerL',code:`static int[][] calculerL(String T, String U){ int m = ⟦T.length()⟧, n = ⟦U.length()⟧;
+    int[][] L = new int[⟦m+1⟧][⟦n+1⟧];
+    for (int q = 0; q < n+1; q++) L[0][q] = 0;
+    for (int p = 0; p < m+1; p++) L[p][0] = 0;
+    for (int p = 1; p < m+1; p++)
+        for (int q = 1; q < n+1; q++)
+            if (T.charAt(⟦p-1⟧) == U.charAt(⟦q-1⟧))
+                L[p][q] = ⟦1 + L[p-1][q-1]‖L[p-1][q-1] + 1⟧;
+            else
+                L[p][q] = Math.max(⟦L[p-1][q]‖L[p][q-1]⟧, ⟦L[p][q-1]‖L[p-1][q]⟧);
+    return L;
+}`},
+ {id:'tr-lcs',topic:'plsc',title:'plsc (reconstruction)',code:`static String plsc(String T, String U, int[][] L, int p, int q){
+    if (⟦p == 0 || q == 0‖q == 0 || p == 0⟧) return "";
+    if (T.charAt(p-1) == U.charAt(q-1))
+        return plsc(T, U, L, ⟦p-1⟧, ⟦q-1⟧) + ⟦T.substring(p-1, p)‖T.substring(p-1,p)‖U.substring(q-1, q)‖T.charAt(p-1)‖U.charAt(q-1)⟧;
+    if (L[p-1][q] >= L[p][q-1]) return plsc(T, U, L, ⟦p-1⟧, ⟦q⟧);
+    return plsc(T, U, L, ⟦p⟧, ⟦q-1⟧);
+}`},
+ {id:'tr-graphe',topic:'plssc',title:'graphe(S)',code:`static Liste[] graphe(int[] S){ int n = S.length;
+    Liste[] G = new Liste[n];
+    for (int i = 0; i < n; i++) G[i] = null;
+    for (int j = 1; j < n; j++)
+        for (int i = 0; ⟦i < j‖i <= j-1‖j > i⟧; i++)
+            if (⟦S[i] < S[j]‖S[j] > S[i]⟧)
+                G[i] = new Liste(⟦j⟧, ⟦G[i]⟧);
+    return G;
+}`},
+ {id:'tr-LA',topic:'plssc',title:'calculerLA',code:`static int[][] calculerLA(Liste[] Gprime){ int n = Gprime.length;
+    int[] L = new int[n], A = new int[n];
+    for (int j = 0; j < n; j++)
+        if (⟦vide(Gprime[j])‖Gprime[j] == null⟧){ L[j] = ⟦1⟧; A[j] = ⟦-1⟧; }
+        else {
+            L[j] = -1;
+            for (Liste l = Gprime[j]; !vide(l); l = reste(l)){ int i = premier(l);
+                if (⟦L[i] > L[j]‖L[j] < L[i]⟧){ L[j] = L[i]; A[j] = ⟦i⟧; }
+            }
+            L[j] = ⟦1 + L[j]‖L[j] + 1⟧;
+        }
+    return new int[][] {L, A};
+}`},
+ {id:'tr-plssc',topic:'plssc',title:'plssc(A, S, j)',code:`static String plssc(int[] A, int[] S, int j){
+    if (A[j] == ⟦-1⟧) return "S[" + j + "]=" + S[j] + " ";
+    return plssc(A, S, ⟦A[j]⟧) + "S[" + j + "]=" + S[j] + " ";
+}`},
+ {id:'tr-argmax',topic:'plssc',title:'argmax',code:`static int argmax(int[] L){
+    int jstar = ⟦0⟧;
+    for (int j = 1; j < L.length; j++)
+        if (⟦L[j] > L[jstar]‖L[jstar] < L[j]⟧) jstar = ⟦j⟧;
+    return jstar;
+}`}
+];
+
+const WRITES = [
+ {id:'wr-afficher',topic:'methode',sol:'afficher',title:'Écris afficher(Liste[] G)',enonce:'Écris une fonction <code>void afficher(Liste[] G)</code> qui affiche le graphe une ligne par sommet, sous la forme <code>0 : 1 3 4</code>. Repère : 10 lignes.'},
+ {id:'wr-sym',topic:'methode',sol:'symetrique',title:'Écris symetrique(Liste[] G) sans regarder',enonce:'Écris <code>Liste[] symetrique(Liste[] G)</code> qui retourne le graphe G′ obtenu en retournant toutes les flèches de G.'},
+ {id:'wr-ctlMA',topic:'chemins',sol:'ch_ctl_MA',title:'Écris calculerMA du contrôle 2',enonce:'Écris <code>int[][] calculerMA(Liste[] Gp, int[][] C)</code> qui retourne M (coûts min) et A (ville précédente, a(0) = −1). Gp est le graphe symétrique. Repère : 16 lignes.'},
+ {id:'wr-acm',topic:'chemins',sol:'ch_ctl_acm',title:'Écris acm(A, C, j)',enonce:'Écris <code>void acm(int[] A, int[][] C, int j)</code> qui affiche un chemin de coût minimum de 0 à j, sous la forme <code>0--(5)-->1--(20)-->4</code>. Repère : 9 lignes.'},
+ {id:'wr-juMA',topic:'juliette',sol:'ju_MA',title:'Écris calculerMA pour Juliette',enonce:'Écris <code>int[][][] calculerMA(int[][] E, int[] C)</code> qui retourne M[0:n+1][0:H+1] (M[k][t] = m(k,t)) et A (A[k][t] = arg m(k,t)).'},
+ {id:'wr-aro',topic:'juliette',sol:'ju_aro',title:'Écris aro(A, E, C, k, t)',enonce:'Écris <code>void aro(int[][] A, int[][] E, int[] C, int k, int t)</code> qui affiche une répartition optimale de t heures sur les k premières unités. Appel principal : <code>aro(A, E, C, n, H)</code>.'},
+ {id:'wr-lcsL',topic:'plsc',sol:'lcs_L',title:'Écris calculerL(T, U)',enonce:'Écris <code>int[][] calculerL(String T, String U)</code> qui retourne L[0:m+1][0:n+1] avec L[p][q] = l(p,q).'},
+ {id:'wr-lcs',topic:'plsc',sol:'lcs_plsc',title:'Écris plsc(T, U, L, p, q)',enonce:'Écris <code>String plsc(String T, String U, int[][] L, int p, int q)</code> qui retourne une plsc aux p et q préfixes de T et U.'},
+ {id:'wr-graphe',topic:'plssc',sol:'lis_graphe',title:'Écris graphe(S)',enonce:'Écris <code>Liste[] graphe(int[] S)</code> qui retourne G(S) : une flèche i → j si i &lt; j et S[i] &lt; S[j].'},
+ {id:'wr-LA',topic:'plssc',sol:'lis_LA',title:'Écris calculerLA(Gprime)',enonce:'Écris <code>int[][] calculerLA(Liste[] Gprime)</code> qui retourne L (L[j] = l(j)) et A (A[j] = arg l(j), −1 si pas de prédécesseur).'},
+ {id:'wr-plssc',topic:'plssc',sol:'lis_plssc',title:'Écris plssc(A, S, j)',enonce:'Écris <code>String plssc(int[] A, int[] S, int j)</code> qui retourne une plssc finissant en j, sous la forme <code>S[1]=1 S[3]=2 S[4]=30 </code>.'}
+];
+
+const CTL_INTRO = `<p>Un réseau de lignes de bus dessert n villes numérotées de 0 à n−1. Si les villes i et j sont reliées par une ligne directe, alors i &lt; j (voyages aller). Tous les couples ne sont pas reliés. Le réseau est un graphe G représenté par une table de listes d'arcs. Le coût du trajet direct de i à j est c(i,j), +∞ s'il n'existe pas ; les coûts sont dans C[0:n][0:n].</p>
+<div class="dag-wrap" data-dag="ctl"></div>
+<p>Classe <code>Liste</code> avec <code>vide(l)</code>, <code>premier(l)</code>, <code>reste(l)</code>, comme en cours. <code>Gp</code> est le graphe symétrique de G.</p>`;
+
+const SUJETS = [
+ {id:'c2',tag:'Annale · 22 novembre 2025',titre:'Contrôle 2 : le réseau de bus',desc:'Le vrai sujet de l\'an dernier : afficher, récurrence, calculerMA, acm. Plus 4 questions bonus sur les arbres binaires.',intro:CTL_INTRO,q:[
+  {pts:5,enonce:'Écrire une fonction <code>afficher(Liste[] G)</code> qui affiche le graphe du réseau sous la forme :<pre class="mini">0 : 1 3 4\n1 : 2 4\n2 : 3 4\n3 : 4\n4 :</pre>Repère : 10 lignes.',sol:'afficher'},
+  {pts:5,enonce:'On note m(j) le coût minimum d\'un trajet de la ville 0 à la ville j incluses, et pred(j) l\'ensemble des villes qui envoient un arc sur j (exemple : pred(3) = {0, 2}). Donner l\'équation de récurrence des m(j) : le cas de base et l\'hérédité avec son intervalle de valeurs de j.',sol:'rec_ctl'},
+  {pts:5,enonce:'Écrire <code>int[][] calculerMA(Liste[] Gp, int[][] C)</code> qui calcule et retourne M[0:n] (m(j)) et A[0:n] (a(j) = arg m(j), la ville qui précède j sur le chemin min ; a(0) = −1). Sur l\'exemple : M = [0, 5, 10, 20, 25] et A = [−1, 0, 1, 2, 1]. Repère : 16 lignes.',sol:'ch_ctl_MA'},
+  {pts:5,enonce:'Écrire <code>void acm(int[] A, int[][] C, int j)</code> qui affiche un chemin de coût minimum de 0 à j incluses. <code>acm(A,C,n-1)</code> affiche <code>0--(5)-->1--(20)-->4</code> ; <code>acm(A,C,3)</code> affiche <code>0--(5)-->1--(5)-->2--(10)-->3</code>. Repère : 9 lignes.',sol:'ch_ctl_acm'},
+  {pts:2,bonus:true,enonce:'Arbres binaires (classe AB : vr, sag, sad, vide). Écrire <code>AB abrhmin(int i, int j)</code> qui retourne un arbre binaire de recherche de hauteur minimum construit sur l\'intervalle [i:j]. Repère : 6 lignes.',sol:'abr_hmin'},
+  {pts:2,bonus:true,enonce:'Écrire <code>void ac(AB a)</code> qui affiche dans l\'ordre croissant les valeurs de l\'arbre binaire de recherche a. Repère : 6 lignes.',sol:'abr_ac'},
+  {pts:2,bonus:true,enonce:'Écrire <code>int taille(AB a)</code> qui retourne le nombre de valeurs de l\'arbre a. Repère : 4 lignes.',sol:'abr_taille'},
+  {pts:2,bonus:true,enonce:'Écrire <code>AB insérer(int x, AB a)</code> qui retourne l\'ABR a dans lequel x a été inséré. Distinguer 4 cas : vide(a), x == vr(a), x &lt; vr(a), x &gt; vr(a). Repère : 6 lignes.',sol:'abr_ins'}
+ ]},
+ {id:'e2',tag:'Sujet blanc · TD2 ex. 2',titre:'Deux lignes de bus',desc:'Récurrence à deux cas, calculerM, la reconstruction sans tableau A, et un calcul à la main.',intro:'<p>Les villes 0, 1, …, n−1 sont desservies par deux lignes de bus. Depuis la ville i on peut aller en i+1 avec un coût d1(i), ou directement en i+2 avec un coût d2(i). Les coûts sont dans D1[0:n] et D2[0:n] (les valeurs D1[n−1], D2[n−2], D2[n−1] sont quelconques, fixées à −1). On note m(j) le coût minimum d\'un chemin de 0 à j.</p>',q:[
+  {pts:5,enonce:'Donner les valeurs m(0) et m(1), puis l\'expression de m(j) pour 2 ≤ j &lt; n.',sol:'rec_ex2'},
+  {pts:5,enonce:'Écrire <code>int[] calculerM(int[] D1, int[] D2)</code> qui retourne le tableau M[0:n] de terme général M[j] = m(j).',sol:'ch_ex2_M'},
+  {pts:6,enonce:'Écrire <code>void afficherCheminMinimum(int[] M, int[] D1, int[] D2, int j)</code> qui affiche un chemin de coût minimum de 0 à j, sous la forme <code>0--(10)-->1--(50)-->3--(30)-->4</code>. Il n\'y a pas de tableau A.',sol:'ch_ex2_aff'},
+  {pts:4,enonce:'À la main : D1 = [5, 30, 10, 20, −1] et D2 = [20, 10, 40, −1, −1]. Calculer M et donner un chemin de coût minimum de 0 à 4 avec son coût.',sol:'ans_ex2h'}
+ ]},
+ {id:'ju',tag:'Sujet blanc · TD3',titre:'Juliette optimise ses révisions',desc:'Problème connu, récurrence de m(k,t), calculerMA et aro.',intro:'<p>Juliette dispose de H heures pour réviser n unités. L\'unité i a le coefficient c(i) ; si elle consacre h heures (0 ≤ h ≤ H) à l\'unité i, elle estime obtenir la note e(i,h). Elle veut maximiser la somme des notes pondérées par les coefficients. Les coefficients sont dans C[0:n], les notes estimées dans E[0:n][0:H+1] (E[i][h] = e(i,h)).</p>',q:[
+  {pts:4,enonce:'De quel problème du cours s\'agit-il d\'une variante ? On note m(n,H) la somme pondérée maximum : donner son expression (« supposons le problème résolu »).',sol:'rec_ju1'},
+  {pts:5,enonce:'Généralisation : donner l\'équation de récurrence (base et hérédité, avec les intervalles) des valeurs m(k,t), somme pondérée maximum des notes des k premières unités pour t heures réparties sur ces k unités.',sol:'rec_ju'},
+  {pts:6,enonce:'Écrire <code>int[][][] calculerMA(int[][] E, int[] C)</code> qui calcule M[0:n+1][0:H+1] (M[k][t] = m(k,t)) et A[0:n+1][0:H+1] (A[k][t] = heures données à la k-ième unité), et les retourne.',sol:'ju_MA'},
+  {pts:5,enonce:'Écrire <code>void aro(int[][] A, int[][] E, int[] C, int k, int t)</code> qui affiche une répartition optimale de t heures sur les k premières unités. Appel principal : <code>aro(A, E, C, n, H)</code>.',sol:'ju_aro'}
+ ]},
+ {id:'lc',tag:'Sujet blanc · TD4',titre:'Plus longue séquence commune',desc:'Une plsc à la main, la récurrence de l(p,q), calculerL et plsc.',intro:'<p>Une sous-séquence de T s\'obtient en supprimant des symboles de T. Une plus longue séquence commune (plsc) à T et U est une plus longue séquence qui est sous-séquence des deux. Les séquences sont des String ; T a m symboles, U en a n. On note l(p,q) la longueur d\'une plsc aux p et q préfixes de T et U.</p>',q:[
+  {pts:3,enonce:'Donner une plsc de T = BANANE et U = ANANAS, et sa longueur.',sol:'ans_lcs1'},
+  {pts:5,enonce:'Donner l\'équation de récurrence des valeurs l(p,q) : base et hérédité, avec les intervalles.',sol:'rec_lcs'},
+  {pts:6,enonce:'Écrire <code>int[][] calculerL(String T, String U)</code> qui retourne L[0:m+1][0:n+1] de terme général L[p][q] = l(p,q).',sol:'lcs_L'},
+  {pts:6,enonce:'Écrire <code>String plsc(String T, String U, int[][] L, int p, int q)</code> qui retourne une plsc aux p et q préfixes. Appel principal : <code>plsc(T, U, L, m, n)</code>.',sol:'lcs_plsc'}
+ ]},
+ {id:'li',tag:'Sujet blanc · TD6',titre:'Plus longue sous-séquence croissante',desc:'Récurrence de l(j), graphe(S), calculerLA, plssc. Bonus : symetrique.',intro:'<p>Une séquence S est dans un tableau d\'entiers S[0:n]. On lui associe le graphe G(S) dont les sommets sont les indices : il y a une flèche i → j si et seulement si i &lt; j et S[i] &lt; S[j]. Une plus longue sous-séquence strictement croissante (plssc) est un plus long chemin de G(S). On note l(j) la longueur d\'une plssc finissant en j et pred(j) les sommets qui envoient une flèche sur j.</p>',q:[
+  {pts:4,enonce:'Donner l(j) quand pred(j) = ∅, puis l\'expression de l(j) quand pred(j) ≠ ∅. Comment obtient-on la longueur d\'une plssc de S ?',sol:'rec_lis'},
+  {pts:5,enonce:'Écrire <code>Liste[] graphe(int[] S)</code> qui retourne le graphe G(S) représenté par une table de listes.',sol:'lis_graphe'},
+  {pts:6,enonce:'Écrire <code>int[][] calculerLA(Liste[] Gprime)</code> qui retourne L[0:n] (L[j] = l(j)) et A[0:n] (A[j] = arg l(j), −1 si pred(j) = ∅). Gprime est le symétrique de G.',sol:'lis_LA'},
+  {pts:5,enonce:'Écrire <code>String plssc(int[] A, int[] S, int j)</code> qui retourne une plssc finissant en j, sous la forme <code>S[1]=1 S[3]=2 S[4]=30 </code>.',sol:'lis_plssc'},
+  {pts:2,bonus:true,enonce:'Réécrire <code>Liste[] symetrique(Liste[] G)</code>.',sol:'symetrique'}
+ ]}
+];
+
+const TOPICS = [
+ {id:'methode',tag:'À lire en premier',title:'La méthode',desc:'La recette en 5 étapes, les listes, les graphes et la récursivité expliqués simplement.'},
+ {id:'chemins',tag:'TD2 ex. 2 et 3 · Contrôle 2',title:'Chemins de coût minimum',desc:'Aller de la ville 0 à la ville n−1 en payant le moins possible.'},
+ {id:'juliette',tag:'TD3',title:'Juliette optimise ses révisions',desc:'Répartir H heures entre n matières pour la meilleure moyenne.'},
+ {id:'plsc',tag:'TD4',title:'Plus longue séquence commune',desc:'Le plus long mot obtenu en barrant des lettres dans deux mots.'},
+ {id:'plssc',tag:'TD6',title:'Plus longue sous-séquence croissante',desc:'Garder le plus de nombres possible, dans l\'ordre, en montant toujours.'},
+ {id:'examen',tag:'Entraînement final',title:'Sujets blancs',desc:'5 sujets chronométrés au format du partiel, avec barème d\'auto-correction.'}
+];
+// ===================== OUTILS =====================
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const INF = Infinity;
+const fmt = v => v === INF ? '∞' : (v === null || v === undefined ? '' : v);
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const norm = s => s.replace(/\s+/g, '').replace(/;+$/, '');
+const parseNum = s => { s = s.trim().toLowerCase(); if (['inf', '∞', '+inf', '+∞', 'infini'].includes(s)) return INF; return s === '' ? NaN : Number(s.replace(',', '.')); };
+
+// ===================== PROGRESSION =====================
+const Store = {
+  key: 'algoE2-revisions-v1', data: {},
+  load() { try { this.data = JSON.parse(localStorage.getItem(this.key)) || {}; } catch (e) { this.data = {}; } },
+  save() { try { localStorage.setItem(this.key, JSON.stringify(this.data)); } catch (e) { } },
+  done(id) { if (!this.data[id]) { this.data[id] = true; this.save(); } updateProgress(); },
+  is(id) { return !!this.data[id]; }
+};
+const REG = {};
+function register(topic, id) { (REG[topic] = REG[topic] || new Set()).add(id); }
+function updateProgress() {
+  for (const t of TOPICS) {
+    const ids = [...(REG[t.id] || [])]; const d = ids.filter(i => Store.is(i)).length;
+    $$(`[data-prog="${t.id}"]`).forEach(c => { c.textContent = `${d}/${ids.length}`; c.classList.toggle('full', ids.length > 0 && d === ids.length); });
+    $$(`[data-bar="${t.id}"]`).forEach(b => b.style.width = (ids.length ? 100 * d / ids.length : 0) + '%');
+    $$(`[data-count="${t.id}"]`).forEach(b => b.textContent = `${d} exercice${d > 1 ? 's' : ''} réussi${d > 1 ? 's' : ''} sur ${ids.length}`);
+  }
+  $$('[data-done]').forEach(m => m.textContent = Store.is(m.dataset.done) ? '✓ réussi' : '');
+}
+
+// ===================== COLORATION JAVA =====================
+function hl(code) {
+  const re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:[^"\\\n]|\\.)*")|\b(static|int|void|return|for|if|else|new|class|public|boolean|while|null|final|char|this|String|Liste|Math|Integer|System|AB)\b|\b(\d+)\b/g;
+  let out = '', last = 0, m;
+  while ((m = re.exec(code))) {
+    out += esc(code.slice(last, m.index));
+    if (m[1]) out += `<span class="c">${esc(m[1])}</span>`;
+    else if (m[2]) out += `<span class="s">${esc(m[2])}</span>`;
+    else if (m[3]) out += `<span class="${/^[A-Z]/.test(m[3]) ? 't' : 'k'}">${m[3]}</span>`;
+    else out += `<span class="n">${m[4]}</span>`;
+    last = re.lastIndex;
+  }
+  return out + esc(code.slice(last));
+}
+
+// ===================== GRAPHE (SVG) =====================
+function drawDAG(n, arcs, o = {}) {
+  const gap = n > 9 ? 64 : 84, r = 17, pad = 46;
+  const W = pad * 2 + gap * (n - 1);
+  const maxSpan = Math.max(1, ...arcs.map(a => a.j - a.i));
+  const unit = Math.min(30, 170 / maxSpan);
+  const y = 26 + unit * maxSpan * 0.9 + 14, H = y + r + (o.sub2 ? 42 : 26);
+  const X = i => pad + gap * i;
+  const rank = { '': 0, cons: 1, chosen: 2, path: 3 };
+  const cls = a => (o.arcClass ? o.arcClass(a) : '') || '';
+  const list = arcs.slice().sort((a, b) => (rank[cls(a)] || 0) - (rank[cls(b)] || 0));
+  let s = `<svg class="dag" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Graphe à ${n} sommets">`;
+  for (const a of list) {
+    const c = cls(a); const x1 = X(a.i), x2 = X(a.j), xm = (x1 + x2) / 2, h = unit * (a.j - a.i) * 0.9 + 8;
+    const cy = y - 2 * h; let ux = x2 - xm, uy = y - cy; const L = Math.hypot(ux, uy); ux /= L; uy /= L;
+    const tx = x2 - ux * (r + 1), ty = y - uy * (r + 1), bx = tx - ux * 9, by = ty - uy * 9, px = -uy * 4.5, py = ux * 4.5;
+    s += `<g class="arc ${c}"><path d="M${x1} ${y} Q${xm} ${cy} ${x2} ${y}"/><polygon points="${tx.toFixed(1)},${ty.toFixed(1)} ${(bx + px).toFixed(1)},${(by + py).toFixed(1)} ${(bx - px).toFixed(1)},${(by - py).toFixed(1)}"/>`;
+    if (o.label) s += `<text x="${xm}" y="${(y - h - 5).toFixed(1)}" class="alab">${o.label(a)}</text>`;
+    s += '</g>';
+  }
+  for (let i = 0; i < n; i++) {
+    const nc = o.nodeClass ? o.nodeClass(i) : '';
+    s += `<g class="node ${nc}"><circle cx="${X(i)}" cy="${y}" r="${r}"/><text x="${X(i)}" y="${y + 5}" class="nin">${o.inner ? o.inner(i) : i}</text>`;
+    if (o.sub) s += `<text x="${X(i)}" y="${y + r + 16}" class="nsub">${o.sub(i)}</text>`;
+    if (o.sub2) s += `<text x="${X(i)}" y="${y + r + 32}" class="nsub">${o.sub2(i)}</text>`;
+    s += '</g>';
+  }
+  return s + '</svg>';
+}
+const lists = (L, name) => `<div><h5>${name}</h5><pre class="mini">${L.map((l, i) => `${i} : ${l.join(' ')}`).join('\n')}</pre></div>`;
+
+// ===================== LECTEUR PAS À PAS =====================
+function Player(root, render) {
+  const bar = $('.pbar', root), msg = $('.pmsg', root);
+  bar.innerHTML = `<button type="button" class="btn" data-a="reset" aria-label="Recommencer">⏮ Début</button>
+    <button type="button" class="btn" data-a="prev">◀ Précédent</button>
+    <button type="button" class="btn primary" data-a="next">Suivant ▶</button>
+    <button type="button" class="btn" data-a="play">Lecture auto</button>
+    <button type="button" class="btn" data-a="end">Aller à la fin</button>
+    <span class="pinfo"></span>`;
+  const info = $('.pinfo', bar), playBtn = $('[data-a=play]', bar);
+  const P = {
+    steps: [], k: 0, timer: null,
+    load(steps) { this.stop(); this.steps = steps; this.k = 0; this.show(); },
+    show() { const st = this.steps[this.k]; render(st); msg.innerHTML = st.msg; info.textContent = `Étape ${this.k} / ${this.steps.length - 1}`; },
+    go(k) { this.k = Math.max(0, Math.min(this.steps.length - 1, k)); this.show(); },
+    stop() { clearInterval(this.timer); this.timer = null; playBtn.textContent = 'Lecture auto'; }
+  };
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || !P.steps.length) return; const a = b.dataset.a;
+    if (a === 'next') { P.stop(); P.go(P.k + 1); }
+    else if (a === 'prev') { P.stop(); P.go(P.k - 1); }
+    else if (a === 'reset') { P.stop(); P.go(0); }
+    else if (a === 'end') { P.stop(); P.go(P.steps.length - 1); }
+    else if (a === 'play') {
+      if (P.timer) P.stop();
+      else { playBtn.textContent = 'Pause'; P.timer = setInterval(() => { if (P.k >= P.steps.length - 1) P.stop(); else P.go(P.k + 1); }, 1100); }
+    }
+  });
+  return P;
+}
+
+// ===================== CHEMINS =====================
+function chBuild(n, arcs) {
+  const C = {}; arcs.forEach(a => C[a.i + ',' + a.j] = a.c);
+  const G = [...Array(n)].map(() => []);
+  Object.keys(C).forEach(k => { const [i, j] = k.split(',').map(Number); G[i].push(j); });
+  G.forEach(l => l.sort((a, b) => a - b));
+  const Gp = [...Array(n)].map(() => []);
+  for (let i = 0; i < n; i++) for (const j of G[i]) Gp[j].unshift(i);   // comme symetrique() : ajout en tête
+  return { C, G, Gp };
+}
+function chSolve(n, C, Gp, order) {
+  const M = Array(n).fill(INF), A = Array(n).fill(-1); M[0] = 0;
+  for (let j = 1; j < n; j++) {
+    const preds = order === 'asc' ? Gp[j].slice().reverse() : Gp[j];
+    for (const i of preds) { const v = M[i] === INF ? INF : M[i] + C[i + ',' + j]; if (v < M[j]) { M[j] = v; A[j] = i; } }
+  }
+  return { M, A };
+}
+function chSteps(n, arcs, order) {
+  const { C, G, Gp } = chBuild(n, arcs);
+  const M = Array(n).fill(null), A = Array(n).fill(null);
+  const snap = x => Object.assign({ M: M.slice(), A: A.slice(), G, Gp, C, n, cur: -1, deps: [], cons: [], chosen: null, path: [] }, x);
+  const steps = [snap({ msg: `On va remplir <b>M</b> (coût minimum pour atteindre chaque ville) et <b>A</b> (ville d'où l'on arrive), de gauche à droite. Clique sur <b>Suivant</b>.` })];
+  M[0] = 0; A[0] = -1;
+  steps.push(snap({ cur: 0, msg: `<b>Base</b> : m(0) = 0, aller de 0 à 0 ne coûte rien. A[0] = −1 : il n'y a pas de ville avant 0.` }));
+  for (let j = 1; j < n; j++) {
+    const preds = order === 'asc' ? Gp[j].slice().reverse() : Gp[j].slice();
+    let mj = INF, aj = -1; const lines = [];
+    for (const i of preds) { const v = M[i] === INF ? INF : M[i] + C[i + ',' + j]; lines.push({ i, v }); if (v < mj) { mj = v; aj = i; } }
+    M[j] = mj; A[j] = aj;
+    let msg = `<b>j = ${j}</b> · pred(${j}) = {${preds.join(', ') || '∅'}}`;
+    if (!preds.length) msg += ` : aucune ligne n'arrive en ${j}, donc m(${j}) = +∞ (ville inaccessible).`;
+    else msg += `<ul class="cands">${lines.map(l => `<li class="${l.i === aj ? 'best' : ''}">depuis ${l.i} : M[${l.i}] + c(${l.i},${j}) = ${fmt(M[l.i])} + ${C[l.i + ',' + j]} = <b>${fmt(l.v)}</b>${l.i === aj ? ' ← minimum' : ''}</li>`).join('')}</ul>Donc M[${j}] = ${fmt(mj)} et A[${j}] = ${aj}.${lines.filter(l => l.v === mj).length > 1 ? ' <span class="note">(Égalité : le code garde le premier candidat rencontré, car il teste <code>m &lt; mj</code> strictement.)</span>' : ''}`;
+    steps.push(snap({ cur: j, deps: preds, cons: preds.map(i => i + ',' + j), chosen: aj >= 0 ? aj + ',' + j : null, msg }));
+  }
+  const last = n - 1;
+  if (M[last] === INF) { steps.push(snap({ msg: `La ville ${last} est inaccessible depuis 0 : pas de chemin.` })); return steps; }
+  const back = []; let j = last; while (j !== 0) { back.push(j); j = A[j]; } back.push(0);
+  for (let t = 0; t < back.length; t++) {
+    const x = back[t];
+    steps.push(snap({ path: back.slice(0, t + 1), cur: x, msg: x === 0 ? `<b>acm(A,C,0)</b> : on est en 0, c'est le cas de base. On affiche « 0 » et on rend la main.` : `<b>acm(A,C,${x})</b> : A[${x}] = ${A[x]}, donc juste avant ${x} on était en ${A[x]}. On appelle d'abord <code>acm(A,C,${A[x]})</code>, et on affichera « --(${C[A[x] + ',' + x]})-->${x} » au retour.` }));
+  }
+  const fwd = back.slice().reverse(); let str = '0';
+  for (let t = 1; t < fwd.length; t++) str += `--(${C[fwd[t - 1] + ',' + fwd[t]]})-->${fwd[t]}`;
+  steps.push(snap({ path: back, msg: `Chaque appel affiche son morceau <i>après</i> le retour de l'appel récursif, donc tout sort dans le bon sens :<div class="out">${str}</div>Coût total : <b>${M[last]}</b>, c'est bien M[${last}].` }));
+  return steps;
+}
+function chRender(st) {
+  const view = $('#sim-ch .sim-view');
+  const arcs = Object.entries(st.C).map(([k, c]) => { const [i, j] = k.split(',').map(Number); return { i, j, c, k }; });
+  const pathArcs = new Set(st.path.filter(x => x !== 0).map(x => st.A[x] + ',' + x));
+  const svg = drawDAG(st.n, arcs, {
+    sub: i => st.M[i] == null ? '' : 'M=' + fmt(st.M[i]), label: a => a.c,
+    arcClass: a => pathArcs.has(a.k) ? 'path' : a.k === st.chosen ? 'chosen' : st.cons.includes(a.k) ? 'cons' : '',
+    nodeClass: i => i === st.cur ? 'cur' : st.path.includes(i) ? 'path' : st.deps.includes(i) ? 'dep' : ''
+  });
+  const row = (name, arr) => `<tr><th>${name}</th>${arr.map((v, i) => `<td class="${i === st.cur ? 'cur' : st.path.includes(i) ? 'path' : st.deps.includes(i) ? 'dep' : ''}">${v == null ? '' : fmt(v)}</td>`).join('')}</tr>`;
+  view.innerHTML = `<div class="dag-wrap">${svg}</div><div class="tables"><div class="tblwrap"><table class="grid"><tr><th>j</th>${st.M.map((_, i) => `<th>${i}</th>`).join('')}</tr>${row('M', st.M)}${row('A', st.A)}</table></div><div class="lists">${lists(st.G, 'G : successeurs')}${lists(st.Gp, 'Gp : prédécesseurs')}</div></div>`;
+}
+const CH_PRESETS = {
+  controle: { n: 5, order: 'gp', arcs: '0 1 5\n0 3 20\n0 4 30\n1 2 5\n1 4 20\n2 3 10\n2 4 20\n3 4 10' },
+  ex2: { n: 5, order: 'gp', arcs: '0 1 10\n1 2 20\n2 3 100\n3 4 30\n0 2 40\n1 3 50\n2 4 60' },
+  ex3: { n: 5, order: 'asc', arcs: '0 1 40\n0 2 40\n0 3 90\n0 4 150\n1 2 50\n1 3 50\n1 4 100\n2 3 40\n2 4 100\n3 4 50' }
+};
+function parseArcs(n, txt) {
+  const arcs = [], errs = [];
+  txt.split('\n').map(l => l.trim()).filter(Boolean).forEach(l => {
+    const p = l.split(/[\s,;:>]+|-(?=\d)|--+/).filter(Boolean).map(Number);
+    if (p.length !== 3 || p.some(isNaN)) errs.push(`« ${esc(l)} » : il faut 3 nombres (départ arrivée coût).`);
+    else if (!(p[0] >= 0 && p[1] < n && p[0] < p[1])) errs.push(`« ${esc(l)} » : il faut 0 ≤ départ < arrivée < n.`);
+    else arcs.push({ i: p[0], j: p[1], c: p[2] });
+  });
+  return { arcs, errs };
+}
+function initChemins() {
+  const root = $('#sim-ch'); const P = Player(root, chRender);
+  const sel = $('#ch-preset'), nI = $('#ch-n'), ta = $('#ch-arcs');
+  let order = 'gp';
+  function applyPreset() { const p = CH_PRESETS[sel.value]; if (!p) return; nI.value = p.n; ta.value = p.arcs; order = p.order; run(); }
+  function run() {
+    const n = Math.max(2, Math.min(10, +nI.value || 5)); const { arcs, errs } = parseArcs(n, ta.value);
+    $('#ch-err').innerHTML = errs.join('<br>'); if (errs.length) return;
+    P.load(chSteps(n, arcs, order));
+  }
+  sel.addEventListener('change', () => { if (sel.value === 'custom') { order = 'gp'; ta.focus(); } else applyPreset(); });
+  ta.addEventListener('input', () => { sel.value = 'custom'; order = 'gp'; });
+  $('#ch-load').addEventListener('click', run);
+  applyPreset();
+}
+
+// ===================== JULIETTE =====================
+function juSolve(C, E) {
+  const n = E.length, H = E[0].length - 1;
+  const M = [...Array(n + 1)].map(() => Array(H + 1).fill(0)), A = [...Array(n + 1)].map(() => Array(H + 1).fill(0));
+  for (let k = 1; k <= n; k++) for (let t = 0; t <= H; t++) {
+    let best = -INF, bh = 0;
+    for (let h = 0; h <= t; h++) { const v = C[k - 1] * E[k - 1][h] + M[k - 1][t - h]; if (v > best) { best = v; bh = h; } }
+    M[k][t] = best; A[k][t] = bh;
+  }
+  return { M, A };
+}
+function juSteps(C, E, T0) {
+  const n = E.length, H = E[0].length - 1;
+  const M = [...Array(n + 1)].map(() => Array(H + 1).fill(null)), A = [...Array(n + 1)].map(() => Array(H + 1).fill(null));
+  const snap = x => Object.assign({ M: M.map(r => r.slice()), A: A.map(r => r.slice()), C, E, n, H, cur: null, deps: [], best: null, eUsed: [], aro: [] }, x);
+  const steps = [snap({ msg: `M a une ligne par nombre k d'unités prises en compte (k = 0 à ${n}) et une colonne par nombre t d'heures (t = 0 à ${H}). On le remplit ligne par ligne.` })];
+  for (let t = 0; t <= H; t++) { M[0][t] = 0; A[0][t] = 0; }
+  steps.push(snap({ msg: `<b>Base</b> : m(0,t) = 0 pour tout t. Avec 0 unité, la somme des notes vaut 0, quel que soit le nombre d'heures.` }));
+  for (let k = 1; k <= n; k++) for (let t = 0; t <= H; t++) {
+    let best = -INF, bh = 0; const lines = [];
+    for (let h = 0; h <= t; h++) { const v = C[k - 1] * E[k - 1][h] + M[k - 1][t - h]; lines.push({ h, v }); if (v > best) { best = v; bh = h; } }
+    M[k][t] = best; A[k][t] = bh;
+    const msg = `<b>m(${k},${t})</b> : ${t} heure${t > 1 ? 's' : ''} à répartir sur les unités 0 à ${k - 1}. On donne h heures à l'unité ${k - 1} (coef ${C[k - 1]}) et les ${t}−h autres aux unités d'avant :<ul class="cands cols">${lines.map(l => `<li class="${l.h === bh ? 'best' : ''}">h=${l.h} : ${C[k - 1]}×${E[k - 1][l.h]} + m(${k - 1},${t - l.h}) = ${C[k - 1] * E[k - 1][l.h]} + ${M[k - 1][t - l.h]} = <b>${l.v}</b></li>`).join('')}</ul>Maximum ${best}, atteint pour h = ${bh} : M[${k}][${t}] = ${best} et A[${k}][${t}] = ${bh}.`;
+    steps.push(snap({ cur: [k, t], deps: lines.map(l => [k - 1, t - l.h]), best: [k - 1, t - bh], eUsed: [[k - 1, bh]], msg }));
+  }
+  let k = n, t = Math.max(0, Math.min(H, T0)); const chain = [];
+  while (k > 0) { const h = A[k][t]; chain.push({ k, t, h }); t -= h; k--; }
+  chain.forEach((c, i) => steps.push(snap({ cur: [c.k, c.t], aro: chain.slice(0, i + 1).map(x => [x.k, x.t]), eUsed: chain.slice(0, i + 1).map(x => [x.k - 1, x.h]), msg: `<b>aro(${c.k},${c.t})</b> : A[${c.k}][${c.t}] = ${c.h}, donc l'unité ${c.k - 1} reçoit ${c.h} h. On appelle d'abord aro(${c.k - 1},${c.t - c.h}) pour répartir les ${c.t - c.h} h restantes sur les unités d'avant.` })));
+  const out = chain.slice().reverse().map(c => `C[${c.k - 1}] * e(${c.k - 1},${c.h}) = ${C[c.k - 1]} * ${E[c.k - 1][c.h]} = ${C[c.k - 1] * E[c.k - 1][c.h]}`).join('\n');
+  const T = Math.max(0, Math.min(H, T0)), SC = C.reduce((a, b) => a + b, 0);
+  steps.push(snap({ aro: chain.map(x => [x.k, x.t]), eUsed: chain.map(x => [x.k - 1, x.h]), msg: `aro(0, …) ne fait rien, puis chaque appel affiche sa ligne au retour, de l'unité 0 à l'unité ${n - 1} :<div class="out">${out}</div>Total m(${n},${T}) = <b>${M[n][T]}</b>, soit une moyenne de ${M[n][T]}/${SC} = ${(M[n][T] / SC).toFixed(2).replace('.', ',')}.` }));
+  return steps;
+}
+function juRender(st) {
+  const v = $('#sim-ju .sim-view'); const { n, H } = st;
+  const has = (L, a, b) => L.some(x => x[0] === a && x[1] === b);
+  const head = `<tr><th>k \\ t</th>${[...Array(H + 1).keys()].map(t => `<th>${t}</th>`).join('')}</tr>`;
+  const tbl = (T, name, full) => `<div class="tblwrap"><table class="grid"><caption>${name}</caption>${head}${T.map((row, k) => `<tr><th>k=${k}</th>${row.map((x, t) => {
+    let c = ''; if (st.cur && st.cur[0] === k && st.cur[1] === t) c = 'cur'; else if (has(st.aro, k, t)) c = 'path';
+    else if (full && st.best && st.best[0] === k && st.best[1] === t) c = 'best'; else if (full && has(st.deps, k, t)) c = 'dep';
+    return `<td class="${c}">${x == null ? '' : x}</td>`;
+  }).join('')}</tr>`).join('')}</table></div>`;
+  const etbl = `<div class="tblwrap"><table class="grid"><caption>Notes estimées E</caption><tr><th>unité \\ h</th>${[...Array(H + 1).keys()].map(t => `<th>${t}</th>`).join('')}</tr>${st.E.map((row, i) => `<tr><th>${i} (coef ${st.C[i]})</th>${row.map((x, h) => `<td class="${has(st.eUsed, i, h) ? 'used' : ''}">${x}</td>`).join('')}</tr>`).join('')}</table></div>`;
+  v.innerHTML = etbl + tbl(st.M, 'Tableau M : m(k,t)', true) + tbl(st.A, 'Tableau A : heures données à l\'unité k−1', false);
+}
+function initJuliette() {
+  const root = $('#sim-ju'); const P = Player(root, juRender);
+  function run() {
+    const C = $('#ju-C').value.split(/[\s,;]+/).filter(Boolean).map(Number);
+    const E = $('#ju-E').value.split('\n').map(l => l.trim()).filter(Boolean).map(l => l.split(/[\s,;]+/).filter(Boolean).map(Number));
+    const errs = [];
+    if (!E.length) errs.push('Entre au moins une unité dans E.');
+    if (C.some(isNaN) || E.flat().some(isNaN)) errs.push('Il ne faut que des nombres.');
+    if (E.length && E.some(r => r.length !== E[0].length)) errs.push('Toutes les lignes de E doivent avoir le même nombre de notes (H+1).');
+    if (C.length !== E.length) errs.push(`Il faut autant de coefficients (${C.length}) que d'unités (${E.length}).`);
+    if (E.length > 5 || (E[0] && E[0].length > 13)) errs.push('Reste à 5 unités et 12 heures maximum pour que le tableau reste lisible.');
+    $('#ju-err').innerHTML = errs.join('<br>'); if (errs.length) return;
+    P.load(juSteps(C, E, +$('#ju-T').value));
+  }
+  $('#ju-load').addEventListener('click', run); run();
+  // tableau de l'exemple (onglet Comprendre)
+  const C = [4, 3, 4], E = [[8, 10, 10, 12, 12, 12, 12, 12, 12, 16, 16], [16, 16, 18, 20, 20, 20, 20, 20, 20, 20, 20], [8, 12, 14, 14, 16, 18, 18, 18, 18, 20, 20]];
+  $('#ju-example').innerHTML = `<table class="grid"><tr><th>unité \\ h</th>${E[0].map((_, h) => `<th>${h}</th>`).join('')}</tr>${E.map((r, i) => `<tr><th>${i} (coef ${C[i]})</th>${r.map(x => `<td>${x}</td>`).join('')}</tr>`).join('')}</table>`;
+}
+
+// ===================== PLSC =====================
+function lcsSolve(T, U) {
+  const m = T.length, n = U.length; const L = [...Array(m + 1)].map(() => Array(n + 1).fill(0));
+  for (let p = 1; p <= m; p++) for (let q = 1; q <= n; q++) L[p][q] = T[p - 1] === U[q - 1] ? 1 + L[p - 1][q - 1] : Math.max(L[p - 1][q], L[p][q - 1]);
+  return L;
+}
+function lcsSteps(T, U) {
+  const m = T.length, n = U.length;
+  const L = [...Array(m + 1)].map(() => Array(n + 1).fill(null)), D = [...Array(m + 1)].map(() => Array(n + 1).fill(''));
+  const snap = x => Object.assign({ L: L.map(r => r.slice()), D: D.map(r => r.slice()), T, U, cur: null, deps: [], path: [], keep: [], res: null }, x);
+  const steps = [snap({ msg: `Les lignes sont les préfixes de T (de vide à « ${esc(T)} »), les colonnes ceux de U. La case (p, q) contiendra la longueur d'une plsc des p premières lettres de T et des q premières de U.` })];
+  for (let q = 0; q <= n; q++) L[0][q] = 0; for (let p = 0; p <= m; p++) L[p][0] = 0;
+  steps.push(snap({ msg: `<b>Base</b> : la ligne 0 et la colonne 0 valent 0. Un mot vide n'a aucune lettre en commun avec un autre mot.` }));
+  for (let p = 1; p <= m; p++) for (let q = 1; q <= n; q++) {
+    const a = T[p - 1], b = U[q - 1]; let msg;
+    if (a === b) { L[p][q] = 1 + L[p - 1][q - 1]; D[p][q] = '↖'; msg = `<b>l(${p},${q})</b> : t(${p - 1}) = '${esc(a)}' et u(${q - 1}) = '${esc(b)}' sont <b>égales</b>, on garde cette lettre. l(${p},${q}) = 1 + l(${p - 1},${q - 1}) = 1 + ${L[p - 1][q - 1]} = <b>${L[p][q]}</b>.`; steps.push(snap({ cur: [p, q], deps: [[p - 1, q - 1]], msg })); }
+    else { const up = L[p - 1][q], left = L[p][q - 1]; L[p][q] = Math.max(up, left); D[p][q] = up >= left ? '↑' : '←'; msg = `<b>l(${p},${q})</b> : '${esc(a)}' ≠ '${esc(b)}'. On jette la dernière lettre de T (case du dessus, ${up}) ou celle de U (case de gauche, ${left}) et on garde le meilleur : max(${up}, ${left}) = <b>${L[p][q]}</b>.`; steps.push(snap({ cur: [p, q], deps: [[p - 1, q], [p, q - 1]], msg })); }
+  }
+  let p = m, q = n, res = ''; const path = [], keep = [];
+  while (p > 0 && q > 0) {
+    path.push([p, q]);
+    if (T[p - 1] === U[q - 1]) { keep.push([p, q]); res = T[p - 1] + res; steps.push(snap({ cur: [p, q], path: path.slice(), keep: keep.slice(), res, msg: `<b>plsc(${p},${q})</b> : '${esc(T[p - 1])}' = '${esc(U[q - 1])}', on garde la lettre et on part en diagonale vers (${p - 1},${q - 1}). Lettres trouvées (de la fin vers le début) : <b>${esc(res)}</b>` })); p--; q--; }
+    else if (L[p - 1][q] >= L[p][q - 1]) { steps.push(snap({ cur: [p, q], path: path.slice(), keep: keep.slice(), res, msg: `<b>plsc(${p},${q})</b> : lettres différentes et L[${p - 1}][${q}] = ${L[p - 1][q]} ≥ L[${p}][${q - 1}] = ${L[p][q - 1]}, on remonte vers (${p - 1},${q}).` })); p--; }
+    else { steps.push(snap({ cur: [p, q], path: path.slice(), keep: keep.slice(), res, msg: `<b>plsc(${p},${q})</b> : lettres différentes et L[${p}][${q - 1}] = ${L[p][q - 1]} > L[${p - 1}][${q}] = ${L[p - 1][q]}, on va à gauche vers (${p},${q - 1}).` })); q--; }
+  }
+  path.push([p, q]);
+  steps.push(snap({ path: path.slice(), keep, res, msg: `p ou q vaut 0 : le cas de base renvoie la chaîne vide. En remontant les appels, chaque lettre gardée est collée à la fin :<div class="out">plsc(${esc(T)}, ${esc(U)}) = ${esc(res) || '(vide)'}</div>Longueur ${res.length}, c'est bien L[${m}][${n}].` }));
+  return steps;
+}
+function lcsRender(st) {
+  const v = $('#sim-lcs .sim-view'); const { T, U } = st; const m = T.length, n = U.length;
+  const has = (L, a, b) => L.some(x => x[0] === a && x[1] === b);
+  let h = `<div class="tblwrap"><table class="grid"><caption>Tableau L</caption><tr><th></th><th class="lbl">ε<small>q=0</small></th>${[...U].map((c, q) => `<th class="lbl">${esc(c)}<small>q=${q + 1}</small></th>`).join('')}</tr>`;
+  for (let p = 0; p <= m; p++) {
+    h += `<tr><th class="lbl">${p ? esc(T[p - 1]) : 'ε'}<small>p=${p}</small></th>`;
+    for (let q = 0; q <= n; q++) {
+      let c = ''; if (st.cur && st.cur[0] === p && st.cur[1] === q) c = 'cur'; else if (has(st.keep, p, q)) c = 'keep'; else if (has(st.path, p, q)) c = 'path'; else if (has(st.deps, p, q)) c = 'dep';
+      h += `<td class="${c}">${st.L[p][q] == null ? '' : st.L[p][q]}${st.D[p][q] && st.L[p][q] != null ? `<sup>${st.D[p][q]}</sup>` : ''}</td>`;
+    }
+    h += '</tr>';
+  }
+  v.innerHTML = h + '</table></div>';
+}
+function initPlsc() {
+  const root = $('#sim-lcs'); const P = Player(root, lcsRender);
+  function run() {
+    const T = $('#lcs-T').value.trim(), U = $('#lcs-U').value.trim();
+    const err = !T || !U ? 'Entre deux séquences non vides.' : (T.length > 16 || U.length > 16 ? '16 symboles maximum par séquence.' : '');
+    $('#lcs-err').textContent = err; if (err) return; P.load(lcsSteps(T, U));
+  }
+  $('#lcs-load').addEventListener('click', run);
+  $('#lcs-ex1').addEventListener('click', () => { $('#lcs-T').value = 'aligatorithme'; $('#lcs-U').value = 'algorithmique'; run(); });
+  run();
+}
+
+// ===================== PLSSC =====================
+function lisBuild(S) {
+  const n = S.length; const G = [...Array(n)].map(() => []);
+  for (let j = 1; j < n; j++) for (let i = 0; i < j; i++) if (S[i] < S[j]) G[i].unshift(j);
+  const Gp = [...Array(n)].map(() => []); for (let i = 0; i < n; i++) for (const j of G[i]) Gp[j].unshift(i);
+  return { G, Gp };
+}
+function lisSolve(S) {
+  const { G, Gp } = lisBuild(S); const n = S.length; const L = Array(n).fill(0), A = Array(n).fill(-1);
+  for (let j = 0; j < n; j++) { if (!Gp[j].length) { L[j] = 1; continue; } let b = -1; for (const i of Gp[j]) if (L[i] > b) { b = L[i]; A[j] = i; } L[j] = 1 + b; }
+  return { G, Gp, L, A };
+}
+function lisSteps(S) {
+  const n = S.length; const { G, Gp } = lisBuild(S);
+  const L = Array(n).fill(null), A = Array(n).fill(null);
+  const snap = x => Object.assign({ S, G, Gp, L: L.slice(), A: A.slice(), n, cur: -1, deps: [], cons: [], chosen: null, path: [], showG: false, showGp: false }, x);
+  const steps = [snap({ msg: `Chaque indice i est un sommet (le cercle affiche S[i]). Flèche i → j quand i &lt; j et S[i] &lt; S[j] : « S[j] peut venir juste après S[i] dans une suite croissante ».` })];
+  steps.push(snap({ showG: true, msg: `<code>graphe(S)</code> range ces flèches dans G : G[i] est la liste des successeurs de i. L'ajout se fait en tête, d'où l'ordre décroissant.` }));
+  steps.push(snap({ showG: true, showGp: true, msg: `<code>symetrique(G)</code> retourne chaque flèche : G′[j] est la liste des <b>prédécesseurs</b> de j, ceux dont on a besoin dans la récurrence.` }));
+  for (let j = 0; j < n; j++) {
+    const preds = Gp[j]; let msg;
+    if (!preds.length) { L[j] = 1; A[j] = -1; msg = `<b>j = ${j}</b> (S[${j}] = ${S[j]}) : pred(${j}) = ∅, aucun nombre plus petit avant lui. <b>Base</b> : L[${j}] = 1, A[${j}] = −1.`; steps.push(snap({ cur: j, showGp: true, msg })); }
+    else {
+      let b = -1, a = -1; for (const i of preds) if (L[i] > b) { b = L[i]; a = i; }
+      L[j] = 1 + b; A[j] = a;
+      msg = `<b>j = ${j}</b> (S[${j}] = ${S[j]}) : pred(${j}) = {${preds.join(', ')}}, parcourus dans l'ordre de G′[${j}].<ul class="cands">${preds.map(i => `<li class="${i === a ? 'best' : ''}">i = ${i} (S[${i}] = ${S[i]}) : L[${i}] = ${L[i]}${i === a ? ' ← plus grand' : ''}</li>`).join('')}</ul>L[${j}] = 1 + ${b} = <b>${L[j]}</b> et A[${j}] = ${a}.`;
+      steps.push(snap({ cur: j, deps: preds, cons: preds.map(i => i + ',' + j), chosen: a + ',' + j, showGp: true, msg }));
+    }
+  }
+  let js = 0; for (let j = 1; j < n; j++) if (L[j] > L[js]) js = j;
+  steps.push(snap({ cur: js, showGp: true, msg: `<b>argmax</b> : le plus grand L[j] vaut ${L[js]}, atteint d'abord en j* = ${js}. ${js !== n - 1 ? `Remarque : ce n'est pas le dernier indice (${n - 1}) !` : ''} La plssc cherchée finit en S[${js}] = ${S[js]}.` }));
+  const back = []; let j = js; while (j !== -1) { back.push(j); j = A[j]; }
+  for (let t = 0; t < back.length; t++) { const x = back[t]; steps.push(snap({ cur: x, path: back.slice(0, t + 1), showGp: true, msg: A[x] === -1 ? `<b>plssc(A,S,${x})</b> : A[${x}] = −1, c'est le début de la suite. On renvoie « S[${x}]=${S[x]} ».` : `<b>plssc(A,S,${x})</b> : A[${x}] = ${A[x]}, avant S[${x}] = ${S[x]} il y a S[${A[x]}] = ${S[A[x]]}. On appelle d'abord plssc(A,S,${A[x]}).` })); }
+  const out = back.slice().reverse().map(i => `S[${i}]=${S[i]}`).join(' ');
+  steps.push(snap({ path: back, showGp: true, msg: `En remontant les appels, chaque élément est ajouté à droite :<div class="out">${out}</div>Longueur ${back.length}.` }));
+  return steps;
+}
+function lisRender(st) {
+  const v = $('#sim-lis .sim-view');
+  const arcs = []; st.G.forEach((l, i) => l.forEach(j => arcs.push({ i, j, k: i + ',' + j })));
+  const pathArcs = new Set(st.path.filter(x => st.A[x] >= 0).map(x => st.A[x] + ',' + x));
+  const svg = drawDAG(st.n, arcs, {
+    inner: i => st.S[i], sub: i => 'i=' + i, sub2: i => st.L[i] == null ? '' : 'L=' + st.L[i],
+    arcClass: a => pathArcs.has(a.k) ? 'path' : a.k === st.chosen ? 'chosen' : st.cons.includes(a.k) ? 'cons' : '',
+    nodeClass: i => i === st.cur ? 'cur' : st.path.includes(i) ? 'path' : st.deps.includes(i) ? 'dep' : ''
+  });
+  const cl = i => i === st.cur ? 'cur' : st.path.includes(i) ? 'path' : st.deps.includes(i) ? 'dep' : '';
+  const row = (name, arr) => `<tr><th>${name}</th>${arr.map((x, i) => `<td class="${cl(i)}">${x == null ? '' : x}</td>`).join('')}</tr>`;
+  v.innerHTML = `<div class="dag-wrap">${svg}</div><div class="tables"><div class="tblwrap"><table class="grid"><tr><th>i</th>${st.S.map((_, i) => `<th>${i}</th>`).join('')}</tr>${row('S', st.S)}${row('L', st.L)}${row('A', st.A)}</table></div><div class="lists">${st.showG ? lists(st.G, 'G : successeurs') : ''}${st.showGp ? lists(st.Gp, 'G′ : prédécesseurs') : ''}</div></div>`;
+}
+function initPlssc() {
+  const root = $('#sim-lis'); const P = Player(root, lisRender);
+  function run() {
+    const S = $('#lis-S').value.split(/[\s,;]+/).filter(Boolean).map(Number);
+    const err = !S.length ? 'Entre au moins un nombre.' : S.some(isNaN) ? 'Il ne faut que des nombres.' : S.length > 14 ? '14 nombres maximum pour que le graphe reste lisible.' : '';
+    $('#lis-err').textContent = err; if (err) return; P.load(lisSteps(S));
+  }
+  $('#lis-load').addEventListener('click', run);
+  $('#lis-ex1').addEventListener('click', () => { $('#lis-S').value = '6 5 1 2 3 4 5 2 7 6 8 0 1'; run(); });
+  run();
+}
+
+// ===================== DIAGRAMMES FIXES =====================
+function renderStaticDags() {
+  const make = {
+    ctl: () => { const a = parseArcs(5, CH_PRESETS.controle.arcs).arcs; return drawDAG(5, a, { label: x => x.c }); },
+    ex2: () => { const a = parseArcs(5, CH_PRESETS.ex2.arcs).arcs; return drawDAG(5, a, { label: x => (x.j - x.i === 1 ? 'd1=' : 'd2=') + x.c }); },
+    lis: () => { const S = [10, 1, 20, 2, 30, 1, 2]; const { G } = lisBuild(S); const a = []; G.forEach((l, i) => l.forEach(j => a.push({ i, j }))); const path = new Set(['1,3', '3,4']); return drawDAG(7, a, { inner: i => S[i], sub: i => 'i=' + i, arcClass: x => path.has(x.i + ',' + x.j) ? 'path' : '', nodeClass: i => [1, 3, 4].includes(i) ? 'path' : '' }); }
+  };
+  $$('[data-dag]').forEach(d => { if (make[d.dataset.dag]) d.innerHTML = make[d.dataset.dag](); });
+}
+
+// ===================== QCM =====================
+function renderQCM(el) {
+  const topic = el.dataset.qcm, qs = QCM[topic], id = 'qcm-' + topic; register(topic, id);
+  const solved = new Set();
+  el.innerHTML = qs.map((q, qi) => {
+    const opts = shuffle(q[1].map((t, i) => ({ t, ok: i === 0 })));
+    return `<div class="q" data-q="${qi}"><p class="qt">${qi + 1}. ${esc(q[0])}</p><div class="opts">${opts.map(o => `<button type="button" data-ok="${o.ok ? 1 : 0}">${esc(o.t)}</button>`).join('')}</div><p class="expl"></p></div>`;
+  }).join('') + `<p class="feedback"></p>`;
+  el.addEventListener('click', e => {
+    const b = e.target.closest('.opts button'); if (!b) return; const qd = b.closest('.q'), qi = +qd.dataset.q;
+    const ok = b.dataset.ok === '1'; b.classList.add(ok ? 'right' : 'wrong');
+    $('.expl', qd).innerHTML = (ok ? '<b style="color:var(--ok)">Exact.</b> ' : '<b style="color:var(--bad)">Pas tout à fait.</b> ') + esc(qs[qi][2]);
+    if (ok) { solved.add(qi); $$('.opts button', qd).forEach(x => x.disabled = true); }
+    const fb = $('.feedback', el);
+    if (solved.size === qs.length) { fb.className = 'feedback good'; fb.textContent = 'Toutes les questions sont réussies.'; Store.done(id); }
+    else fb.textContent = `${solved.size} / ${qs.length} trouvées`;
+  });
+}
+
+// ===================== CODE À TROUS =====================
+function renderTrous(el) {
+  const ex = TROUS.find(t => t.id === el.dataset.trous); if (!ex) return; register(ex.topic, ex.id);
+  const parts = ex.code.split(/⟦([^⟧]*)⟧/); const answers = []; let code = '';
+  parts.forEach((p, i) => {
+    if (i % 2 === 0) code += hl(p);
+    else { const alts = p.split('‖'); answers.push(alts); const w = Math.max(3, alts[0].length + 1); code += `<input class="hole" data-i="${answers.length - 1}" style="width:${w}ch" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="trou ${answers.length}">`; }
+  });
+  el.className = 'ex';
+  el.innerHTML = `<h4><span class="kind">Code à trous</span>${esc(ex.title)} <span class="done-mark" data-done="${ex.id}"></span></h4><p class="note">Complète chaque case en pointillés (les espaces ne comptent pas).</p><pre class="code">${code}</pre><div class="row"><button type="button" class="btn primary" data-a="check">Vérifier</button><button type="button" class="btn" data-a="sol">Voir la solution</button><button type="button" class="btn ghost" data-a="clear">Effacer</button></div><p class="feedback"></p>`;
+  const holes = $$('input.hole', el), fb = $('.feedback', el);
+  el.addEventListener('click', e => {
+    const a = e.target.closest('button')?.dataset.a; if (!a) return;
+    if (a === 'check') {
+      let ok = 0; holes.forEach(h => { const good = answers[+h.dataset.i].some(x => norm(x) === norm(h.value)); h.classList.toggle('good', good); h.classList.toggle('bad', !good); if (good) ok++; });
+      if (ok === holes.length) { fb.className = 'feedback good'; fb.textContent = 'Parfait, tout est juste.'; Store.done(ex.id); }
+      else { fb.className = 'feedback bad'; fb.textContent = `${ok} / ${holes.length} trous justes. Les cases rouges sont à revoir.`; }
+    } else if (a === 'sol') { holes.forEach(h => { h.value = answers[+h.dataset.i][0]; h.classList.remove('bad', 'good'); }); fb.className = 'feedback'; fb.textContent = 'Solution affichée. Efface et réessaie de mémoire pour valider l\'exercice.'; }
+    else if (a === 'clear') { holes.forEach(h => { h.value = ''; h.classList.remove('bad', 'good'); }); fb.textContent = ''; }
+  });
+  holes.forEach(h => h.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('[data-a=check]', el).click(); } }));
+}
+
+// ===================== ÉCRIRE SOI-MÊME =====================
+function checklistHTML(key, name) {
+  return `<ul class="checklist">${(CHECKS[key] || []).map(([t, p], i) => `<li><label><input type="checkbox" data-pts="${p}" name="${name}-${i}" id="${name}-${i}"><span>${esc(t)}</span><span class="pts">${p} pt${p > 1 ? 's' : ''}</span></label></li>`).join('')}</ul>`;
+}
+function tabInTextarea(ta) { ta.addEventListener('keydown', e => { if (e.key === 'Tab' && !e.shiftKey) { e.preventDefault(); const s = ta.selectionStart; ta.value = ta.value.slice(0, s) + '    ' + ta.value.slice(ta.selectionEnd); ta.selectionStart = ta.selectionEnd = s + 4; } }); }
+function renderWrite(el) {
+  const ex = WRITES.find(w => w.id === el.dataset.write); if (!ex) return; register(ex.topic, ex.id);
+  el.className = 'ex';
+  el.innerHTML = `<h4><span class="kind">Comme au partiel</span>${esc(ex.title)} <span class="done-mark" data-done="${ex.id}"></span></h4><div class="enonce">${ex.enonce}</div><textarea class="answer" id="ta-${ex.id}" spellcheck="false" aria-label="Ta réponse" placeholder="Écris ton code ici, comme sur ta copie. La touche Tab insère une indentation."></textarea><div class="row"><button type="button" class="btn primary" data-a="show">Comparer avec le corrigé</button></div><div class="corr" hidden><div class="two-col"><div><h5>Ta réponse</h5><pre class="code mine"></pre></div><div><h5>Corrigé</h5><pre class="code">${hl(CODES[ex.sol])}</pre></div></div><h5 style="margin-top:12px">Coche ce que ta réponse contient vraiment</h5>${checklistHTML(ex.sol, ex.id)}<p class="feedback"></p></div>`;
+  const ta = $('textarea', el); tabInTextarea(ta);
+  $('[data-a=show]', el).addEventListener('click', () => { $('.mine', el).innerHTML = ta.value.trim() ? hl(ta.value) : '<span class="c">// (vide)</span>'; $('.corr', el).hidden = false; });
+  el.addEventListener('change', () => {
+    const boxes = $$('.checklist input', el); const tot = boxes.reduce((a, b) => a + +b.dataset.pts, 0), got = boxes.filter(b => b.checked).reduce((a, b) => a + +b.dataset.pts, 0);
+    const fb = $('.corr .feedback', el); fb.textContent = `${got} / ${tot} points.`;
+    fb.className = 'feedback ' + (got === tot ? 'good' : '');
+    if (got === tot) { fb.textContent += ' Bravo, réponse complète.'; Store.done(ex.id); }
+  });
+}
+
+// ===================== EXERCICES À LA MAIN =====================
+const cellIn = (k, w) => `<input class="cell" data-k="${k}" inputmode="text" autocomplete="off" aria-label="${k}"${w ? ` style="width:${w}px"` : ''}>`;
+function markCells(root, judge) {
+  let ok = true;
+  $$('input.cell', root).forEach(inp => { const v = inp.value.trim(); inp.classList.remove('good', 'bad'); if (v === '') { ok = false; inp.classList.add('bad'); return; } const r = judge(inp.dataset.k, v); inp.classList.add(r ? 'good' : 'bad'); if (!r) ok = false; });
+  return ok;
+}
+function handShell(root, id, topic, build) {
+  register(topic, id);
+  const extra = root.dataset.hand === 'chemins' ? `<label>Type <select class="hx-type"><option value="g">Réseau quelconque (contrôle 2)</option><option value="2">Deux lignes (TD2 ex. 2)</option><option value="c">Toutes les lignes (TD2 ex. 3)</option></select></label>` : '';
+  root.innerHTML = `<div class="hx-head">${extra}<button type="button" class="btn" data-a="new">Nouvel exercice</button></div><div class="hx-body"></div><div class="row"><button type="button" class="btn primary" data-a="check">Vérifier</button><button type="button" class="btn" data-a="sol">Voir la solution</button></div><p class="feedback"></p>`;
+  const body = $('.hx-body', root), fb = $('.feedback', root); let cur = null;
+  function gen() { cur = build(body, root); fb.textContent = ''; fb.className = 'feedback'; }
+  root.addEventListener('click', e => {
+    const a = e.target.closest('button')?.dataset.a; if (!a) return;
+    if (a === 'new') gen();
+    else if (a === 'check') { const r = cur.check(); fb.className = 'feedback ' + (r === true ? 'good' : 'bad'); fb.innerHTML = r === true ? 'Tout est juste. Bien joué !' : r; if (r === true) Store.done(id); }
+    else if (a === 'sol') { cur.solve(); fb.className = 'feedback'; fb.textContent = 'Solution affichée. Lance un nouvel exercice pour t\'entraîner.'; }
+  });
+  $('.hx-type', root)?.addEventListener('change', gen);
+  gen();
+}
+function handChemins(body, root) {
+  const type = $('.hx-type', root).value, n = type === 'c' ? 5 : 6, arcs = [];
+  for (let j = 1; j < n; j++) {
+    let preds;
+    if (type === '2') preds = [j - 1, j - 2].filter(i => i >= 0);
+    else if (type === 'c') preds = [...Array(j).keys()];
+    else { preds = []; if (Math.random() < 0.75) preds.push(j - 1); for (let i = 0; i < j - 1; i++) if (Math.random() < 0.4) preds.push(i); if (!preds.length) preds.push(rnd(0, j - 1)); }
+    preds.forEach(i => arcs.push({ i, j, c: type === 'c' ? rnd(3, 8) * (j - i) + rnd(0, 6) : rnd(2, 20) }));
+  }
+  const { C, Gp } = chBuild(n, arcs); const { M } = chSolve(n, C, Gp, 'gp');
+  const cols = [...Array(n).keys()];
+  body.innerHTML = `<div class="dag-wrap">${drawDAG(n, arcs, { label: a => a.c })}</div><div class="tables"><div class="tblwrap"><table class="grid"><tr><th>j</th>${cols.map(j => `<th>${j}</th>`).join('')}</tr><tr><th>pred(j)</th>${cols.map(j => `<td class="na">{${Gp[j].slice().reverse().join(',')}}</td>`).join('')}</tr><tr><th>M</th>${cols.map(j => `<td class="inp">${cellIn('M' + j)}</td>`).join('')}</tr><tr><th>A</th>${cols.map(j => `<td class="inp">${cellIn('A' + j)}</td>`).join('')}</tr></table></div></div>`;
+  return {
+    check() {
+      const Mu = cols.map(j => parseNum($(`[data-k=M${j}]`, body).value));
+      const ok = markCells(body, (k, v) => {
+        const j = +k.slice(1), x = parseNum(v);
+        if (k[0] === 'M') return x === M[j];
+        if (j === 0) return x === -1;
+        return Gp[j].includes(x) && Mu[x] === M[x] && M[x] + C[x + ',' + j] === M[j];
+      });
+      return ok || 'Il reste des erreurs (en rouge). Rappel : M[j] = min des M[i] + c(i,j) pour i dans pred(j).';
+    },
+    solve() { cols.forEach(j => { $(`[data-k=M${j}]`, body).value = fmt(M[j]); let a = -1; if (j > 0) { for (const i of Gp[j]) if (M[i] + C[i + ',' + j] === M[j]) { a = i; break; } } $(`[data-k=A${j}]`, body).value = a; }); $$('input.cell', body).forEach(i => i.classList.remove('good', 'bad')); }
+  };
+}
+function handJuliette(body) {
+  const C = [rnd(1, 4), rnd(1, 4)], H = 4;
+  const E = [0, 1].map(() => { let v = rnd(4, 10); return [...Array(H + 1)].map((_, h) => { if (h > 0) v = Math.min(20, v + rnd(0, 4)); return v; }); });
+  const { M } = juSolve(C, E); const ts = [...Array(H + 1).keys()];
+  body.innerHTML = `<div class="tables"><div class="tblwrap"><table class="grid"><caption>Notes estimées E</caption><tr><th>unité \\ h</th>${ts.map(t => `<th>${t}</th>`).join('')}</tr>${E.map((r, i) => `<tr><th>${i} (coef ${C[i]})</th>${r.map(x => `<td>${x}</td>`).join('')}</tr>`).join('')}</table></div>
+  <div class="tblwrap"><table class="grid"><caption>Tableau M : m(k,t)</caption><tr><th>k \\ t</th>${ts.map(t => `<th>${t}</th>`).join('')}</tr><tr><th>k=0</th>${ts.map(() => '<td>0</td>').join('')}</tr>${[1, 2].map(k => `<tr><th>k=${k}</th>${ts.map(t => `<td class="inp">${cellIn(`M${k}_${t}`)}</td>`).join('')}</tr>`).join('')}</table></div></div>
+  <p>Répartition optimale des ${H} heures : unité 0 → ${cellIn('h0')} h, unité 1 → ${cellIn('h1')} h</p>`;
+  return {
+    check() {
+      const h0 = parseNum($('[data-k=h0]', body).value), h1 = parseNum($('[data-k=h1]', body).value);
+      const okRep = Number.isInteger(h0) && Number.isInteger(h1) && h0 >= 0 && h1 >= 0 && h0 + h1 <= H && C[0] * E[0][h0] + C[1] * E[1][h1] === M[2][H];
+      const ok = markCells(body, (k, v) => { if (k === 'h0' || k === 'h1') return okRep; const [kk, t] = k.slice(1).split('_').map(Number); return parseNum(v) === M[kk][t]; });
+      return ok || 'Il reste des erreurs. Pour m(1,t) : max des c(0)·e(0,h), h ≤ t. Pour m(2,t) : max des m(1,t−h) + c(1)·e(1,h).';
+    },
+    solve() { [1, 2].forEach(k => ts.forEach(t => $(`[data-k=M${k}_${t}]`, body).value = M[k][t])); const { A } = juSolve(C, E); const h1 = A[2][H]; $('[data-k=h1]', body).value = h1; $('[data-k=h0]', body).value = A[1][H - h1]; $$('input.cell', body).forEach(i => i.classList.remove('good', 'bad')); }
+  };
+}
+const isSubseq = (s, t) => { let i = 0; for (const c of t) if (c === s[i]) i++; return i === s.length; };
+function handPlsc(body) {
+  const al = 'ABC'; const T = [...Array(5)].map(() => al[rnd(0, 2)]).join(''), U = [...Array(4)].map(() => al[rnd(0, 2)]).join('');
+  const L = lcsSolve(T, U), m = 5, n = 4;
+  let h = `<div class="tblwrap"><table class="grid"><caption>T = ${T} &nbsp;·&nbsp; U = ${U}</caption><tr><th></th><th class="lbl">ε</th>${[...U].map(c => `<th class="lbl">${c}</th>`).join('')}</tr><tr><th class="lbl">ε</th>${'<td>0</td>'.repeat(n + 1)}</tr>`;
+  for (let p = 1; p <= m; p++) h += `<tr><th class="lbl">${T[p - 1]}</th><td>0</td>${[...Array(n)].map((_, q) => `<td class="inp">${cellIn(`L${p}_${q + 1}`, 44)}</td>`).join('')}</tr>`;
+  body.innerHTML = h + `</table></div><p>Une plsc de ${T} et ${U} : ${cellIn('res', 120)}</p>`;
+  return {
+    check() {
+      const ok = markCells(body, (k, v) => { if (k === 'res') { const s = v.toUpperCase().replace(/\s/g, ''); return s.length === L[m][n] && isSubseq(s, T) && isSubseq(s, U); } const [p, q] = k.slice(1).split('_').map(Number); return parseNum(v) === L[p][q]; });
+      return ok || 'Il reste des erreurs. Lettres égales : 1 + case en haut à gauche. Sinon : max(case du dessus, case de gauche).';
+    },
+    solve() {
+      for (let p = 1; p <= m; p++) for (let q = 1; q <= n; q++) $(`[data-k=L${p}_${q}]`, body).value = L[p][q];
+      let p = m, q = n, r = ''; while (p > 0 && q > 0) { if (T[p - 1] === U[q - 1]) { r = T[p - 1] + r; p--; q--; } else if (L[p - 1][q] >= L[p][q - 1]) p--; else q--; }
+      $('[data-k=res]', body).value = r || '(vide)'; $$('input.cell', body).forEach(i => i.classList.remove('good', 'bad'));
+    }
+  };
+}
+function handPlssc(body) {
+  const n = 8; const S = [...Array(n)].map(() => rnd(0, 12)); const { Gp, L } = lisSolve(S); const idx = [...Array(n).keys()];
+  const best = Math.max(...L);
+  body.innerHTML = `<div class="tblwrap"><table class="grid"><tr><th>i</th>${idx.map(i => `<th>${i}</th>`).join('')}</tr><tr><th>S</th>${S.map(x => `<td>${x}</td>`).join('')}</tr><tr><th>L</th>${idx.map(i => `<td class="inp">${cellIn('L' + i, 44)}</td>`).join('')}</tr><tr><th>A</th>${idx.map(i => `<td class="inp">${cellIn('A' + i, 44)}</td>`).join('')}</tr></table></div><p>Une plssc (indices séparés par des espaces, ex. « 1 3 4 ») : ${cellIn('res', 160)}</p>`;
+  return {
+    check() {
+      const Lu = idx.map(i => parseNum($(`[data-k=L${i}]`, body).value));
+      const ok = markCells(body, (k, v) => {
+        if (k === 'res') { const I = v.split(/[\s,;]+/).filter(Boolean).map(Number); if (I.length !== best || I.some(x => !Number.isInteger(x) || x < 0 || x >= n)) return false; for (let t = 1; t < I.length; t++) if (!(I[t - 1] < I[t] && S[I[t - 1]] < S[I[t]])) return false; return true; }
+        const i = +k.slice(1), x = parseNum(v);
+        if (k[0] === 'L') return x === L[i];
+        if (!Gp[i].length) return x === -1;
+        return Gp[i].includes(x) && Lu[x] === L[x] && L[x] === L[i] - 1;
+      });
+      return ok || `Il reste des erreurs. L[j] = 1 + max des L[i] pour i &lt; j avec S[i] &lt; S[j] (1 s'il n'y en a pas). La plssc a la longueur du plus grand L.`;
+    },
+    solve() {
+      const A = idx.map(i => { if (!Gp[i].length) return -1; for (const p of Gp[i]) if (L[p] === L[i] - 1) return p; return -1; });
+      idx.forEach(i => { $(`[data-k=L${i}]`, body).value = L[i]; $(`[data-k=A${i}]`, body).value = A[i]; });
+      let j = L.indexOf(best); const r = []; while (j !== -1) { r.unshift(j); j = A[j]; }
+      $('[data-k=res]', body).value = r.join(' '); $$('input.cell', body).forEach(i => i.classList.remove('good', 'bad'));
+    }
+  };
+}
+
+// ===================== SUJETS BLANCS =====================
+let examTimer = null;
+function examList() {
+  clearInterval(examTimer);
+  const root = $('#exam-root');
+  root.innerHTML = `<div class="cards">${SUJETS.map(s => { const b = Store.data['score-' + s.id]; return `<article class="card"><p class="tag">${esc(s.tag)}</p><h3>${esc(s.titre)}</h3><p>${esc(s.desc)}</p><p class="small">${s.q.filter(q => !q.bonus).length} questions · 90 min${b != null ? ` · meilleure note ${b}/20` : ''}</p><div class="row"><button type="button" class="btn primary" data-start="${s.id}">Commencer</button></div></article>`; }).join('')}</div>
+  <div class="panel"><h3>Comment se corriger honnêtement</h3><p>Une fois la copie rendue, coche une ligne du barème seulement si ta réponse la contient <b>vraiment</b>, sans erreur d'indice. Le jour du partiel, un <code>j &lt; n</code> à la place d'un <code>j &lt; n+1</code> coûte des points. Refais un sujet raté deux jours plus tard.</p></div>`;
+}
+function examStart(id) {
+  const s = SUJETS.find(x => x.id === id); const root = $('#exam-root'); clearInterval(examTimer);
+  let left = 90 * 60;
+  root.innerHTML = `<div class="exam-top"><button type="button" class="btn ghost" data-a="back">← Tous les sujets</button><h3 style="margin:0;flex:1">${esc(s.titre)}</h3><span class="timer" aria-live="off">90:00</span><button type="button" class="btn" data-a="pause">Pause</button></div>
+  <div class="prose">${s.intro}<p class="note">Durée : 90 minutes. Sans document. Donne des réponses courtes.</p></div>
+  ${s.q.map((q, i) => `<div class="qexam" data-qi="${i}"><h4>${q.bonus ? 'Question bonus' : 'Question ' + (i + 1)}<span class="pts">${q.pts} points</span>${q.bonus ? '<span class="bonus">bonus</span>' : ''}</h4><div class="enonce">${q.enonce}</div><textarea class="answer" id="ex-${s.id}-${i}" spellcheck="false" aria-label="Réponse à la question ${i + 1}" placeholder="Ta réponse…"></textarea><div class="corr" hidden></div></div>`).join('')}
+  <div class="row"><button type="button" class="btn primary" data-a="submit">Rendre ma copie</button></div><div class="exam-result"></div>`;
+  renderStaticDags();
+  $$('textarea', root).forEach(tabInTextarea);
+  const tEl = $('.timer', root); let paused = false;
+  const tick = () => { if (paused) return; left = Math.max(0, left - 1); tEl.textContent = `${String(Math.floor(left / 60)).padStart(2, '0')}:${String(left % 60).padStart(2, '0')}`; tEl.classList.toggle('low', left < 600); if (left === 0) { clearInterval(examTimer); tEl.textContent = 'Temps écoulé'; } };
+  examTimer = setInterval(tick, 1000);
+  root.onclick = e => {
+    const a = e.target.closest('button')?.dataset.a; if (!a) return;
+    if (a === 'back') examList();
+    else if (a === 'pause') { paused = !paused; e.target.textContent = paused ? 'Reprendre' : 'Pause'; }
+    else if (a === 'submit') submit();
+  };
+  function submit() {
+    clearInterval(examTimer); $('[data-a=submit]', root).hidden = true; $('[data-a=pause]', root).hidden = true;
+    s.q.forEach((q, i) => {
+      const box = $(`[data-qi="${i}"] .corr`, root); const mine = $(`#ex-${s.id}-${i}`).value;
+      box.innerHTML = `<div class="two-col" style="margin-top:10px"><div><h5>Ta réponse</h5><pre class="code">${mine.trim() ? hl(mine) : '<span class="c">// (vide)</span>'}</pre></div><div><h5>Corrigé</h5><pre class="code">${hl(CODES[q.sol])}</pre></div></div><h5 style="margin-top:12px">Barème : coche ce que tu as vraiment écrit</h5>${checklistHTML(q.sol, `ck-${s.id}-${i}`)}`;
+      $$('input', box).forEach(c => c.dataset.bonus = q.bonus ? 1 : 0);
+      box.hidden = false;
+    });
+    root.onchange = score; score();
+    Store.done('exam-' + s.id);
+    $('.exam-result', root).scrollIntoView?.({ behavior: 'smooth', block: 'nearest' });
+  }
+  function score() {
+    const boxes = $$('.checklist input', root); let main = 0, bonus = 0;
+    boxes.forEach(b => { if (b.checked) { if (b.dataset.bonus === '1') bonus += +b.dataset.pts; else main += +b.dataset.pts; } });
+    const note = Math.round(Math.min(20, main + bonus) * 10) / 10;
+    $('.exam-result', root).innerHTML = `<div class="panel"><p class="score-big">Note : ${note} / 20</p><p>${main} points sur les questions principales${s.q.some(q => q.bonus) ? `, ${bonus} en bonus` : ''}. ${note >= 15 ? 'Très solide, tu es prêt.' : note >= 10 ? 'C\'est en bonne voie : retravaille les lignes non cochées dans le chapitre correspondant.' : 'Reprends le chapitre, refais les codes à trous puis retente ce sujet dans quelques jours.'}</p><div class="row"><button type="button" class="btn" data-a="back">Choisir un autre sujet</button></div></div>`;
+    const prev = Store.data['score-' + s.id]; if (prev == null || note > prev) { Store.data['score-' + s.id] = note; Store.save(); }
+  }
+}
+
+// ===================== NAVIGATION =====================
+const VIEWS = ['accueil', 'methode', 'chemins', 'juliette', 'plsc', 'plssc', 'examen'];
+function route() {
+  let h = location.hash.slice(1); if (!VIEWS.includes(h)) h = 'accueil';
+  $$('.view').forEach(v => v.hidden = v.id !== 'v-' + h);
+  $$('.nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + h));
+  window.scrollTo(0, 0);
+}
+function setSub(sec, key) {
+  $$('.subtabs button', sec).forEach(x => x.classList.toggle('on', x.dataset.sub === key));
+  $$('.sub', sec).forEach(p => p.hidden = p.dataset.sub !== key);
+  const bar = $('.subtabs', sec); if (bar && bar.getBoundingClientRect().top < 0) bar.scrollIntoView();
+}
+
+// ===================== DÉMARRAGE =====================
+function init() {
+  Store.load();
+  $('#home-cards').innerHTML = TOPICS.map(t => `<a class="card" href="#${t.id}"><p class="tag">${esc(t.tag)}</p><h3>${esc(t.title)}</h3><p>${esc(t.desc)}</p><p class="small" data-count="${t.id}"></p><div class="bar"><i data-bar="${t.id}"></i></div></a>`).join('');
+  $$('pre[data-code]').forEach(p => p.innerHTML = hl(CODES[p.dataset.code] || ''));
+  renderStaticDags();
+  $$('[data-qcm]').forEach(renderQCM);
+  $$('[data-trous]').forEach(renderTrous);
+  $$('[data-write]').forEach(renderWrite);
+  const H = { chemins: handChemins, juliette: handJuliette, plsc: handPlsc, plssc: handPlssc };
+  $$('[data-hand]').forEach(el => handShell(el, 'hx-' + el.dataset.hand, el.dataset.hand, H[el.dataset.hand]));
+  SUJETS.forEach(s => register('examen', 'exam-' + s.id));
+  initChemins(); initJuliette(); initPlsc(); initPlssc();
+  examList();
+  $('#exam-root').addEventListener('click', e => { const b = e.target.closest('[data-start]'); if (b) examStart(b.dataset.start); });
+  document.addEventListener('click', e => {
+    const t = e.target.closest('.subtabs button'); if (t) { setSub(t.closest('.view'), t.dataset.sub); return; }
+    const g = e.target.closest('.next-sub'); if (g) { setSub(g.closest('.view'), g.dataset.go); window.scrollTo(0, 0); }
+  });
+  $('#reset-prog').addEventListener('click', () => { Store.data = {}; Store.save(); updateProgress(); examList(); });
+  window.addEventListener('hashchange', route);
+  route(); updateProgress();
+}
+init();
+</script>
+</body></html>
