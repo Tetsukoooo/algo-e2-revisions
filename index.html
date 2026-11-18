@@ -264,18 +264,6 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
 .plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 .plan > div{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:10px;padding:12px 14px}
 .plan p{margin:.3rem 0 0;font-size:.95rem}
-@media (max-width:820px){
-  .app{grid-template-columns:1fr}
-  .side{position:sticky;top:0;height:auto;z-index:10;flex-direction:row;align-items:center;padding:8px 10px;gap:10px;border-right:0;border-bottom:1px solid var(--line);overflow-x:auto}
-  .brand small,.side-foot{display:none}
-  .nav{flex-direction:row;gap:2px}
-  .nav a{display:block;white-space:nowrap;padding:7px 10px}
-  .nav a small,.nav a .chip{display:none}
-  .subtabs{top:52px}
-  h1{font-size:1.7rem}
-  body{font-size:16px}
-}
-@media (max-width:820px){.sos{right:12px;bottom:12px;padding:10px 14px;font-size:.9rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 /* ---- fiches de révision ---- */
@@ -312,26 +300,104 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
   .fb{break-inside:avoid}
   pre.code{max-height:none!important;white-space:pre-wrap}
 }
+
+/* ---- ergonomie v5 ---- */
+.side-top{display:flex;align-items:center;gap:10px}
+.side-body{display:flex;flex-direction:column;gap:16px;flex:1}
+.cur-title,.menu-btn{display:none}
+.gprog{padding:0 8px;font-size:.82rem;color:var(--muted)}
+.gprog-row{display:flex;justify-content:space-between;margin-bottom:5px}
+.gprog-row b{color:var(--ink);font-family:var(--font-mono)}
+.gprog .bar{margin:0}
+.nav-label{margin:14px 10px 4px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nav a.nav-sos span{color:var(--bad)}
+.nav a.nav-sos.active{background:var(--bad-soft)}
+.resume{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:18px 0 8px}
+.resume:empty{display:none}
+.resume-item{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.resume-item small{color:var(--muted);font-size:.8rem}
+.resume-item b{font-family:var(--font-display);font-size:1.1rem}
+.resume-item span{color:var(--muted);font-size:.85rem}
+.resume-item.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.resume-item.primary small,.resume-item.primary span{color:rgba(255,255,255,.85)}
+.resume-item.sos-item{border-left:4px solid var(--bad)}
+.resume-item:hover{border-color:var(--accent)}
+.hgroup{margin:26px 0 6px}
+.hgroup-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:6px}
+.hgroup-head h2{margin:0;font-size:1.15rem}
+.hgroup-head p{margin:0;color:var(--muted);font-size:.9rem}
+.hgroup .cards{margin:12px 0}
+.hgroup .panel.ordre{margin:0}
+.hgroup .panel.ordre h3{margin-top:0}
+.subtabs{counter-reset:st;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.subtabs::-webkit-scrollbar{display:none}
+.subtabs button{counter-increment:st;white-space:nowrap}
+.subtabs button::before{content:counter(st);display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;margin-right:7px;font-size:.75rem;background:var(--surface-2);border:1px solid var(--line-strong);color:var(--muted)}
+.subtabs button.on::before{background:var(--accent);border-color:var(--accent);color:#fff}
+.chap-foot{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:40px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+.chap-foot a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.chap-foot a:hover{border-color:var(--accent)}
+.chap-foot small{color:var(--muted);font-size:.8rem}
+.chap-foot b{font-family:var(--font-display)}
+.chap-foot .cf-next{text-align:right}
+.sos-short{display:none}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .main{padding-bottom:80px}
+  .side{position:sticky;top:0;height:auto;z-index:20;padding:8px 12px;gap:0;border-right:0;border-bottom:1px solid var(--line);overflow:visible}
+  .side-top{justify-content:space-between}
+  .brand{padding:0}
+  .brand small{display:none}
+  .brand b{font-size:1rem}
+  .brand .logo{padding:5px 6px;font-size:.8rem}
+  .cur-title{display:block;flex:1;min-width:0;font-weight:600;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+  .menu-btn{display:block;font:inherit;font-weight:700;font-size:.9rem;background:var(--surface-2);color:var(--ink);border:1px solid var(--line-strong);border-radius:9px;padding:7px 14px;cursor:pointer}
+  .side-body{display:none;position:absolute;left:0;right:0;top:100%;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 12px 24px rgba(0,0,0,.12);padding:12px;max-height:calc(100vh - 60px);overflow:auto}
+  .side.open .side-body{display:flex}
+  .subtabs{top:52px}
+  h1{font-size:1.7rem}
+  body{font-size:16px}
+  .sos{right:12px;bottom:12px;padding:9px 14px;font-size:.88rem}
+  .sos-long{display:none}.sos-short{display:inline}
+  .chap-foot{grid-template-columns:1fr}
+  .chap-foot .cf-next{text-align:left}
+  .fiche-nav{top:52px;flex-wrap:nowrap;overflow-x:auto}
+  .subtabs{justify-content:space-between;gap:0}
+  .subtabs button{padding:10px 4px;font-size:.84rem}
+  .subtabs button::before{display:none}
+  .fiche-nav button{white-space:nowrap}
+}
 </style>
 </head>
 <body>
 <div class="app">
-<aside class="side">
-  <a class="brand" href="#accueil"><span class="logo">m(j)</span><span><b>Algo E2</b><small>Révisions du partiel</small></span></a>
+<aside class="side" id="side">
+  <div class="side-top">
+    <a class="brand" href="#accueil"><span class="logo">m(j)</span><span><b>Algo E2</b><small>Révisions du partiel</small></span></a>
+    <span class="cur-title" id="cur-title"></span>
+    <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="side-nav">Menu</button>
+  </div>
+  <div class="side-body" id="side-nav">
+  <div class="gprog"><div class="gprog-row"><span>Progression globale</span><b id="gprog-val">0 %</b></div><div class="bar"><i id="gprog-bar"></i></div></div>
   <nav class="nav" aria-label="Chapitres">
-    <a href="#accueil"><span>Accueil</span></a>
+    <a href="#accueil"><span>Accueil</span><small>Par où commencer</small></a>
     <a href="#methode"><span>La méthode</span><small>À lire en premier</small><i class="chip" data-prog="methode"></i></a>
+    <p class="nav-label">Les TD</p>
     <a href="#chemins"><span>Chemins de coût min</span><small>TD2 ex. 2-3 · Contrôle 2</small><i class="chip" data-prog="chemins"></i></a>
     <a href="#juliette"><span>Juliette</span><small>TD3 · répartir ses heures</small><i class="chip" data-prog="juliette"></i></a>
     <a href="#plsc"><span>PLSC</span><small>TD4 · séquence commune</small><i class="chip" data-prog="plsc"></i></a>
     <a href="#plssc"><span>PLSSC</span><small>TD6 · sous-séquence croissante</small><i class="chip" data-prog="plssc"></i></a>
-    <a href="#arbres"><span>Arbres binaires</span><small>Hors TD · ABR, parcours</small><i class="chip" data-prog="arbres"></i></a>
-    <a href="#palindrome"><span>Sous-chaîne palindrome</span><small>Hors TD · à faire en 90 min</small><i class="chip" data-prog="palindrome"></i></a>
-    <a href="#abropt"><span>ABR de coût minimum</span><small>Cours · dernier chapitre</small><i class="chip" data-prog="abropt"></i></a>
+    <p class="nav-label">Hors TD et cours</p>
+    <a href="#arbres"><span>Arbres binaires</span><small>Les 10 exercices du prof</small><i class="chip" data-prog="arbres"></i></a>
+    <a href="#palindrome"><span>Sous-séquence palindrome</span><small>TD4 · contrôle blanc</small><i class="chip" data-prog="palindrome"></i></a>
+    <a href="#abropt"><span>ABR de coût minimum</span><small>Dernier chapitre du cours</small><i class="chip" data-prog="abropt"></i></a>
+    <p class="nav-label">Réviser et s'entraîner</p>
     <a href="#fiches"><span>Fiches de révision</span><small>Un sujet par page</small><i class="chip" data-prog="fiches"></i></a>
-    <a href="#examen"><span>Sujets blancs</span><small>Format partiel, chronométré</small><i class="chip" data-prog="examen"></i></a>
+    <a href="#examen"><span>Sujets blancs</span><small>Format partiel, 90 min</small><i class="chip" data-prog="examen"></i></a>
+    <a href="#urgence" class="nav-sos"><span>Kit de survie</span><small>Objectif 10/20, la veille</small></a>
   </nav>
   <div class="side-foot">Ta progression est gardée dans ce navigateur. <button type="button" id="reset-prog">Tout remettre à zéro</button></div>
+  </div>
 </aside>
 
 <main class="main">
@@ -341,14 +407,15 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
   <header class="sec-head">
     <p class="eyebrow">ESIEE · Algorithmique E2 · Programmation dynamique</p>
     <h1>Réviser le partiel d'algo, depuis zéro</h1>
-    <p class="lead">Quatre problèmes au programme, une seule méthode pour tous les résoudre. Chaque chapitre explique l'idée avec des exemples de tous les jours, montre l'algorithme qui remplit son tableau case par case, puis te fait écrire le code comme le jour du partiel.</p>
+    <p class="lead">Sept sujets au programme, une seule méthode pour tous les résoudre. Chaque chapitre explique l'idée avec des exemples de tous les jours, montre l'algorithme qui remplit son tableau case par case, puis te fait écrire le code comme le jour du partiel.</p>
   </header>
-  <div class="cards" id="home-cards"></div>
+  <div class="resume" id="resume"></div>
+  <div id="home-groups"></div>
   <div class="panel" style="margin-bottom:14px">
     <h3>Le programme du partiel</h3>
     <div class="two" style="gap:6px 24px">
       <div><p><b>TD</b> : feuille 2 ex. 2 et 3 (chemins de coût minimum), feuille 3 (Juliette), feuille 4 (plsc), feuille 6 (plssc).</p>
-      <p><b>Hors TD</b> : exercices sur les <a href="#arbres">arbres binaires</a> et la <a href="#palindrome">plus longue sous-chaîne palindrome</a>. Le prof recommande de traiter ce dernier comme un contrôle : 90 minutes, seul, sans téléphone. Un <a href="#examen">sujet blanc</a> est prévu pour ça.</p></div>
+      <p><b>Hors TD</b> : exercices sur les <a href="#arbres">arbres binaires</a> et la <a href="#palindrome">plus longue sous-séquence palindrome</a> (plssp, le fichier du TD4). Le prof recommande de traiter ce dernier comme un contrôle : 90 minutes, seul, sans téléphone. Un <a href="#examen">sujet blanc</a> est prévu pour ça.</p></div>
       <div><p><b>Cours</b> : tout depuis le dernier contrôle, jusqu'au calcul d'un <a href="#abropt">arbre binaire de recherche de coût minimum</a> inclus.</p>
       <p class="callout warn" style="margin:6px 0"><b>Pas de question sur le Seam Carving.</b> Inutile de le réviser.</p></div>
     </div>
@@ -365,7 +432,7 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
       </ol>
       <p class="note">Le prof donne un repère en nombre de lignes. Si ta fonction en fait trois fois plus, c'est que tu t'es perdu.</p>
     </div>
-    <div class="panel">
+    <div id="ordre-panel" class="panel ordre">
       <h3>Ordre conseillé</h3>
       <ol>
         <li>Lis <a href="#methode">la méthode</a> en entier : c'est la clé de tout le reste.</li>
@@ -441,7 +508,7 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
       <tr><td>Juliette (TD3)</td><td>m(k,t) : meilleure somme pondérée, t heures sur les k premières unités</td><td>m(0,t) = 0</td><td>m(k,t) = max sur 0 ≤ h ≤ t de m(k−1,t−h) + c(k−1)·e(k−1,h)</td><td>α·n·H²</td></tr>
       <tr><td>PLSC (TD4)</td><td>l(p,q) : longueur d'une plsc des p et q préfixes</td><td>l(0,q) = l(p,0) = 0</td><td>égales : 1+l(p−1,q−1)<br>sinon : max( l(p−1,q), l(p,q−1) )</td><td>Θ(m·n)</td></tr>
       <tr><td>PLSSC (TD6)</td><td>l(j) : longueur d'une plssc qui finit en j</td><td>pred(j) = ∅ : l(j) = 1</td><td>l(j) = 1 + max sur i ∈ pred(j) de l(i)<br>réponse = max des l(j)</td><td>α·n²</td></tr>
-      <tr><td>Sous-chaîne palindrome (hors TD)</td><td>p(i,j) : vrai si S[i:j] est un palindrome</td><td>p(i,i) = vrai<br>p(i,i+1) = vrai</td><td>p(i,j) = ( S[i] == S[j−1] ) et p(i+1, j−1), j − i ≥ 2</td><td>Θ(n²)</td></tr>
+      <tr><td>Sous-séquence palindrome (hors TD, TD4)</td><td>l(i,j) : longueur max des plssp de S[i:j]</td><td>l(i,i) = 0<br>l(i,i+1) = 1</td><td>s(i) == s(j−1) : 2 + l(i+1, j−1)<br>sinon : max( l(i+1,j), l(i,j−1) )</td><td>Θ(n²)</td></tr>
       <tr><td>ABR de coût minimum (cours)</td><td>m(i,j) : coût min d'un abr sur les valeurs [i:j]</td><td>m(i,i) = 0</td><td>m(i,j) = min sur i ≤ k &lt; j de m(i,k) + m(k+1,j), + f(i) + … + f(j−1)</td><td>Θ(n³)</td></tr>
       <tr><td>Cardinal minimum (contrôle 1)</td><td>m(k,s) : cardinal min d'un sous-ensemble des k premiers éléments, de somme s</td><td>m(0,0) = 0<br>m(0,s) = ∞, s ≥ 1</td><td>m(k,s) = min{ m(k−1,s), 1 + m(k−1, s−x(k−1)) }</td><td>Θ(n·S)</td></tr>
     </table></div>
@@ -887,6 +954,22 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
     <p>Pour construire l'abr le plus « tassé » possible avec les valeurs de l'ensemble [i:j] (de i à j−1), on met la <b>valeur médiane</b> k = (i+j)/2 à la racine, puis on recommence à gauche sur [i:k] et à droite sur [k+1:j]. Si j − i ≤ 0, l'ensemble est vide : on retourne l'arbre vide. Appel principal : <code>abrhmin(0, n)</code>. Temps de calcul : Θ(n).</p>
     <p class="note">Le cours prend toujours les valeurs 0, 1, …, n−1 (l'ensemble [0:n]). Ce n'est pas une restriction : si les valeurs sont autres, on les numérote dans l'ordre croissant.</p>
     <p>C'est le même principe que la recherche par dichotomie. Et c'est exactement la structure qu'on réutilise pour l'<a href="#abropt">ABR de coût minimum</a>, en changeant juste le choix de la racine.</p>
+    <h2>Les 10 exercices du prof (22/10/2026)</h2>
+    <p>Le prof a donné une série d'exercices, à résoudre <b>avant</b> de regarder les solutions. Pour chacun : la base, l'hérédité, puis la fonction. Tous sont dans l'onglet « Le code » et dans le sujet blanc « Exercices sur les arbres binaires ».</p>
+    <div class="scroll"><table class="notes">
+      <tr><td><b>0) in(x, a)</b></td><td>in(x, ()) = () ; in(vr, (vr g d)) = (vr g d) ; x &lt; vr ⟹ in(x, g) ; x &gt; vr ⟹ in(x, d)</td></tr>
+      <tr><td><b>1) h(a)</b></td><td>h(()) = −1 ; h((vr g d)) = 1 + max(h(g), h(d))</td></tr>
+      <tr><td><b>2) t(a)</b></td><td>t(()) = 0 ; t((vr g d)) = 1 + t(g) + t(d)</td></tr>
+      <tr><td><b>3) somme(a)</b></td><td>somme(()) = 0 ; somme((vr g d)) = vr + somme(g) + somme(d)</td></tr>
+      <tr><td><b>4) inserer(x, a)</b></td><td>inserer(x, ()) = (x () ()) ; inserer(x, (x g d)) = (x g d) ; x &lt; vr ⟹ (vr inserer(x,g) d) ; x &gt; vr ⟹ (vr g inserer(x,d))</td></tr>
+      <tr><td><b>5) abrhmin(i, j)</b></td><td>j − i ≤ 0 ⟹ () ; sinon (m, abrhmin(i,m), abrhmin(m+1,j)) avec m = (i+j)/2</td></tr>
+      <tr><td><b>6) grd(a)</b></td><td>sag(a) affiché croissant, puis vr(a), puis sad(a) croissant ⟹ a affiché croissant</td></tr>
+      <tr><td><b>7) drg(a)</b></td><td>sad(a) décroissant, puis vr(a), puis sag(a) décroissant</td></tr>
+      <tr><td><b>8) C(a, F, l)</b></td><td>C((), l) = 0 ; C((vr g d), l) = (l+1)·f(vr) + C(g, l+1) + C(d, l+1). Appel principal C(A, F, 0)</td></tr>
+      <tr><td><b>9) max(a), min(a)</b></td><td>max((vr g ())) = vr ; d ≠ () ⟹ max((vr g d)) = max(d). Le min : pareil à gauche</td></tr>
+    </table></div>
+    <p>Exemple de vérification du prof : avec abrhmin(0, 7) (racine 3, puis 1 et 5, puis 0, 2, 4, 6), on trouve t = 7, h = 2, somme = 21, min = 0, max = 6. Avec F = [10, 11, 12, 13, 14, 15, 16], le coût vaut 221 ; l'ABR glouton 6 → 5 → … → 0 coûte 336.</p>
+    <p class="note">Au contrôle de janvier 2026 (l'an dernier), les arbres sont tombés en questions bonus de 2 points : <code>dans(v, a)</code> (« environ 6 lignes ») et <code>h(a)</code> (« environ 4 lignes »), sans commentaire demandé.</p>
     <button type="button" class="btn primary next-sub" data-go="s">Construire des arbres →</button>
   </div>
 
@@ -919,12 +1002,14 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
     <div class="prose">
     <div class="codeblock"><h3>La classe AB et les fonctions de base</h3><pre class="code" data-code="ab_class"></pre></div>
     <div class="codeblock"><h3>t (taille) et h (hauteur)</h3><pre class="code" data-code="ab_th"></pre></div>
+    <div class="codeblock"><h3>somme des valeurs (ex. 3)</h3><pre class="code" data-code="ab_somme"></pre></div>
     <div class="codeblock"><h3>nombre de feuilles</h3><pre class="code" data-code="ab_feuilles"></pre></div>
     <div class="codeblock"><h3>Les parcours grd, drg, rgd</h3><p class="explain">La seule différence est la place de la ligne qui affiche la racine.</p><pre class="code" data-code="ab_parcours"></pre></div>
     <div class="codeblock"><h3>in : chercher dans un abr</h3><p class="explain">On ne descend que d'un côté : c'est tout l'intérêt d'un abr.</p><pre class="code" data-code="ab_appartient"></pre></div>
-    <div class="codeblock"><h3>Maximum d'un ABR</h3><pre class="code" data-code="ab_max"></pre></div>
+    <div class="codeblock"><h3>max et min d'un ABR non vide (ex. 9)</h3><p class="explain">Le max est « la plus à droite », le min « la plus à gauche ». Le cas de l'arbre vide est traité à part par maximum(a).</p><pre class="code" data-code="ab_max"></pre></div>
     <div class="codeblock"><h3>inserer (repère : 6 lignes)</h3><pre class="code" data-code="ab_ins"></pre></div>
     <div class="codeblock"><h3>abrhmin (repère : 6 lignes)</h3><pre class="code" data-code="ab_hmin"></pre></div>
+    <div class="codeblock"><h3>C : coût d'un ABR (ex. 8)</h3><pre class="code" data-code="ao_cout"></pre></div>
     </div>
   </div>
 
@@ -936,19 +1021,21 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
     <div data-trous="tr-appartient"></div>
     <div data-trous="tr-inserer"></div>
     <div data-trous="tr-hmin"></div>
+    <div data-trous="tr-max"></div>
     <div data-write="wr-hauteur"></div>
     <div data-write="wr-feuilles"></div>
     <div data-write="wr-appartient"></div>
     <div data-write="wr-inserer"></div>
+    <div data-write="wr-somme"></div>
   </div>
 </section>
 
 <!-- ============ PALINDROME ============ -->
 <section class="view" id="v-palindrome" hidden>
   <header class="sec-head">
-    <p class="eyebrow">Hors TD · à traiter comme un contrôle</p>
-    <h1>Plus longue sous-chaîne palindrome</h1>
-    <p class="lead">Trouver le plus long morceau d'un mot qui se lit pareil dans les deux sens. Dans BANANAS, c'est ANANA.</p>
+    <p class="eyebrow">Hors TD · TD4 · « à résoudre comme un contrôle blanc »</p>
+    <h1>Plus longue sous-séquence palindrome (plssp)</h1>
+    <p class="lead">Garder le plus de lettres possible d'un mot, dans l'ordre, pour qu'elles forment un palindrome. Dans bricabrac, c'est carac.</p>
   </header>
   <div class="subtabs" role="tablist">
     <button type="button" data-sub="c" class="on">Comprendre</button>
@@ -958,56 +1045,71 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
   </div>
 
   <div class="sub prose" data-sub="c">
-    <div class="callout">Le prof recommande de résoudre ce problème <b>comme un contrôle</b> : 90 minutes, seul, sans téléphone. Si tu veux jouer le jeu, ne lis pas cette page avant : lance directement le <a href="#examen">sujet blanc « sous-chaîne palindrome »</a>, puis reviens ici pour comprendre.</div>
-    <p class="note">Je n'ai pas l'énoncé exact du prof. Cette page utilise la méthode classique avec ses notations habituelles (intervalle [i:j], j exclu). Si ton sujet nomme les choses autrement, la logique reste la même.</p>
-    <h2>Palindrome et sous-chaîne</h2>
-    <p>Un <b>palindrome</b> se lit pareil de gauche à droite et de droite à gauche : RADAR, KAYAK, ANANA. Une lettre seule est un palindrome, et le mot vide aussi.</p>
-    <p>Une <b>sous-chaîne</b> est un morceau <b>d'un seul tenant</b> : on ne saute aucune lettre. GORI est une sous-chaîne de ALGORITHME ; AGRT n'en est pas (c'est une sous-séquence, comme dans la PLSC, où l'on pouvait sauter des lettres).</p>
-    <p>En Java, <code>S.substring(i, j)</code> est la sous-chaîne S[i:j], des lettres d'indices i à j−1. Elle a j − i lettres.</p>
+    <div class="callout">C'est le problème que le prof demande de résoudre <b>comme un contrôle</b> : 90 minutes, seul, sans smartphone. Pour jouer le jeu, ne lis pas cette page avant : lance le <a href="#examen">sujet blanc « plssp »</a> (c'est son énoncé, mot pour mot), puis reviens ici.</div>
+    <p class="note">Cette page suit le fichier plssp du TD4 (énoncé et corrigé du prof).</p>
+    <h2>Palindrome et sous-séquence</h2>
+    <p>Une séquence égale à sa renversée est un <b>palindrome</b> : elle, laval, radar. Une lettre seule est un palindrome, et la séquence vide aussi.</p>
+    <p>Une <b>sous-séquence</b> de S s'obtient en <b>supprimant des lettres</b> de S, autant qu'on veut : algorithme est une sous-séquence de aligatorithme. C'est la même notion que dans la <a href="#plsc">plsc</a> : on peut sauter des lettres, mais on garde l'ordre.</p>
+    <div class="formula">bricabrac → on supprime b, r, i, b → c a r a c &nbsp;(longueur 5)<br>volvo → ovo &nbsp;·&nbsp; elle → elle &nbsp;·&nbsp; "programmation dynamique" → manynam</div>
+    <p class="analogy">Imagine un collier de perles de couleur. Tu as le droit d'enlever des perles, pas de les déplacer. Tu veux le plus long collier symétrique possible.</p>
 
-    <h2>L'idée : éplucher un oignon</h2>
-    <p class="analogy">Pour vérifier qu'un mot est un palindrome, tu caches la première et la dernière lettre avec tes doigts : si elles sont égales, il reste à vérifier le mot du milieu, et ainsi de suite. Le mot est un palindrome si <b>ses deux lettres du bord sont égales ET si l'intérieur est un palindrome</b>.</p>
-    <div class="formula">RADAR : R = R, et ADA est un palindrome (A = A, et D en est un)<br>ANANAS : A ≠ S, donc ce n'est pas un palindrome</div>
+    <h2>1 · Supposons le problème résolu</h2>
+    <p>On note <b>l(0,n)</b> la longueur maximum des plssp de S = s(0) … s(n−1). On regarde les <b>deux bouts</b> : la première lettre s(0) et la dernière s(n−1).</p>
+    <ul>
+      <li><b>Elles sont égales</b> : on peut les garder toutes les deux, une à chaque bout, autour d'une plssp de l'intérieur S[1:n−1]. Donc l(0,n) = <b>2 + l(1, n−1)</b>.</li>
+      <li><b>Elles sont différentes</b> : elles ne peuvent pas être aux deux bouts d'un même palindrome, donc l'une des deux ne sert pas. Soit on enlève la première (il reste S[1:n]), soit la dernière (il reste S[0:n−1]), et on garde le meilleur : l(0,n) = <b>max( l(1,n), l(0,n−1) )</b>.</li>
+    </ul>
+    <p class="analogy">Comme la <a href="#plsc">plsc</a>, mais en comparant le début et la fin d'<b>un seul</b> mot, au lieu des fins de deux mots.</p>
 
-    <h2>Équation de récurrence</h2>
-    <p>S a n lettres. On note <b>p(i,j)</b> la valeur « vrai si la sous-chaîne S[i:j] est un palindrome », pour 0 ≤ i ≤ j ≤ n.</p>
-    <div class="rec"><b>Base</b><span>p(i,i) = vrai, 0 ≤ i ≤ n &nbsp;(chaîne vide)<br>p(i,i+1) = vrai, 0 ≤ i &lt; n &nbsp;(une seule lettre)</span><b>Hérédité</b><span>pour j − i ≥ 2 :<br>p(i,j) = ( S[i] == S[j−1] ) et p(i+1, j−1)</span><b>Réponse</b><span>le plus grand j − i tel que p(i,j) est vrai ; la sous-chaîne est S.substring(i, j)</span></div>
-    <p class="note">S[j−1] est la dernière lettre de S[i:j], car j est exclu. Si ton cours utilise des intervalles fermés S[i..j], remplace j−1 par j : p(i,j) = (S[i] == S[j]) et p(i+1, j−1).</p>
+    <h2>2 · Équation de récurrence</h2>
+    <p><b>l(i,j)</b> = longueur maximum des plssp de S[i:j] = s(i) … s(j−1). La <b>taille</b> du problème est t = j − i.</p>
+    <div class="rec"><b>Base t = 0</b><span>l(i,i) = 0, pour 0 ≤ i &lt; n+1 &nbsp;(séquence vide)</span><b>Base t = 1</b><span>l(i,i+1) = 1, pour 0 ≤ i &lt; n &nbsp;(une seule lettre)</span><b>Hérédité</b><span>2 ≤ t &lt; n+1, 0 ≤ i &lt; n−t+1, j = i + t :<br>s(i) == s(j−1) ⟹ l(i,j) = 2 + l(i+1, j−1)<br>s(i) != s(j−1) ⟹ l(i,j) = max( l(i+1, j), l(i, j−1) )</span><b>Réponse</b><span>l(0,n), et la plssp avec plssp(L, S, 0, n)</span></div>
+    <p>Pourquoi <b>deux bases</b> ? Le cas « égaux » passe de la taille t à la taille t − 2. Pour calculer la taille 2, il faut la taille 0 ; pour la taille 3, la taille 1.</p>
 
-    <h2>Dans quel ordre remplir le tableau ?</h2>
-    <p>p(i,j) a besoin de p(i+1, j−1), qui concerne une sous-chaîne <b>plus courte de 2 lettres</b>. On remplit donc par <b>longueur d = j − i croissante</b> : d'abord les longueurs 0 et 1 (la base), puis 2, puis 3… Dans le tableau, ça revient à remplir les diagonales l'une après l'autre.</p>
-    <p>C'est le même schéma « par longueur d'intervalle » que pour l'<a href="#abropt">ABR de coût minimum</a>.</p>
+    <h2>3 · Dans quel ordre remplir L ?</h2>
+    <p>Chaque case utilise des cases de taille t − 1 ou t − 2. On remplit donc <b>par tailles t croissantes</b>, diagonale par diagonale, comme pour l'<a href="#abropt">ABR de coût minimum</a> : d'abord les deux bases (t = 0 et t = 1), puis t = 2, 3, …, n. Le tableau L a n+1 lignes et n+1 colonnes ; seules les cases i ≤ j servent.</p>
+    <p>Temps de calcul : environ n²/2 cases, chacune en temps constant, donc <b>Θ(n²)</b>.</p>
 
-    <h2>Complexité</h2>
-    <p>Environ n²/2 cases, chacune en temps constant : <b>Θ(n²)</b>. La méthode naïve (tester toutes les sous-chaînes une par une en les relisant) coûte Θ(n³).</p>
+    <h2>4 · Retrouver une plssp</h2>
+    <p>La fonction <code>plssp(L, S, i, j)</code> retourne une plssp de S[i:j] en relisant la récurrence :</p>
+    <ul>
+      <li>j − i = 0 : la séquence vide <code>""</code> ; j − i = 1 : la lettre <code>S.substring(i, i+1)</code> ;</li>
+      <li>premier et dernier caractères p et d égaux : <code>p + plssp(L, S, i+1, j−1) + d</code> ;</li>
+      <li>sinon : on continue du côté qui donne la plus grande longueur, <code>L[i+1][j]</code> ou <code>L[i][j−1]</code>.</li>
+    </ul>
+    <p>Ici, pas d'affichage : la fonction <b>retourne une String</b>, construite en recollant les morceaux.</p>
+
+    <h2>Variante : la sous-chaîne palindrome</h2>
+    <p>Si on interdit de sauter des lettres (une <b>sous-chaîne</b>, d'un seul tenant), la récurrence devient un « et » : S[i:j] est un palindrome si s(i) == s(j−1) <b>et</b> si l'intérieur S[i+1:j−1] en est un. Dans BANANAS, la plus longue sous-chaîne palindrome est ANANA. Le code de cette variante est dans l'onglet « Le code ». Le sujet du prof porte sur la <b>sous-séquence</b>.</p>
     <button type="button" class="btn primary next-sub" data-go="s">Voir le tableau se remplir →</button>
   </div>
 
   <div class="sub" data-sub="s" hidden>
-    <p class="prose">Chaque case (i, j) dit si S[i:j] est un palindrome. On compare les deux lettres du bord (en orange) et on regarde la case de l'intérieur, en bas à gauche en diagonale. À la fin, la plus longue sous-chaîne s'affiche en vert.</p>
+    <p class="prose">Chaque case (i, j) reçoit l(i,j). On compare le premier et le dernier caractère (en orange). Égaux : 2 + la case de l'intérieur. Différents : le max de la case du dessous et de la case de gauche. À la fin, on suit les appels de plssp (en vert).</p>
     <div class="sim" id="sim-pal">
       <div class="sim-inputs">
-        <label for="pal-S">Chaîne S <input id="pal-S" type="text" value="BANANAS" maxlength="14"></label>
+        <label for="pal-S">Séquence S <input id="pal-S" type="text" value="bricabrac" maxlength="12"></label>
         <button type="button" class="btn primary" id="pal-load">Lancer</button>
         <button type="button" class="btn ghost" id="pal-ex">Autre exemple</button>
       </div>
       <p class="err" id="pal-err"></p>
       <div class="pbar"></div><div class="pmsg"></div>
-      <div class="legend"><span class="l-cur">case calculée</span><span class="l-dep">case de l'intérieur</span><span class="l-path">plus longue sous-chaîne</span></div>
+      <div class="legend"><span class="l-cur">case calculée</span><span class="l-dep">cases utilisées</span><span class="l-path">appels de plssp</span></div>
       <div class="sim-view"></div>
     </div>
   </div>
 
   <div class="sub" data-sub="k" hidden>
     <div class="prose">
-    <div class="codeblock"><h3>calculerP</h3><p class="explain">Les deux bases, puis une boucle sur la longueur d, puis sur le début i ; la fin est j = i + d.</p><pre class="code" data-code="pal_P"></pre></div>
-    <div class="codeblock"><h3>plscp : retourner la plus longue sous-chaîne palindrome</h3><pre class="code" data-code="pal_res"></pre></div>
+    <div class="codeblock"><h3>calculerL (corrigé du prof)</h3><p class="explain">Les deux bases, puis la boucle sur la taille t, puis sur le début i ; la fin est j = i + t.</p><pre class="code" data-code="pl_L"></pre></div>
+    <div class="codeblock"><h3>plssp : retourner une plus longue sous-séquence palindrome</h3><p class="explain">Appel principal : <code>plssp(L, S, 0, S.length())</code>.</p><pre class="code" data-code="pl_plssp"></pre></div>
+    <div class="codeblock"><h3>Variante sous-chaîne : calculerP</h3><p class="explain">Un booléen par case, et un « et » au lieu d'un max.</p><pre class="code" data-code="pal_P"></pre></div>
     </div>
   </div>
 
   <div class="sub" data-sub="e" hidden>
-    <div class="ex"><h4><span class="kind">À la main</span>Remplis le tableau P <span class="done-mark" data-done="hx-palindrome"></span></h4><p>Les bases sont données. Écris V (vrai) ou F (faux) dans chaque case, en commençant par les petites longueurs (les cases juste au-dessus de la base).</p><div data-hand="palindrome"></div></div>
-    <div class="ex"><h4><span class="kind">QCM</span>Sous-chaîne palindrome <span class="done-mark" data-done="qcm-palindrome"></span></h4><div class="qcm" data-qcm="palindrome"></div></div>
+    <div class="ex"><h4><span class="kind">À la main</span>Remplis le tableau L <span class="done-mark" data-done="hx-palindrome"></span></h4><p>Les bases (0 et 1) sont données. Remplis par tailles croissantes : d'abord les cases juste au-dessus de la base.</p><div data-hand="palindrome"></div></div>
+    <div class="ex"><h4><span class="kind">QCM</span>Sous-séquence palindrome <span class="done-mark" data-done="qcm-palindrome"></span></h4><div class="qcm" data-qcm="palindrome"></div></div>
     <div data-trous="tr-calcP"></div>
     <div data-trous="tr-plscp"></div>
     <div data-write="wr-calcP"></div>
@@ -1149,7 +1251,7 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
           <tr><td>Question 3</td><td>calculerM : remplir le tableau</td><td>calculerMA : remplir M et A</td></tr>
           <tr><td>Question 4</td><td>asecm : afficher une solution, en récursif</td><td>acm : afficher le chemin, en récursif</td></tr>
         </table></div>
-        <p>Retiens donc ce schéma : <b>expression ou utilitaire → récurrence → calcul → affichage récursif</b>. Le problème peut être un que tu n'as jamais vu : c'est la recette qui est notée.</p></div>
+        <p>Retiens donc ce schéma : <b>expression ou utilitaire → récurrence → calcul → affichage récursif</b>. Le contrôle blanc plssp du TD4 suit exactement le même schéma (sa question 4 <b>retourne</b> une String au lieu d'afficher). Le problème peut être un que tu n'as jamais vu : c'est la recette qui est notée.</p><p class="note">Au contrôle 1, « toutes les questions ont le même poids », et l'énoncé fournit une ébauche de programme (le main, l'affichage du tableau, min, Infini) : tu n'écris que les fonctions demandées. En janvier 2026, des questions bonus sur les arbres valaient 2 points chacune (note sur 26).</p></div>
       <div class="fb wide"><h4>La recette en 5 étapes</h4><ol>
         <li><b>Nommer la valeur</b> : « m(k,s) = cardinal minimum d'un sous-ensemble des k premiers éléments, de somme s ». Une phrase complète, avec ce que représentent les indices.</li>
         <li><b>Supposons le problème résolu</b> : regarde la <b>dernière décision</b> de la meilleure solution (le dernier élément est pris ou pas, la dernière ville, les dernières heures…). Chaque possibilité donne un terme du min ou du max.</li>
@@ -1175,7 +1277,7 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
 
   <!-- ===== CONTRÔLE 1 ===== -->
   <article class="fiche" data-fiche="controle1" data-title="Contrôle 1 · cardinal minimum">
-    <header class="fiche-head"><p class="eyebrow">Annale · contrôle 1 du 10/10/2026</p><h2>Sous-ensemble de somme S, de cardinal minimum</h2>
+    <header class="fiche-head"><p class="eyebrow">Annale · contrôle 1 du 10/10/2026 · énoncé et corrigé du prof · questions de même poids</p><h2>Sous-ensemble de somme S, de cardinal minimum</h2>
       <p class="fiche-one">Avec des pièces de valeurs X, payer exactement S avec le moins de pièces possible.</p>
       <p class="analogy">Tu dois payer 10 € avec des pièces de 1, 2, 4, 5, 6 et 7 € (une de chaque). 4 + 6 fait 2 pièces ; 1 + 2 + 7 en fait 3. On veut le moins de pièces.</p></header>
     <div class="fiche-grid">
@@ -1185,7 +1287,7 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
         <p class="analogy">C'est le même raisonnement que Juliette ou le sac à dos : « est-ce que je prends le dernier objet ? »</p></div>
       <div class="fb wide rec-b"><h4>Récurrence</h4><pre class="code" data-code="rec_secm"></pre></div>
       <div class="fb"><h4>Ordre de calcul · complexité</h4><p>M[0:n+1][0:S+1], ligne par ligne : k croissant, car la ligne k n'utilise que la ligne k−1. Temps Θ(n × S).</p></div>
-      <div class="fb"><h4>Reconstruction</h4><p>Pas de tableau A : on reteste la formule. Si M[k][s] == M[k−1][s], x(k−1) n'est pas pris. Sinon il est pris : on affiche d'abord le reste (k−1, s−x(k−1)), puis x(k−1).</p></div>
+      <div class="fb"><h4>Reconstruction</h4><p>L'aide de l'énoncé : poser secm(k,s) = un sous-ensemble de X[0:k] de somme s, de cardinal minimum. Pas de tableau A : on reteste la formule. Si M[k][s] == M[k−1][s], x(k−1) n'est pas pris. Sinon il est pris : on affiche d'abord le reste (k−1, s−x(k−1)), puis x(k−1).</p></div>
       <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="secm_M"></pre><pre class="code" data-code="secm_aff"></pre></div></div>
       <div class="fb"><h4>Exemple à connaître</h4><pre class="mini">X = [1, 2, 4, 5, 6, 7], S = 10
 m(6,10) = 2  →  { 4, 6 }
@@ -1274,7 +1376,7 @@ m(2,2) = max( h=0 : 16 + 1×1 = 17,
       <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="lcs_L"></pre><pre class="code" data-code="lcs_plsc"></pre></div></div>
       <div class="fb"><h4>Exemple à connaître</h4><pre class="code" data-code="ans_lcs1"></pre></div>
       <div class="fb pieges"><h4>Pièges</h4><ul>
-        <li>Sous-<b>séquence</b> : on peut sauter des lettres (contrairement à la sous-chaîne du palindrome).</li>
+        <li>Sous-<b>séquence</b> : on peut sauter des lettres (comme dans la plssp).</li>
         <li><code>T.length()</code> et <code>T.charAt(p-1)</code> : parenthèses et indice p−1.</li>
         <li>Deux bases : la ligne 0 <b>et</b> la colonne 0.</li>
         <li>Dans plsc, l'appel récursif d'abord, la lettre ensuite.</li>
@@ -1350,28 +1452,28 @@ grd : 20 30 35 40 50 60 70 80</pre></div>
   </article>
 
   <!-- ===== PALINDROME ===== -->
-  <article class="fiche" data-fiche="palindrome" data-title="Sous-chaîne palindrome">
-    <header class="fiche-head"><p class="eyebrow">Hors TD · à traiter comme un contrôle</p><h2>Plus longue sous-chaîne palindrome</h2>
-      <p class="fiche-one">Le plus long morceau d'un seul tenant de S qui se lit pareil dans les deux sens.</p>
-      <p class="analogy">Éplucher un oignon : on cache la première et la dernière lettre avec les doigts. Si elles sont égales, il reste à vérifier l'intérieur.</p></header>
+  <article class="fiche" data-fiche="palindrome" data-title="Sous-séquence palindrome">
+    <header class="fiche-head"><p class="eyebrow">Hors TD · TD4 · « à résoudre comme un contrôle blanc »</p><h2>Plus longue sous-séquence palindrome (plssp)</h2>
+      <p class="fiche-one">Supprimer le moins de lettres possible de S pour qu'il reste un palindrome.</p>
+      <p class="analogy">Un collier de perles : tu peux enlever des perles mais pas les déplacer, et tu veux le plus long collier symétrique.</p></header>
     <div class="fiche-grid">
-      <div class="fb"><h4>Les données</h4><p>S de longueur n. S[i:j] = les lettres d'indices i à j−1, soit <code>S.substring(i, j)</code>, de longueur j − i.</p></div>
-      <div class="fb"><h4>La valeur</h4><p><b>p(i,j)</b> = vrai si S[i:j] est un palindrome, pour 0 ≤ i ≤ j ≤ n.</p></div>
-      <div class="fb wide"><h4>Supposons le problème résolu</h4><p>S[i:j] est un palindrome si et seulement si ses <b>deux lettres du bord</b> sont égales, S[i] == S[j−1], <b>et</b> l'intérieur S[i+1:j−1] est un palindrome.</p></div>
-      <div class="fb wide rec-b"><h4>Récurrence</h4><pre class="code" data-code="rec_pal"></pre></div>
-      <div class="fb"><h4>Ordre de calcul · complexité</h4><p>Par <b>longueur d = j − i croissante</b> (diagonale par diagonale), car p(i,j) utilise une sous-chaîne plus courte de 2. P[n+1][n+1]. Θ(n²) au lieu de Θ(n³) en testant tout.</p></div>
-      <div class="fb"><h4>Le résultat</h4><p>Parcourir tous les (i, j) avec P[i][j] vrai et garder le plus grand j − i. Retourner <code>S.substring(bi, bj)</code>.</p></div>
-      <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="pal_P"></pre><pre class="code" data-code="pal_res"></pre></div></div>
-      <div class="fb"><h4>Exemple à connaître</h4><pre class="code" data-code="ans_pal1"></pre></div>
+      <div class="fb"><h4>Les données</h4><p>S = s(0) … s(n−1). S[i:j] = s(i) … s(j−1). Sous-séquence : on peut sauter des lettres, on garde l'ordre.</p></div>
+      <div class="fb"><h4>La valeur</h4><p><b>l(i,j)</b> = longueur maximum des plssp de S[i:j]. Taille t = j − i. Réponse : l(0,n).</p></div>
+      <div class="fb wide"><h4>Supposons le problème résolu</h4><pre class="code" data-code="pl_expr"></pre></div>
+      <div class="fb wide rec-b"><h4>Récurrence</h4><pre class="code" data-code="rec_pl"></pre></div>
+      <div class="fb"><h4>Ordre de calcul · complexité</h4><p>L[n+1][n+1], par <b>tailles t croissantes</b> (diagonales) : les deux bases, puis t = 2 … n. Θ(n²).</p></div>
+      <div class="fb"><h4>Reconstruction</h4><p>plssp(L, S, i, j) <b>retourne une String</b> : "" ou une lettre pour les bases ; p + plssp(i+1, j−1) + d si les bouts sont égaux ; sinon on suit le plus grand de L[i+1][j] et L[i][j−1].</p></div>
+      <div class="fb wide"><h4>Code à savoir écrire (corrigé du prof)</h4><div class="two-col"><pre class="code" data-code="pl_L"></pre><pre class="code" data-code="pl_plssp"></pre></div></div>
+      <div class="fb"><h4>Exemples du prof</h4><pre class="code" data-code="ans_pl1"></pre></div>
       <div class="fb pieges"><h4>Pièges</h4><ul>
-        <li>Deux bases : la chaîne vide p(i,i) et une lettre p(i,i+1).</li>
-        <li>La dernière lettre de S[i:j] est S[j−1], pas S[j].</li>
-        <li>« et » (&amp;&amp;) entre les deux conditions, pas « ou ».</li>
-        <li>Ne pas remplir par i croissant : la case de l'intérieur ne serait pas prête.</li>
+        <li><b>Deux bases</b> : t = 0 (0) et t = 1 (1).</li>
+        <li>Égaux : <b>2 +</b> l'intérieur (pas 1 +), on garde les deux lettres.</li>
+        <li>La dernière lettre de S[i:j] est <code>S.charAt(j-1)</code>.</li>
+        <li>Boucle sur i : <code>i &lt; n+1-t</code>, puis <code>j = i+t</code>.</li>
+        <li>Ne pas confondre avec la sous-<b>chaîne</b> (sans saut de lettre) : là, c'est un booléen et un « et ».</li>
       </ul></div>
     </div>
-    <p class="note">Je n'ai pas l'énoncé du prof pour ce problème : la fiche suit la méthode classique avec ses notations [i:j].</p>
-    <footer class="fiche-foot"><a class="btn" href="#palindrome">Revoir le chapitre</a></footer>
+    <footer class="fiche-foot"><a class="btn" href="#palindrome">Revoir le chapitre</a><a class="btn ghost" href="#examen">Faire le contrôle blanc</a></footer>
   </article>
 
   <!-- ===== ABR COÛT MIN ===== -->
@@ -1486,12 +1588,12 @@ racine 1 (hauteur min) : 2×5+1×1+2×1 = 13
     <h1>Sujets blancs</h1>
     <p class="lead">Au format du partiel : 90 minutes, 4 questions, sans regarder le cours. Écris tes réponses, rends ta copie, puis corrige-toi avec le barème détaillé.</p>
   </header>
-  <div class="callout">Commence par l'<b>annale du contrôle 1</b> : c'est le vrai format de cette année, sur un problème que tu n'as pas vu en TD. Les barèmes sont des estimations, pas ceux du prof.</div>
+  <div class="callout">Commence par l'<b>annale du contrôle 1</b> : c'est le vrai sujet de cette année (« toutes les questions ont le même poids »), sur un problème que tu n'as pas vu en TD. Ensuite, le <b>contrôle blanc plssp</b> que le prof a donné avec le TD4. Les autres barèmes sont mes estimations.</div>
   <div id="exam-root"></div>
 </section>
 
 </main>
-<a class="sos" href="#urgence" id="sos-btn"><span class="sos-dot" aria-hidden="true"></span>Urgence · objectif 10/20</a>
+<a class="sos" href="#urgence" id="sos-btn"><span class="sos-dot" aria-hidden="true"></span><span class="sos-long">Urgence · objectif 10/20</span><span class="sos-short">SOS 10/20</span></a>
 </div>
 <script>
 // ===================== DONNÉES =====================
@@ -2590,6 +2692,185 @@ CODES.ab_grd = `static void grd(AB a){   // a est un abr : affiche ses valeurs �
     grd(sad(a));             // puis celles de sad(a) : a est affiché à l'endroit
 }`;
 TOPICS.splice(TOPICS.findIndex(t => t.id === 'examen'), 0, {id:'fiches',tag:'La veille',title:'Fiches de révision',desc:'Une fiche par sujet : données, valeur, récurrence, code, exemple, pièges.'});
+
+// ===================== v4 : documents du drive du cours =====================
+// ---- PLSSP (TD4, hors TD, « à résoudre comme un contrôle blanc ») ----
+Object.assign(CODES, {
+pl_expr: `Supposons le problème résolu. S = s(0) ... s(n-1), problème de taille t = n.
+ • s(0) == s(n-1) : une plssp de S est s(0), suivie d'une plssp de
+   S[1:n-1], suivie de s(n-1)               →  l(0,n) = 2 + l(1,n-1)
+ • s(0) != s(n-1) : l'un des deux ne fait pas partie d'une plssp.
+   Une plssp de S est une plssp de S[1:n] ou de S[0:n-1]
+                                            →  l(0,n) = max( l(1,n), l(0,n-1) )`,
+rec_pl: `l(i,j) = longueur maximum des plssp de S[i:j] = s(i) ... s(j-1).
+Taille du problème : t = j - i.
+Base t = 0 : qqsoit i, 0 ≤ i < n+1 :   l(i,i) = 0      (séquence vide)
+Base t = 1 : qqsoit i, 0 ≤ i < n :     l(i,i+1) = 1    (une lettre)
+Hérédité, 2 ≤ t < n+1 : qqsoit i, 0 ≤ i < n-t+1, j = i+t :
+   s(i) == s(j-1)  ==>  l(i,j) = 2 + l(i+1, j-1)
+   s(i) != s(j-1)  ==>  l(i,j) = max( l(i+1, j), l(i, j-1) )`,
+pl_L: `static int[][] calculerL(String S){ int n = S.length();
+    int[][] L = new int[n+1][n+1];
+    // base, t = j-i = 0
+    int t = 0;
+    for (int i = 0; i < n+1-t; i++) L[i][i] = 0;
+    // base, t = j-i = 1
+    t = 1;
+    for (int i = 0; i < n+1-t; i++) L[i][i+1] = 1;
+    // cas général
+    for (t = 2; t < n+1; t++)              // par tailles t croissantes
+        for (int i = 0; i < n+1-t; i++){   // t fixé : tous les (i,j) tels que j-i = t
+            int j = i+t;
+            if (S.charAt(i) == S.charAt(j-1))
+                L[i][j] = 2 + L[i+1][j-1];
+            else
+                L[i][j] = max(L[i+1][j], L[i][j-1]);
+        }
+    return L;
+}   // Theta(n²)`,
+pl_plssp: `static String plssp(int[][] L, String S, int i, int j){ // une plssp de S[i:j]
+// Appel principal : plssp(L, S, 0, n) où n = S.length()
+    if (j-i == 0) return "";
+    if (j-i == 1) return S.substring(i, i+1);
+    char p = S.charAt(i), d = S.charAt(j-1);   // premier et dernier caractères
+    if (p == d) return p + plssp(L, S, i+1, j-1) + d;
+    if (L[i+1][j] >= L[i][j-1]) return plssp(L, S, i+1, j);
+    return plssp(L, S, i, j-1);
+}`,
+ans_pl1: `elle → elle      laval → laval      volvo → ovo (ou vlv)
+bricabrac → carac (longueur 5)
+"programmation dynamique" → manynam`,
+// ---- arbres : exercices du 22/10/2026 ----
+ab_class: `static class AB{ int vr; AB g, d;
+    AB(int vr, AB g, AB d){ this.vr = vr; this.g = g; this.d = d; }
+}
+static boolean vide(AB a){ return a == null; }   // l'arbre vide () est null
+static int vr(AB a){ return a.vr; }              // valeur racine (a non vide)
+static AB sag(AB a){ return a.g; }               // sous-arbre gauche
+static AB sad(AB a){ return a.d; }               // sous-arbre droit`,
+ab_somme: `static int somme(AB a){   // somme des valeurs d'un AB
+    if (vide(a)) return 0;
+    return vr(a) + somme(sag(a)) + somme(sad(a));
+}`,
+ab_max: `static int max(AB a){  // a est un ABR non vide : sa valeur max est « la plus à droite »
+    if (vide(sad(a))) return vr(a);   // rien à droite : vr(a) est la plus à droite
+    return max(sad(a));               // sinon : la plus à droite de sad(a)
+}
+static int maximum(AB a){ // a peut être vide : ce cas est traité à part
+    if (vide(a)) return Integer.MIN_VALUE;
+    return max(a);
+}
+static int min(AB a){  // idem : la valeur « la plus à gauche »
+    if (vide(sag(a))) return vr(a);
+    return min(sag(a));
+}`,
+ao_cout: `static int C(AB a, int[] F, int l){ // coût du sous-arbre a de l'ABR A ; la racine de a
+// est au niveau l dans A. Appel principal : C(A, F, 0).
+    if (vide(a)) return 0;              // aucune recherche dans a, donc coût nul
+    return (l+1)*F[vr(a)]               // l+1 sommets touchés pour atteindre vr(a)
+        + C(sag(a), F, l+1)             // coût du sous-arbre gauche, au niveau l+1
+        + C(sad(a), F, l+1);            // idem à droite
+}`,
+ans_abex: `abrhmin(0,7) :          3
+                   1          5
+                 0   2      4   6
+t = 7, h = 2, somme = 21, min = 0, max = 6
+grd : 0 1 2 3 4 5 6      drg : 6 5 4 3 2 1 0
+F = [10,11,12,13,14,15,16] : C(a,F,0) = 221
+(l'ABR glouton 6 → 5 → ... → 0 coûte 336)`,
+ans_ao1: `F = [f(0)=5, f(1)=2, f(2)=3]
+a  = 2 -- 1 -- 0 (racine 2) : C(a)  = 1×3 + 2×2 + 3×5 = 22
+a' = 1, avec 0 à gauche et 2 à droite : C(a') = 1×2 + 2×5 + 2×3 = 18
+a' est meilleur.`,
+secm_asecm_rec: `secm(k,s) = un sous-ensemble de X[0:k] de somme s, de cardinal minimum.
+Base :      secm(0,0) = Ø                 → rien à afficher
+Hérédité :  m(k,s) == m(k-1,s)  → secm(k,s) = secm(k-1,s)
+            sinon              → secm(k,s) = secm(k-1, s-x(k-1)) ∪ {x(k-1)}`
+});
+Object.assign(CHECKS, {
+pl_expr: [['« Supposons le problème résolu » : on regarde s(0) et s(n−1)',1],['Égaux : 2 + l(1, n−1)',2],['Différents : max( l(1,n), l(0,n−1) )',2]],
+rec_pl: [['Définition de l(i,j) sur S[i:j], taille t = j − i',1],['Base t = 0 : l(i,i) = 0 et base t = 1 : l(i,i+1) = 1',1.5],['Hérédité : 2 + l(i+1,j−1) si s(i) == s(j−1), sinon max',1.5],['Intervalles : 2 ≤ t < n+1, 0 ≤ i < n−t+1, j = i + t',1]],
+pl_L: [['L = new int[n+1][n+1]',0.5],['Les deux bases (diagonales t = 0 et t = 1)',1],['Boucles : t de 2 à n, puis i de 0 à n−t, avec j = i + t',1.5],['Test S.charAt(i) == S.charAt(j−1) → 2 + L[i+1][j−1]',1],['Sinon max(L[i+1][j], L[i][j−1]), return L',1]],
+pl_plssp: [['Bases : j − i == 0 → "", j − i == 1 → la lettre',1.5],['Égaux : p + plssp(L,S,i+1,j−1) + d',2],['Sinon : on suit le plus grand de L[i+1][j] et L[i][j−1]',1.5]],
+ans_pl1: [['bricabrac → carac',2],['volvo → ovo (ou vlv)',1.5],['laval et elle sont déjà des palindromes',1.5]],
+ab_somme: [['Vide → 0',1],['vr(a) + somme(sag(a)) + somme(sad(a))',3]],
+ab_max: [['Base : sad(a) vide → vr(a)',2],['Sinon max(sad(a))',2],['min symétrique avec sag',1]],
+ao_cout: [['Vide → 0',1],['(l+1) × F[vr(a)]',2],['+ C des deux sous-arbres au niveau l+1',2]],
+ans_abex: [['t = 7, h = 2, somme = 21',2],['grd croissant, drg décroissant',1],['C = 221',2]],
+ans_ao1: [['C(a) = 22',2],['C(a\') = 18',2],['a\' est meilleur',1]],
+rec_secm: [['Base : m(0,0) = 0',1],['Base : m(0,s) = ∞ pour 1 ≤ s < S+1',1],['Hérédité : min{ m(k−1,s), 1 + m(k−1, s−x(k−1)) }, le second terme seulement si s ≥ x(k−1)',2],['Intervalles : 1 ≤ k < n+1, 0 ≤ s < S+1',1]]
+});
+QCM.palindrome = [
+ ['Quelle est la différence entre une sous-séquence et une sous-chaîne ?',['Une sous-séquence peut sauter des lettres, une sous-chaîne est d\'un seul tenant','Aucune','Une sous-chaîne peut sauter des lettres','Une sous-séquence est toujours plus courte'],'Exemple du prof : algorithme est une sous-séquence de aligatorithme (on a supprimé des lettres), mais pas une sous-chaîne.'],
+ ['Plus longue sous-séquence palindrome de bricabrac ?',['carac','bricabrac','aba','rabar'],'b r i c a b r a c : on garde les lettres d\'indices 3, 4, 6, 7, 8 → c a r a c. Longueur 5, c\'est le résultat du programme du prof.'],
+ ['Si s(i) == s(j−1), l(i,j) = ?',['2 + l(i+1, j−1)','1 + l(i+1, j−1)','max( l(i+1,j), l(i,j−1) )','l(i+1, j−1)'],'On garde les deux lettres égales aux deux bouts : +2, autour d\'une plssp de l\'intérieur.'],
+ ['Si s(i) != s(j−1), l(i,j) = ?',['max( l(i+1,j), l(i,j−1) )','2 + l(i+1,j−1)','l(i+1,j−1)','0'],'Les deux bouts ne peuvent pas être appariés : l\'un des deux ne sert pas. On essaie de supprimer l\'un, puis l\'autre, et on garde le meilleur. Même idée que la plsc.'],
+ ['Pourquoi deux bases, t = 0 et t = 1 ?',['Le cas « égaux » saute de la taille t à t − 2 : il faut connaître les deux plus petites tailles','Par habitude','Pour aller plus vite','Il n\'y en a qu\'une'],'l(i,j) utilise l(i+1, j−1), de taille t − 2. Pour t = 2, on lit la taille 0 ; pour t = 3, la taille 1.'],
+ ['Dans quel ordre remplit-on L ?',['Par tailles t = j − i croissantes','Par i croissant','Par j décroissant','Dans n\'importe quel ordre'],'Chaque case utilise des cases de tailles t − 1 ou t − 2, déjà calculées.'],
+ ['Que vaut l(0,n) pour volvo ?',['3','5','2','1'],'volvo n\'est pas un palindrome (v ≠ o). Le prof trouve ovo : les lettres d\'indices 1, 3 et 4 (o, v, o). vov ou vlv marchent aussi : longueur 3.'],
+ ['Complexité de calculerL ?',['Θ(n²)','Θ(n)','Θ(n³)','Θ(2ⁿ)'],'Environ n²/2 cases, chacune en temps constant. Essayer toutes les sous-séquences coûterait de l\'ordre de 2ⁿ.']
+];
+replaceById(TROUS, 'tr-calcP', {id:'tr-calcP',topic:'palindrome',title:'calculerL (cas général)',code:`for (t = 2; t < n+1; t++)
+    for (int i = 0; i < ⟦n+1-t‖n-t+1⟧; i++){
+        int j = ⟦i+t‖t+i⟧;
+        if (S.charAt(⟦i⟧) == S.charAt(⟦j-1⟧))
+            L[i][j] = ⟦2 + L[i+1][j-1]‖L[i+1][j-1] + 2⟧;
+        else
+            L[i][j] = max(⟦L[i+1][j]⟧, ⟦L[i][j-1]⟧);
+    }`});
+replaceById(TROUS, 'tr-plscp', {id:'tr-plscp',topic:'palindrome',title:'plssp',code:`static String plssp(int[][] L, String S, int i, int j){
+    if (j-i == 0) return ⟦""⟧;
+    if (j-i == 1) return S.substring(⟦i⟧, ⟦i+1⟧);
+    char p = S.charAt(i), d = S.charAt(⟦j-1⟧);
+    if (p == d) return ⟦p⟧ + plssp(L, S, ⟦i+1⟧, ⟦j-1⟧) + ⟦d⟧;
+    if (L[i+1][j] >= L[i][j-1]) return plssp(L, S, ⟦i+1⟧, ⟦j⟧);
+    return plssp(L, S, ⟦i⟧, ⟦j-1⟧);
+}`});
+replaceById(WRITES, 'wr-calcP', {id:'wr-calcP',topic:'palindrome',sol:'pl_L',title:'Écris calculerL(String S)',enonce:'Écris <code>int[][] calculerL(String S)</code> qui calcule toutes les valeurs l(i,j) dans un tableau L[0:n+1][0:n+1]. Le calcul est conduit par tailles t = j − i croissantes.'});
+replaceById(WRITES, 'wr-plscp', {id:'wr-plscp',topic:'palindrome',sol:'pl_plssp',title:'Écris plssp(L, S, i, j)',enonce:'Écris <code>String plssp(int[][] L, String S, int i, int j)</code> qui retourne une plus longue sous-séquence palindrome de S[i:j]. Appel principal : <code>plssp(L, S, 0, S.length())</code>.'});
+replaceById(SUJETS, 'pa', {id:'pa',tag:'Hors TD · TD4 · « à résoudre comme un contrôle blanc »',titre:'Plus longue sous-séquence palindrome (plssp)',desc:'Le sujet du prof, tel quel : 90 minutes, seul, sans smartphone. Les 4 questions habituelles.',intro:'<p>Une séquence S = s(0) … s(n−1) est donnée. Une séquence égale à sa renversée est un <b>palindrome</b>. S\' est une <b>sous-séquence</b> de S si elle est obtenue en supprimant des symboles de S, quel que soit leur nombre (S elle-même et la séquence vide sont des sous-séquences de S). On veut une plus longue sous-séquence palindrome de S (une plssp de S).</p><p>On note l(0,n) la longueur maximum des plssp de S : c\'est le problème de taille t = n. Généralisation : l(i,j) est la longueur maximum des plssp de S[i:j] = s(i) … s(j−1), problème de taille t = j − i.</p><p>Exemples d\'exécution du prof : elle → elle, laval → laval, bricabrac → carac, volvo → ovo, "programmation dynamique" → manynam.</p>',q:[
+  {pts:5,enonce:'Supposons le problème résolu : donner l\'expression récurrente de l(0,n).',sol:'pl_expr'},
+  {pts:5,enonce:'Donner l\'équation de récurrence de l(i,j), base et hérédité, en précisant les intervalles de valeur des paramètres i et j.',sol:'rec_pl'},
+  {pts:5,enonce:'Écrire une fonction <code>int[][] calculerL(String S)</code> qui calcule toutes les valeurs l(i,j) dans un tableau L[0:n+1][0:n+1]. Le calcul est conduit par tailles t = j − i croissantes.',sol:'pl_L'},
+  {pts:5,enonce:'Écrire une fonction <code>String plssp(int[][] L, String S, int i, int j)</code> qui retourne une plus longue sous-séquence palindrome de S[i:j]. Appel principal : <code>plssp(L, S, 0, S.length())</code>.',sol:'pl_plssp'}
+ ]});
+// arbres : les 10 exercices du prof (22/10/2026)
+QCM.arbres.push(
+ ['somme((vr g d)) = ?',['vr + somme(g) + somme(d)','1 + somme(g) + somme(d)','somme(g) + somme(d)','max(somme(g), somme(d))'],'Même schéma que t, mais on ajoute la valeur de la racine au lieu de 1.'],
+ ['La plus grande valeur d\'un ABR non vide est…',['la plus à droite : on descend à droite tant qu\'on peut','toujours la racine','la plus à gauche','une feuille quelconque'],'Tout ce qui est à droite est plus grand. Si sad(a) est vide, c\'est vr(a) ; sinon c\'est max(sad(a)).']
+);
+TROUS.push({id:'tr-max',topic:'arbres',title:'max d\'un ABR non vide',code:`static int max(AB a){
+    if (vide(⟦sad(a)⟧)) return ⟦vr(a)⟧;
+    return max(⟦sad(a)⟧);
+}`});
+WRITES.push({id:'wr-somme',topic:'arbres',sol:'ab_somme',title:'Écris somme(AB a)',enonce:'Exercice 3 du prof. Base : somme(()) = 0. Hérédité : somme((vr g d)) = … En déduire <code>int somme(AB a)</code>.'});
+replaceById(SUJETS, 'ab', {id:'ab',tag:'Hors TD · exercices du 22/10/2026',titre:'Exercices sur les arbres binaires',desc:'Les exercices du prof : in, h, t, somme, inserer, abrhmin, grd, drg, coût, max. Plus les 2 questions sur les arbres du contrôle de janvier 2026.',intro:'<p>Classe du prof : <code>class AB{ int vr; AB g, d; }</code>, avec <code>vide(a)</code>, <code>vr(a)</code>, <code>sag(a)</code>, <code>sad(a)</code>. Un arbre s\'écrit (vr g d), l\'arbre vide (). Pour chaque fonction : donne la base et l\'hérédité, puis écris la fonction. Le prof : « résoudre ces exercices AVANT de consulter les solutions ».</p>',q:[
+  {pts:4,enonce:'(Ex. 1 et 2) h(()) = −1. Donner l\'hérédité de h et de t, puis écrire <code>int h(AB a)</code> et <code>int t(AB a)</code>. (Au contrôle de janvier 2026, h valait 2 points, « environ 4 lignes ».)',sol:'ab_th'},
+  {pts:4,enonce:'(Ex. 0) a est un ABR. Écrire <code>AB in(int x, AB a)</code> : si x n\'est pas dans a, l\'arbre vide ; sinon le sous-arbre dont x est racine. (En janvier 2026 : la même, nommée <code>dans</code>, « environ 6 lignes ».)',sol:'ab_appartient'},
+  {pts:4,enonce:'(Ex. 3 et 9) Écrire <code>int somme(AB a)</code>, puis <code>int max(AB a)</code> qui retourne la plus grande valeur d\'un ABR non vide.',sol:'ab_max'},
+  {pts:4,enonce:'(Ex. 4 et 6) Écrire <code>AB inserer(int x, AB a)</code>, puis <code>void grd(AB a)</code> qui affiche les valeurs de l\'ABR a dans l\'ordre croissant.',sol:'ab_ins'},
+  {pts:4,enonce:'(Ex. 8) F = [f(0)=5, f(1)=2, f(2)=3]. Calculer le coût de l\'arbre a = 2 — 1 — 0 (racine 2, 1 à sa gauche, 0 à gauche de 1) et de l\'arbre a\' de racine 1, avec 0 et 2 pour fils. Puis écrire <code>int C(AB a, int[] F, int l)</code>.',sol:'ans_ao1'}
+ ]});
+// contrôle 1 : le vrai énoncé (toutes les questions ont le même poids)
+replaceById(SUJETS, 'c1', {id:'c1',tag:'Annale · contrôle 1 du 10 octobre 2026',titre:'Contrôle 1 : sous-ensemble de cardinal minimum',desc:'Le vrai sujet de cette année. Toutes les questions ont le même poids.',intro:'<p>Un ensemble X = {x0, x1, …, xn−1} de n entiers positifs est donné ainsi qu\'un entier positif S. Nous voulons un sous-ensemble de X de somme S, de cardinal minimum. Le cardinal d\'un ensemble est son nombre d\'éléments.</p><p>Rappel : X[0:k] = {x0, …, xk−1} est l\'ensemble des k premiers éléments de X. En particulier X[0:0] = ∅ et X[0:n] = X.</p><p>Exemple : X = {1, 2, 4, 5, 6, 7}, S = 10. Les sous-ensembles de X de somme S sont {1, 2, 7}, {1, 4, 5} et {4, 6}. Le sous-ensemble {4, 6} est solution car il est de cardinal minimum.</p><p>Nous notons m(n,S) le cardinal minimum d\'un sous-ensemble de X[0:n] de somme S. Si aucun sous-ensemble de X n\'est de somme S, m(n,S) = ∞. Dans l\'ébauche fournie : <code>static final int Infini = Integer.MAX_VALUE/2;</code> et une fonction <code>min(x, y)</code>.</p>',q:[
+  {pts:5,enonce:'Supposons le problème résolu : donner l\'expression récurrente de m(n,S).',sol:'secm_expr'},
+  {pts:5,enonce:'Généralisons : donner l\'équation de récurrence des valeurs m(k,s), base et hérédité, en précisant bien les intervalles de valeur des paramètres k et s.',sol:'rec_secm'},
+  {pts:5,enonce:'Écrire une fonction <code>int[][] calculerM(int[] X, int S)</code> qui calcule et retourne un tableau d\'entiers M à n+1 lignes et S+1 colonnes de terme général M[k][s] = m(k,s).',sol:'secm_M'},
+  {pts:5,enonce:'Écrire une fonction <code>void asecm(int[][] M, int[] X, int k, int s)</code> qui affiche un sous-ensemble de X[0:k] de somme s, de cardinal minimum. Appel principal : <code>asecm(M,X,n,S)</code>, exécuté seulement s\'il existe une solution. Aide du prof : posez « secm(k,s) est un sous-ensemble de X[0:k] de somme s, de cardinal minimum » et donnez son expression récurrente (base de l\'affichage et cas d\'hérédité).',sol:'secm_aff'}
+ ]});
+TOPICS.forEach(t => { if (t.id === 'palindrome') { t.title = 'Sous-séquence palindrome'; t.tag = 'Hors TD · TD4'; t.desc = 'plssp : le contrôle blanc du prof. l(i,j), calcul par tailles croissantes.'; } if (t.id === 'arbres') t.desc = 'Les 10 exercices du prof : in, h, t, somme, inserer, abrhmin, grd, drg, coût, max.'; });
+CODES.ab_q3 = CODES.ab_somme + '\n' + CODES.ab_max;
+CODES.ab_q4 = CODES.ab_ins + '\n' + CODES.ab_grd;
+CODES.ab_q5 = CODES.ans_ao1 + '\n\n' + CODES.ao_cout;
+CHECKS.ab_q3 = [['somme : vide → 0, sinon vr(a) + somme(sag) + somme(sad)',2],['max : sad(a) vide → vr(a), sinon max(sad(a))',2]];
+CHECKS.ab_q4 = [['inserer : les 4 cas, en reconstruisant le nœud',2.5],['grd : grd(sag), afficher vr(a), grd(sad)',1.5]];
+CHECKS.ab_q5 = [['C(a) = 22 et C(a\') = 18',1.5],['Vide → 0',0.5],['(l+1) × F[vr(a)] + C(sag, F, l+1) + C(sad, F, l+1)',2]];
+(s => { s.q[2].sol = 'ab_q3'; s.q[3].sol = 'ab_q4'; s.q[4].sol = 'ab_q5'; })(SUJETS.find(s => s.id === 'ab'));
+CODES.ab_feuilles = `static int nbFeuilles(AB a){
+    if (vide(a)) return 0;
+    if (vide(sag(a)) && vide(sad(a))) return 1;   // a est une feuille (v () ())
+    return nbFeuilles(sag(a)) + nbFeuilles(sad(a));
+}`;
 // ===================== OUTILS =====================
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -3216,7 +3497,6 @@ function setSub(sec, key) {
 // ===================== DÉMARRAGE =====================
 function init() {
   Store.load();
-  $('#home-cards').innerHTML = TOPICS.map(t => `<a class="card" href="#${t.id}"><p class="tag">${esc(t.tag)}</p><h3>${esc(t.title)}</h3><p>${esc(t.desc)}</p><p class="small" data-count="${t.id}"></p><div class="bar"><i data-bar="${t.id}"></i></div></a>`).join('');
   $$('pre[data-code]').forEach(p => p.innerHTML = hl(CODES[p.dataset.code] || ''));
   initUrgence(); initFiches();
   renderStaticDags();
@@ -3397,7 +3677,7 @@ function aoSteps(F) {
   order.forEach((o, k) => steps.push(snap({ cur: [o.i, o.j], path: order.slice(0, k + 1).map(x => [x.i, x.j]), tree: T.fromList(order.slice(0, k + 1).map(x => x.r)), msg: `<b>abrcmin(M, ${o.i}, ${o.j})</b> : M[${o.j}][${o.i}] = ${o.r}, la valeur ${o.r} est la racine de ce sous-arbre. À gauche abrcmin(M, ${o.i}, ${o.r})${o.r === o.i ? ' (vide)' : ''}, à droite abrcmin(M, ${o.r + 1}, ${o.j})${o.r + 1 === o.j ? ' (vide)' : ''}.` })));
   const tree = aoBuild(A, 0, n), dep = T.depths(tree);
   const parts = F.map((f, k) => `${f}×${dep[k] + 1}`), tot = F.reduce((s, f, k) => s + f * (dep[k] + 1), 0);
-  steps.push(snap({ tree, path: order.map(x => [x.i, x.j]), msg: `Arbre terminé. Vérification avec cout(a, F) : chaque valeur v coûte F[v] × (niveau + 1) :<div class="out">${parts.join(' + ')} = ${tot}</div>C'est bien M[0][${n}] = ${M[0][n]}.` }));
+  steps.push(snap({ tree, path: order.map(x => [x.i, x.j]), msg: `Arbre terminé. Vérification avec C(a, F, 0) : chaque valeur v coûte F[v] × (niveau + 1) :<div class="out">${parts.join(' + ')} = ${tot}</div>C'est bien M[0][${n}] = ${M[0][n]}.` }));
   return steps;
 }
 function aoRender(st) {
@@ -3479,6 +3759,88 @@ function handAo(body) {
   };
 }
 
+// ===================== PLSSP : plus longue sous-séquence palindrome (TD4, version du prof) =====================
+// Ces déclarations remplacent celles du palindrome « sous-chaîne » de app2.js (la dernière déclaration gagne).
+function plSolve(S) {
+  const n = S.length, L = [...Array(n + 1)].map(() => Array(n + 1).fill(0));
+  for (let i = 0; i < n; i++) L[i][i + 1] = 1;
+  for (let t = 2; t <= n; t++) for (let i = 0; i + t <= n; i++) { const j = i + t; L[i][j] = S[i] === S[j - 1] ? 2 + L[i + 1][j - 1] : Math.max(L[i + 1][j], L[i][j - 1]); }
+  // reconstruction, exactement comme la fonction plssp du prof
+  const calls = [], keep = [];
+  (function rec(i, j) {
+    calls.push([i, j]);
+    if (j - i === 0) return;
+    if (j - i === 1) { keep.push(i); return; }
+    if (S[i] === S[j - 1]) { keep.push(i, j - 1); rec(i + 1, j - 1); return; }
+    if (L[i + 1][j] >= L[i][j - 1]) rec(i + 1, j); else rec(i, j - 1);
+  })(0, n);
+  keep.sort((a, b) => a - b);
+  return { L, calls, keep, res: keep.map(k => S[k]).join('') };
+}
+function palSteps(S) {
+  const n = S.length, L = [...Array(n + 1)].map(() => Array(n + 1).fill(null));
+  const snap = x => Object.assign({ S, L: L.map(r => r.slice()), cur: null, dep: [], cmp: [], inner: null, path: [], keep: [] }, x);
+  const steps = [snap({ msg: `La case (i, j) contiendra l(i,j), la longueur d'une plus longue sous-séquence palindrome de S[i:j] (lettres i à j−1). Seules les cases i ≤ j servent. On remplit <b>par tailles t = j − i croissantes</b>.` })];
+  for (let i = 0; i <= n; i++) L[i][i] = 0;
+  steps.push(snap({ msg: `<b>Base, t = 0</b> : l(i,i) = 0. La séquence vide n'a que la sous-séquence vide.` }));
+  for (let i = 0; i < n; i++) L[i][i + 1] = 1;
+  steps.push(snap({ msg: `<b>Base, t = 1</b> : l(i,i+1) = 1. Une lettre seule est un palindrome de longueur 1.` }));
+  for (let t = 2; t <= n; t++) for (let i = 0; i + t <= n; i++) {
+    const j = i + t, a = S[i], b = S[j - 1], eq = a === b, sub = esc(S.slice(i, j));
+    let msg = `<b>l(${i},${j})</b>, taille ${t} : S[${i}:${j}] = « ${sub} ». Premier caractère '${esc(a)}', dernier '${esc(b)}' : `;
+    let dep;
+    if (eq) { L[i][j] = 2 + L[i + 1][j - 1]; dep = [[i + 1, j - 1]]; msg += `<b>égaux</b>. On les garde tous les deux autour d'une plssp de l'intérieur : 2 + l(${i + 1},${j - 1}) = 2 + ${L[i + 1][j - 1]} = <b>${L[i][j]}</b>.`; }
+    else { L[i][j] = Math.max(L[i + 1][j], L[i][j - 1]); dep = [[i + 1, j], [i, j - 1]]; msg += `<b>différents</b>, l'un des deux ne sert pas. max( l(${i + 1},${j}), l(${i},${j - 1}) ) = max(${L[i + 1][j]}, ${L[i][j - 1]}) = <b>${L[i][j]}</b>.`; }
+    steps.push(snap({ cur: [i, j], dep, cmp: [i, j - 1], inner: eq ? [i + 1, j - 1] : null, msg }));
+  }
+  const { calls, keep, res } = plSolve(S);
+  const path = [];
+  calls.forEach(([i, j], k) => {
+    path.push([i, j]);
+    let why;
+    if (j - i === 0) why = 'séquence vide : on retourne "".';
+    else if (j - i === 1) why = `une lettre : on retourne "${esc(S[i])}".`;
+    else if (S[i] === S[j - 1]) why = `'${esc(S[i])}' == '${esc(S[j - 1])}' : on retourne '${esc(S[i])}' + plssp(${i + 1},${j - 1}) + '${esc(S[j - 1])}'.`;
+    else why = `'${esc(S[i])}' ≠ '${esc(S[j - 1])}' : L[${i + 1}][${j}] = ${L[i + 1][j]} ${L[i + 1][j] >= L[i][j - 1] ? '≥' : '<'} L[${i}][${j - 1}] = ${L[i][j - 1]}, on continue sur plssp(${L[i + 1][j] >= L[i][j - 1] ? `${i + 1},${j}` : `${i},${j - 1}`}).`;
+    const last = k === calls.length - 1;
+    steps.push(snap({ path: path.slice(), keep: last ? keep : [], cur: [i, j], msg: `<b>plssp(L, S, ${i}, ${j})</b> : ${why}` + (last ? `<div class="out">plssp(${esc(S)}) = ${esc(res) || '(vide)'}</div>Longueur ${res.length} = L[0][${n}].` : '') }));
+  });
+  return steps;
+}
+function palRender(st) {
+  const { S, L } = st, n = S.length;
+  const strip = `<div class="strip">${[...S].map((c, i) => { let k = ''; if (st.keep.includes(i)) k = 'best'; else if (st.cmp.includes(i)) k = 'cmp'; else if (st.inner && i >= st.inner[0] && i < st.inner[1]) k = 'in'; return `<span class="${k}"><b>${esc(c)}</b><small>${i}</small></span>`; }).join('')}</div>`;
+  const inList = (arr, i, j) => arr.some(p => p[0] === i && p[1] === j);
+  let h = `<div class="tblwrap"><table class="grid"><caption>Tableau L (lignes i, colonnes j) : L[i][j] = l(i,j)</caption><tr><th>i \\ j</th>${[...Array(n + 1).keys()].map(j => `<th>${j}</th>`).join('')}</tr>`;
+  for (let i = 0; i <= n; i++) {
+    h += `<tr><th>${i}</th>`;
+    for (let j = 0; j <= n; j++) {
+      if (j < i) { h += '<td class="na"></td>'; continue; }
+      const v = L[i][j]; let c = '';
+      if (st.cur && st.cur[0] === i && st.cur[1] === j) c = 'cur'; else if (inList(st.path, i, j)) c = 'path'; else if (inList(st.dep, i, j)) c = 'dep';
+      h += `<td class="${c}">${v === null ? '' : v}</td>`;
+    }
+    h += '</tr>';
+  }
+  $('#sim-pal .sim-view').innerHTML = strip + h + '</table></div>';
+}
+function initPal() {
+  const P = Player($('#sim-pal'), palRender); const ex = ['bricabrac', 'volvo', 'laval', 'BANANAS', 'ALGORITHME', 'elle'];
+  function run() { const S = $('#pal-S').value.trim(); const err = !S ? 'Entre une séquence.' : S.length > 12 ? '12 lettres maximum, pour que le tableau reste lisible.' : ''; $('#pal-err').textContent = err; if (!err) P.load(palSteps(S)); }
+  $('#pal-load').addEventListener('click', run);
+  $('#pal-ex').addEventListener('click', () => { const cur = $('#pal-S').value.trim(); $('#pal-S').value = ex[(ex.indexOf(cur) + 1) % ex.length]; run(); });
+  run();
+}
+function handPal(body) {
+  const n = 6; const S = [...Array(n)].map(() => 'ABC'[rnd(0, 2)]).join(''); const { L } = plSolve(S);
+  let h = `<div class="strip">${[...S].map((c, i) => `<span><b>${c}</b><small>${i}</small></span>`).join('')}</div><div class="tblwrap"><table class="grid"><caption>L[i][j] = l(i,j)</caption><tr><th>i \\ j</th>${[...Array(n + 1).keys()].map(j => `<th>${j}</th>`).join('')}</tr>`;
+  for (let i = 0; i <= n; i++) { h += `<tr><th>${i}</th>`; for (let j = 0; j <= n; j++) { if (j < i) h += '<td class="na"></td>'; else if (j - i < 2) h += `<td>${j - i}</td>`; else h += `<td class="inp">${cellIn(`L${i}_${j}`, 40)}</td>`; } h += '</tr>'; }
+  body.innerHTML = h + `</table></div><p>Une plus longue sous-séquence palindrome de ${S} : ${cellIn('res', 120)}</p>`;
+  return {
+    check() { const ok = markCells(body, (k, v) => { if (k === 'res') { const s = v.toUpperCase().replace(/\s/g, ''); return s.length === L[0][n] && isPal(s) && isSubseq(s, S); } const [i, j] = k.slice(1).split('_').map(Number); return parseNum(v) === L[i][j]; }); return ok || 'Il reste des erreurs. Si S[i] == S[j−1] : 2 + la case de l\'intérieur (en bas à gauche). Sinon : le max de la case du dessous et de la case de gauche.'; },
+    solve() { for (let i = 0; i <= n; i++) for (let j = i + 2; j <= n; j++) $(`[data-k=L${i}_${j}]`, body).value = L[i][j]; $('[data-k=res]', body).value = plSolve(S).res; $$('input.cell', body).forEach(i => i.classList.remove('good', 'bad')); }
+  };
+}
 // ===================== URGENCE =====================
 Object.assign(CODES, {
 sk_calcul: `static int[][] calculerMA( les données ){ int n = ...;
@@ -3507,7 +3869,7 @@ const URG = [
  ['Juliette (TD3)','Problème connu ? m(k,t) ? Base ? Hérédité ?','Variante du sac à dos\nm(k,t) = meilleure somme pondérée, t heures\n         sur les k premières unités\nm(0,t) = 0\nm(k,t) = max sur 0 ≤ h ≤ t de\n         m(k−1, t−h) + c(k−1)·e(k−1, h)\n1 ≤ k ≤ n, 0 ≤ t ≤ H ; M[n+1][H+1]'],
  ['PLSC (TD4)','l(p,q) ? Base ? Les deux cas ?','l(p,q) = longueur d\'une plsc des p et q préfixes\nl(0,q) = 0 ;  l(p,0) = 0\nsi t(p−1) = u(q−1) : 1 + l(p−1, q−1)\nsinon : max( l(p−1, q), l(p, q−1) )\nL[m+1][n+1] ; Θ(m·n)'],
  ['PLSSC (TD6)','Flèche i → j ? l(j) ? Où est la réponse ?','flèche i → j ssi i < j et S[i] < S[j]\nl(j) = longueur d\'une plssc qui finit en j\npred(j) = ∅ : l(j) = 1, A[j] = −1\nsinon : l(j) = 1 + max sur i ∈ pred(j) de l(i)\nRéponse : le MAX des l(j), pas l(n−1)'],
- ['Sous-chaîne palindrome','p(i,j) ? Base ? Hérédité ? Ordre ?','p(i,j) = vrai si S[i:j] est un palindrome\np(i,i) = vrai ;  p(i,i+1) = vrai\np(i,j) = S[i] == S[j−1] et p(i+1, j−1)\npour j − i ≥ 2\nordre : longueur d = j − i croissante ; Θ(n²)'],
+ ['Sous-séquence palindrome (TD4)','l(i,j) ? Les deux bases ? Hérédité ? Ordre ?','l(i,j) = longueur max des plssp de S[i:j]\nl(i,i) = 0 ;  l(i,i+1) = 1\ns(i) == s(j−1) : l(i,j) = 2 + l(i+1, j−1)\nsinon : l(i,j) = max( l(i+1,j), l(i,j−1) )\n2 ≤ t < n+1, 0 ≤ i < n−t+1, j = i+t ; Θ(n²)'],
  ['ABR de coût minimum (cours)','m(i,j) ? Base ? Cas général ? Où va l\'arg ?','m(i,j) = coût min d\'un abr sur les valeurs [i:j]\nm(i,i) = 0\nm(i,j) = min sur i ≤ k < j de ( m(i,k) + m(k+1,j) )\n         + f(i) + … + f(j−1)\nM[i][j] = m(i,j) ;  M[j][i] = arg (la racine k)\nordre : tailles t = j − i croissantes ; Θ(n³)'],
  ['Arbres binaires (cours)','t ? h ? règle de l\'abr ? grd ? abrhmin ?','t : () → 0, sinon 1 + t(g) + t(d)\nh : () → −1, sinon 1 + max(h(g), h(d))\n    (une feuille a h = 0)\nabr : x ∈ g ⇒ x < vr,  x ∈ d ⇒ x > vr\ngrd : croissant   drg : décroissant\nabrhmin(i,j) : k = (i+j)/2, g sur [i:k], d sur [k+1:j]'],
  ['Cardinal minimum (contrôle 1)','m(k,s) ? Base ? Hérédité ? Comment afficher ?','m(k,s) = cardinal min d\'un sous-ensemble des\n         k premiers éléments, de somme s\nm(0,0) = 0 ;  m(0,s) = infini pour 1 ≤ s ≤ S\nm(k,s) = min{ m(k−1,s), 1 + m(k−1, s−x(k−1)) }\n1 ≤ k < n+1, 0 ≤ s < S+1\nasecm : M[k][s] == M[k−1][s] → x(k−1) pas pris']
@@ -3558,6 +3920,65 @@ function initFiches() {
   $('#reset-prog')?.addEventListener('click', sync);
   show(arts[0].dataset.fiche); sync();
 }
-init();
+// ===================== ERGONOMIE : accueil groupé, reprise, progression globale, menu mobile, navigation entre chapitres =====================
+const ORDER = ['methode', 'chemins', 'juliette', 'plsc', 'plssc', 'arbres', 'palindrome', 'abropt', 'fiches', 'examen'];
+const GROUPS = [
+  { title: 'Commencer', sub: 'Une seule recette pour tous les problèmes.', ids: ['methode'] },
+  { title: 'Les TD', sub: 'Feuilles 2, 3, 4 et 6.', ids: ['chemins', 'juliette', 'plsc', 'plssc'] },
+  { title: 'Hors TD et cours', sub: 'Arbres, plssp et le dernier chapitre du cours.', ids: ['arbres', 'palindrome', 'abropt'] },
+  { title: 'Réviser et s\'entraîner', sub: 'La veille, puis en conditions réelles.', ids: ['fiches', 'examen'] }
+];
+const topic = id => TOPICS.find(t => t.id === id);
+const navTitle = id => { const a = $(`.nav a[href="#${id}"] span`); return a ? a.textContent : (id === 'urgence' ? 'Kit de survie' : ''); };
+const progOf = id => { const ids = [...(REG[id] || [])]; return { d: ids.filter(i => Store.is(i)).length, n: ids.length }; };
+
+function renderHome() {
+  $('#home-groups').innerHTML = GROUPS.map(g => `<section class="hgroup"><div class="hgroup-head"><h2>${esc(g.title)}</h2><p>${esc(g.sub)}</p></div><div class="cards">${g.ids.map(id => { const t = topic(id); return t ? `<a class="card" href="#${t.id}"><p class="tag">${esc(t.tag)}</p><h3>${esc(t.title)}</h3><p>${esc(t.desc)}</p><p class="small" data-count="${t.id}"></p><div class="bar"><i data-bar="${t.id}"></i></div></a>` : ''; }).join('')}</div></section>`).join('');
+  const ord = $('#ordre-panel'), first = $('#home-groups .hgroup .cards');
+  if (ord && first) { const wrap = ord.parentElement; first.appendChild(ord); if (wrap && wrap.children.length === 1) wrap.style.display = 'block'; }
+}
+function renderResume() {
+  const box = $('#resume'); if (!box) return;
+  const last = Store.data.lastView;
+  const next = ORDER.find(id => { const p = progOf(id); return p.n === 0 || p.d < p.n; }) || 'examen';
+  const card = (id, label, primary) => { const p = progOf(id); return `<a class="resume-item${primary ? ' primary' : ''}" href="#${id}"><small>${label}</small><b>${esc(navTitle(id))}</b><span>${p.n ? `${p.d} / ${p.n} réussis` : ''}</span></a>`; };
+  let h = '';
+  if (last && ORDER.includes(last)) h += card(last, 'Reprendre là où tu t\'es arrêté', true);
+  if (next !== last) h += card(next, last ? 'Prochaine étape conseillée' : 'Commencer ici', !last);
+  h += `<a class="resume-item sos-item" href="#urgence"><small>Le partiel est demain ?</small><b>Kit de survie</b><span>L'essentiel pour viser 10/20</span></a>`;
+  box.innerHTML = h;
+}
+function globalProgress() {
+  let d = 0, n = 0; ORDER.forEach(id => { const p = progOf(id); d += p.d; n += p.n; });
+  const pc = n ? Math.round(100 * d / n) : 0;
+  $('#gprog-val').textContent = `${pc} %`; $('#gprog-bar').style.width = pc + '%';
+}
+function chapterFooters() {
+  ORDER.forEach((id, k) => {
+    const sec = $('#v-' + id); if (!sec) return;
+    const prev = ORDER[k - 1], next = ORDER[k + 1];
+    sec.insertAdjacentHTML('beforeend', `<nav class="chap-foot" aria-label="Chapitres voisins">${prev ? `<a href="#${prev}" class="cf-prev"><small>← Précédent</small><b>${esc(navTitle(prev))}</b></a>` : '<span></span>'}${next ? `<a href="#${next}" class="cf-next"><small>Suivant →</small><b>${esc(navTitle(next))}</b></a>` : '<span></span>'}</nav>`);
+  });
+}
+function initUX() {
+  renderHome(); chapterFooters();
+  const side = $('#side'), btn = $('#menu-btn');
+  const setMenu = open => { side.classList.toggle('open', open); btn.setAttribute('aria-expanded', open); btn.textContent = open ? 'Fermer' : 'Menu'; };
+  btn.addEventListener('click', () => setMenu(!side.classList.contains('open')));
+  $('#side-nav').addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+  const onRoute = () => {
+    let h = location.hash.slice(1); if (!VIEWS.includes(h)) h = 'accueil';
+    $('#cur-title').textContent = h === 'accueil' ? '' : navTitle(h);
+    if (ORDER.includes(h)) { Store.data.lastView = h; Store.save(); }
+    if (h === 'accueil') renderResume();
+    setMenu(false);
+  };
+  window.addEventListener('hashchange', onRoute);
+  const up = updateProgress;
+  updateProgress = function () { up(); globalProgress(); renderResume(); };
+  updateProgress(); onRoute();
+}
+init(); initUX();
 </script>
 </body></html>
