@@ -277,6 +277,41 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
 }
 @media (max-width:820px){.sos{right:12px;bottom:12px;padding:10px 14px;font-size:.9rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---- fiches de révision ---- */
+.fiche-nav{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 6px;position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0}
+.fiche-nav button{font:inherit;font-size:.9rem;font-weight:600;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 13px;cursor:pointer}
+.fiche-nav button.read::before{content:"✓ ";color:var(--ok)}
+.fiche-nav button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.fiche-nav button.on.read::before{color:#fff}
+.fiche{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:10px 0 24px}
+.fiche-head h2{margin:2px 0 6px}
+.fiche-head .eyebrow{margin:0}
+.fiche-one{font-size:1.06rem;font-weight:600;margin:4px 0 8px}
+.fiche-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.fb{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.fb.wide{grid-column:1/-1}
+.fb h4{margin:0 0 6px;font-family:var(--font-display);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.fb p,.fb ul,.fb ol{margin:4px 0}
+.fb ul,.fb ol{padding-left:20px}
+.fb li{margin:3px 0}
+.fb pre.code,.fb pre.mini{margin:6px 0 0}
+.fb.rec-b{border-color:var(--accent);background:var(--accent-soft)}
+.fb.rec-b pre.code{background:var(--surface)}
+.fb.pieges{border-color:var(--bad);background:var(--bad-soft)}
+.fb.pieges h4{color:var(--bad)}
+.fb .qcm{margin-top:4px}
+.fb .two-col{grid-template-columns:1fr}
+.fiche-foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.three-trees{display:grid;grid-template-columns:1fr;gap:12px;margin:10px 0}
+.three-trees .note{text-align:center;margin:4px 0 0}
+@media (max-width:760px){.fiche-grid{grid-template-columns:1fr}.fiche{padding:16px}}
+@media print{
+  .side,.sos,.fiche-nav,.fiche-foot,#fiche-count,.sec-head{display:none!important}
+  .fiche{border:0;padding:0;margin:0}
+  .fb{break-inside:avoid}
+  pre.code{max-height:none!important;white-space:pre-wrap}
+}
 </style>
 </head>
 <body>
@@ -293,6 +328,7 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
     <a href="#arbres"><span>Arbres binaires</span><small>Hors TD · ABR, parcours</small><i class="chip" data-prog="arbres"></i></a>
     <a href="#palindrome"><span>Sous-chaîne palindrome</span><small>Hors TD · à faire en 90 min</small><i class="chip" data-prog="palindrome"></i></a>
     <a href="#abropt"><span>ABR de coût minimum</span><small>Cours · dernier chapitre</small><i class="chip" data-prog="abropt"></i></a>
+    <a href="#fiches"><span>Fiches de révision</span><small>Un sujet par page</small><i class="chip" data-prog="fiches"></i></a>
     <a href="#examen"><span>Sujets blancs</span><small>Format partiel, chronométré</small><i class="chip" data-prog="examen"></i></a>
   </nav>
   <div class="side-foot">Ta progression est gardée dans ce navigateur. <button type="button" id="reset-prog">Tout remettre à zéro</button></div>
@@ -320,9 +356,9 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
   <div class="two">
     <div class="panel">
       <h3>Ce qui t'attend le jour J</h3>
-      <p>D'après le contrôle 2 : 90 minutes, sans document ni ordinateur, réponses courtes. Quatre questions de 5 points qui suivent presque toujours le même schéma :</p>
+      <p>D'après tes deux contrôles (le contrôle 1 de cette année et l'annale du contrôle 2) : 90 minutes, sans document ni ordinateur, un problème parfois <b>jamais vu</b>, et quatre questions qui déroulent toujours la même recette :</p>
       <ol>
-        <li><b>Une fonction utilitaire</b> : afficher un graphe, construire le graphe, le symétrique…</li>
+        <li><b>« Supposons le problème résolu »</b> (exprimer m(n,S), contrôle 1) <b>ou une fonction utilitaire</b> (afficher un graphe, contrôle 2).</li>
         <li><b>L'équation de récurrence</b> : la base, l'hérédité et l'intervalle des indices.</li>
         <li><b>La fonction de calcul</b> (<code>calculerMA</code>, <code>calculerL</code>…) qui remplit le tableau.</li>
         <li><b>La fonction récursive</b> qui affiche la solution (<code>acm</code>, <code>aro</code>, <code>plsc</code>…).</li>
@@ -335,7 +371,8 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
         <li>Lis <a href="#methode">la méthode</a> en entier : c'est la clé de tout le reste.</li>
         <li>Pour chaque TD : Comprendre → Simulateur → Le code → S'entraîner.</li>
         <li>Refais les calculs « à la main » jusqu'à ne plus te tromper : c'est le meilleur moyen de retenir la récurrence.</li>
-        <li>Termine par un <a href="#examen">sujet blanc</a> chronométré, sans regarder le corrigé.</li>
+        <li>La veille, relis les <a href="#fiches">fiches de révision</a>.</li>
+        <li>Termine par un <a href="#examen">sujet blanc</a> chronométré, sans regarder le corrigé : commence par l'annale du contrôle 1.</li>
       </ol>
     </div>
   </div>
@@ -405,7 +442,8 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
       <tr><td>PLSC (TD4)</td><td>l(p,q) : longueur d'une plsc des p et q préfixes</td><td>l(0,q) = l(p,0) = 0</td><td>égales : 1+l(p−1,q−1)<br>sinon : max( l(p−1,q), l(p,q−1) )</td><td>Θ(m·n)</td></tr>
       <tr><td>PLSSC (TD6)</td><td>l(j) : longueur d'une plssc qui finit en j</td><td>pred(j) = ∅ : l(j) = 1</td><td>l(j) = 1 + max sur i ∈ pred(j) de l(i)<br>réponse = max des l(j)</td><td>α·n²</td></tr>
       <tr><td>Sous-chaîne palindrome (hors TD)</td><td>p(i,j) : vrai si S[i:j] est un palindrome</td><td>p(i,i) = vrai<br>p(i,i+1) = vrai</td><td>p(i,j) = ( S[i] == S[j−1] ) et p(i+1, j−1), j − i ≥ 2</td><td>Θ(n²)</td></tr>
-      <tr><td>ABR de coût minimum (cours)</td><td>m(i,j) : coût min d'un ABR sur les clés [i:j]</td><td>m(i,i) = 0</td><td>m(i,j) = σ(i,j) + min sur i ≤ r &lt; j de m(i,r) + m(r+1,j)</td><td>α·n³</td></tr>
+      <tr><td>ABR de coût minimum (cours)</td><td>m(i,j) : coût min d'un abr sur les valeurs [i:j]</td><td>m(i,i) = 0</td><td>m(i,j) = min sur i ≤ k &lt; j de m(i,k) + m(k+1,j), + f(i) + … + f(j−1)</td><td>Θ(n³)</td></tr>
+      <tr><td>Cardinal minimum (contrôle 1)</td><td>m(k,s) : cardinal min d'un sous-ensemble des k premiers éléments, de somme s</td><td>m(0,0) = 0<br>m(0,s) = ∞, s ≥ 1</td><td>m(k,s) = min{ m(k−1,s), 1 + m(k−1, s−x(k−1)) }</td><td>Θ(n·S)</td></tr>
     </table></div>
     <button type="button" class="btn primary next-sub" data-go="j">Suite : la boîte à outils Java →</button>
   </div>
@@ -810,10 +848,10 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
       <tr><td>racine</td><td>le nœud tout en haut (ici 50).</td></tr>
       <tr><td>feuille</td><td>un nœud dont les deux sous-arbres sont vides (ici 20, 35, 60, 80).</td></tr>
       <tr><td>taille</td><td>le nombre de valeurs (ici 8).</td></tr>
-      <tr><td>hauteur</td><td>le nombre de niveaux (ici 4). Convention de cette page : hauteur(vide) = 0, une feuille seule a hauteur 1. Certains cours prennent −1 pour l'arbre vide : regarde la convention de ton cours, la formule récursive reste la même.</td></tr>
-      <tr><td>profondeur</td><td>la distance à la racine : la racine est à profondeur 0, ses fils à 1, etc.</td></tr>
+      <tr><td>hauteur h</td><td>la longueur du plus long chemin depuis la racine, en nombre d'arcs (ici 3 : 50 → 30 → 40 → 35). <b>Convention du cours : h(()) = −1</b>, donc une feuille a une hauteur 0.</td></tr>
+      <tr><td>niveau</td><td>la distance à la racine : la racine est au niveau 0, ses fils au niveau 1, etc. Il faut <b>l + 1 comparaisons</b> pour trouver une valeur au niveau l.</td></tr>
     </table></div>
-    <p>En Java, la classe du contrôle 2 :</p>
+    <p>Dans le cours, on écrit un arbre comme un triplet <b>(vr g d)</b>, et l'arbre vide <b>()</b>. Par exemple (4 (3 () ()) (6 () ())) est l'arbre de racine 4 avec 3 à gauche et 6 à droite. Une feuille, c'est <b>(v () ())</b>. En Java, la classe du cours (on n'utilise jamais les champs directement, seulement vide, vr, sag et sad) :</p>
     <pre class="code" data-code="ab_class"></pre>
 
     <h2>La recette pour toutes les fonctions sur les arbres</h2>
@@ -822,29 +860,32 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
       <li><b>Cas général</b> : on suppose qu'on a le résultat pour sag(a) et sad(a) (appels récursifs), et on les combine avec la racine vr(a).</li>
     </ol>
     <p class="analogy">Pour compter les employés, le patron demande à chacun de ses deux adjoints « combien vous êtes dans ton équipe ? », additionne les deux réponses, et s'ajoute lui-même. Chaque adjoint fait pareil avec ses propres adjoints.</p>
-    <div class="formula">taille(vide) = 0 &nbsp;&nbsp;·&nbsp;&nbsp; taille(a) = 1 + taille(sag(a)) + taille(sad(a))<br>hauteur(vide) = 0 &nbsp;&nbsp;·&nbsp;&nbsp; hauteur(a) = 1 + max( hauteur(sag(a)), hauteur(sad(a)) )</div>
+    <div class="formula">t(()) = 0 &nbsp;&nbsp;·&nbsp;&nbsp; t(a) = 1 + t(sag(a)) + t(sad(a))<br>h(()) = −1 &nbsp;&nbsp;·&nbsp;&nbsp; h(a) = 1 + max( h(sag(a)), h(sad(a)) )</div>
+    <p>Pourquoi −1 ? Pour que la formule marche aussi sur une feuille : h((v () ())) = 1 + max(−1, −1) = 0. Une feuille n'a aucun arc sous elle.</p>
+    <p>Le prof justifie chaque ligne par un commentaire (« les valeurs de son sag ont été affichées… donc a a été affiché »). Fais pareil : c'est la preuve que ta fonction est juste.</p>
 
-    <h2>Les trois parcours</h2>
-    <p>Pour afficher toutes les valeurs, on visite la racine et les deux sous-arbres. Seul l'ordre change :</p>
+    <h2>Les parcours : grd, drg, rgd</h2>
+    <p>Pour afficher toutes les valeurs, on visite la racine (r) et les deux sous-arbres (g et d). Le nom de la fonction dit l'ordre :</p>
     <div class="scroll"><table class="notes">
-      <tr><td><b>préfixe</b></td><td>racine, puis gauche, puis droite. Sur l'exemple : 50 30 20 40 35 70 60 80</td></tr>
-      <tr><td><b>infixe</b></td><td>gauche, puis racine, puis droite. Sur l'exemple : 20 30 35 40 50 60 70 80</td></tr>
-      <tr><td><b>suffixe</b></td><td>gauche, puis droite, puis racine. Sur l'exemple : 20 35 40 30 60 80 70 50</td></tr>
+      <tr><td><b>grd</b></td><td>gauche, racine, droite : un abr s'affiche <b>dans l'ordre croissant</b> (« à l'endroit »). Sur l'exemple : 20 30 35 40 50 60 70 80</td></tr>
+      <tr><td><b>drg</b></td><td>droite, racine, gauche : <b>ordre décroissant</b> (« à l'envers »). Sur l'exemple : 80 70 60 50 40 35 30 20</td></tr>
+      <tr><td><b>rgd</b></td><td>racine d'abord (préfixe). Sur l'exemple : 50 30 20 40 35 70 60 80. Le cours s'en sert pour écrire les arcs de l'arbre.</td></tr>
     </table></div>
-    <p>Moyen mnémotechnique : le nom dit <b>où se place la racine</b> (pré = avant, in = au milieu, suf = après).</p>
+    <p class="analogy">grd, c'est lire un livre : tout ce qui est avant (à gauche), la page du milieu, puis tout ce qui est après.</p>
 
     <h2>Les arbres binaires de recherche (ABR)</h2>
     <p>Un ABR est un arbre binaire rangé : pour chaque nœud, <b>toutes</b> les valeurs de son sous-arbre gauche sont plus petites que lui, et <b>toutes</b> celles de son sous-arbre droit sont plus grandes.</p>
     <p class="analogy">Le jeu « plus grand / plus petit » : on te dit 50, tu sais si ton nombre est à gauche ou à droite, et tu élimines la moitié des possibilités à chaque question.</p>
     <ul>
-      <li><b>Chercher</b> x : on compare à la racine. Égal : trouvé. Plus petit : on cherche <b>seulement</b> à gauche. Plus grand : seulement à droite.</li>
-      <li><b>Le parcours infixe d'un ABR donne les valeurs dans l'ordre croissant.</b> C'est la fonction <code>ac</code> du contrôle 2.</li>
-      <li><b>Insérer</b> x : on descend comme pour chercher, et on accroche x à l'endroit vide où l'on tombe. La version du cours reconstruit les nœuds sur le chemin : <code>new AB(vr(a), insérer(x, sag(a)), sad(a))</code>.</li>
+      <li><b>in(x, a)</b> cherche x : on compare à la racine. Égal : on retourne ce sous-arbre. Plus petit : on cherche <b>seulement</b> à gauche. Plus grand : seulement à droite. Arbre vide : x est absent, on retourne ().</li>
+      <li><b>grd(a)</b> affiche un abr dans l'ordre croissant (c'est le <code>ac</code> du contrôle 2), <b>drg(a)</b> dans l'ordre décroissant.</li>
+      <li><b>inserer(x, a)</b> : on descend comme pour chercher, et on accroche x à l'endroit vide où l'on tombe. Si x est déjà là, on retourne a (pas de répétition dans un abr). La version du cours reconstruit les nœuds sur le chemin : <code>new AB(vr(a), inserer(x, sag(a)), sad(a))</code>.</li>
       <li><b>Le maximum</b> est tout en bas à droite, le minimum tout en bas à gauche.</li>
     </ul>
 
     <h2>L'ABR de hauteur minimum : abrhmin(i, j)</h2>
-    <p>Pour construire l'ABR le plus « tassé » possible avec les valeurs de l'intervalle [i:j] (de i à j−1), on met le <b>milieu</b> m = (i+j)/2 à la racine, puis on recommence à gauche sur [i:m] et à droite sur [m+1:j]. Si i ≥ j, l'intervalle est vide : on retourne l'arbre vide.</p>
+    <p>Pour construire l'abr le plus « tassé » possible avec les valeurs de l'ensemble [i:j] (de i à j−1), on met la <b>valeur médiane</b> k = (i+j)/2 à la racine, puis on recommence à gauche sur [i:k] et à droite sur [k+1:j]. Si j − i ≤ 0, l'ensemble est vide : on retourne l'arbre vide. Appel principal : <code>abrhmin(0, n)</code>. Temps de calcul : Θ(n).</p>
+    <p class="note">Le cours prend toujours les valeurs 0, 1, …, n−1 (l'ensemble [0:n]). Ce n'est pas une restriction : si les valeurs sont autres, on les numérote dans l'ordre croissant.</p>
     <p>C'est le même principe que la recherche par dichotomie. Et c'est exactement la structure qu'on réutilise pour l'<a href="#abropt">ABR de coût minimum</a>, en changeant juste le choix de la racine.</p>
     <button type="button" class="btn primary next-sub" data-go="s">Construire des arbres →</button>
   </div>
@@ -876,13 +917,14 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
 
   <div class="sub" data-sub="k" hidden>
     <div class="prose">
-    <div class="codeblock"><h3>taille et hauteur</h3><pre class="code" data-code="ab_th"></pre></div>
+    <div class="codeblock"><h3>La classe AB et les fonctions de base</h3><pre class="code" data-code="ab_class"></pre></div>
+    <div class="codeblock"><h3>t (taille) et h (hauteur)</h3><pre class="code" data-code="ab_th"></pre></div>
     <div class="codeblock"><h3>nombre de feuilles</h3><pre class="code" data-code="ab_feuilles"></pre></div>
-    <div class="codeblock"><h3>Les trois parcours</h3><p class="explain">La seule différence est la place de la ligne qui affiche la racine.</p><pre class="code" data-code="ab_parcours"></pre></div>
-    <div class="codeblock"><h3>Chercher dans un ABR</h3><p class="explain">On ne descend que d'un côté : c'est tout l'intérêt d'un ABR.</p><pre class="code" data-code="ab_appartient"></pre></div>
+    <div class="codeblock"><h3>Les parcours grd, drg, rgd</h3><p class="explain">La seule différence est la place de la ligne qui affiche la racine.</p><pre class="code" data-code="ab_parcours"></pre></div>
+    <div class="codeblock"><h3>in : chercher dans un abr</h3><p class="explain">On ne descend que d'un côté : c'est tout l'intérêt d'un abr.</p><pre class="code" data-code="ab_appartient"></pre></div>
     <div class="codeblock"><h3>Maximum d'un ABR</h3><pre class="code" data-code="ab_max"></pre></div>
-    <div class="codeblock"><h3>insérer (contrôle 2, repère : 6 lignes)</h3><pre class="code" data-code="ab_ins"></pre></div>
-    <div class="codeblock"><h3>abrhmin (contrôle 2, repère : 6 lignes)</h3><pre class="code" data-code="ab_hmin"></pre></div>
+    <div class="codeblock"><h3>inserer (repère : 6 lignes)</h3><pre class="code" data-code="ab_ins"></pre></div>
+    <div class="codeblock"><h3>abrhmin (repère : 6 lignes)</h3><pre class="code" data-code="ab_hmin"></pre></div>
     </div>
   </div>
 
@@ -978,7 +1020,7 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
   <header class="sec-head">
     <p class="eyebrow">Cours · dernier chapitre au programme</p>
     <h1>Arbre binaire de recherche de coût minimum</h1>
-    <p class="lead">Quand certaines clés sont cherchées beaucoup plus souvent que d'autres, on a intérêt à les placer près de la racine. Quel ABR minimise le nombre total de comparaisons ?</p>
+    <p class="lead">Quand certaines valeurs sont cherchées beaucoup plus souvent que d'autres, on a intérêt à les placer près de la racine. Quel abr minimise le coût moyen de recherche ?</p>
   </header>
   <div class="subtabs" role="tablist">
     <button type="button" data-sub="c" class="on">Comprendre</button>
@@ -988,49 +1030,72 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
   </div>
 
   <div class="sub prose" data-sub="c">
-    <p class="note">Je n'ai pas tes notes de cours sur ce chapitre. Cette page présente la version classique : n clés 0, 1, …, n−1, chaque clé k étant cherchée f(k) fois. Si ton cours ajoute des fréquences pour les recherches qui échouent, la structure de la récurrence est la même ; seule la somme σ change.</p>
+    <p class="note">Cette page suit ton cours du 5 octobre 2026 (R. Natowicz) : mêmes notations, mêmes fonctions, même exemple.</p>
     <h2>Le problème</h2>
-    <p>Chercher une clé à la profondeur p dans un ABR coûte p + 1 comparaisons (la racine est à profondeur 0 : une comparaison). Si la clé k est cherchée f(k) fois, le <b>coût</b> de l'arbre est le nombre total de comparaisons :</p>
-    <div class="formula">coût = Σ f(k) × ( profondeur(k) + 1 )</div>
-    <p class="analogy">Dans un magasin, on met les produits les plus demandés près de l'entrée. Ici on a une contrainte en plus : le rangement doit rester un ABR (plus petit à gauche, plus grand à droite). On ne peut donc pas simplement trier par popularité.</p>
-    <h3>Exemple : 3 clés, f = [5, 1, 1]</h3>
-    <div class="two">
-      <div><div class="dag-wrap" data-tree="ao-eq"></div><p class="note">Arbre équilibré (abrhmin) : 5×2 + 1×1 + 1×2 = <b>13</b></p></div>
-      <div><div class="dag-wrap" data-tree="ao-opt"></div><p class="note">Clé 0 à la racine : 5×1 + 1×2 + 1×3 = <b>10</b></p></div>
+    <p>Les valeurs de l'ensemble [0:n] (de 0 à n−1) sont rangées dans un abr. On connaît la <b>fréquence de recherche</b> F[v] de chaque valeur v. Trouver une valeur au niveau l demande <b>l + 1 comparaisons</b> (une seule pour la racine). On définit :</p>
+    <ul>
+      <li><b>coût de recherche de v</b> = F[v] × (nombre de comparaisons pour trouver v) ;</li>
+      <li><b>coût de l'abr</b> = la somme des coûts de ses valeurs.</li>
+    </ul>
+    <p class="analogy">Dans un magasin, on met les produits les plus demandés près de l'entrée. Ici, on a une contrainte en plus : le rangement doit rester un abr (plus petit à gauche, plus grand à droite). On ne peut donc pas simplement trier par popularité.</p>
+    <pre class="code" data-code="ao_cout"></pre>
+
+    <h2>Trois façons de construire l'abr</h2>
+    <p>L'exemple du cours : n = 9, F = [2, 3, 1, 8, 5, 4, 6, 7, 9].</p>
+    <div class="scroll"><table class="notes">
+      <tr><td><b>glouton</b></td><td>On insère les valeurs par fréquences décroissantes, sans regarder les valeurs. La plus fréquente est à la racine, mais l'arbre peut devenir très haut. Pire cas (fréquences croissantes) : une « liste », Θ(n²) pour les insertions. <b>Coût 140.</b></td></tr>
+      <tr><td><b>hauteur minimum</b></td><td>abrhmin(0, n) : la médiane à la racine, sans regarder les fréquences. <b>Coût 123.</b></td></tr>
+      <tr><td><b>coût minimum</b></td><td>Programmation dynamique : on tient compte des valeurs ET des fréquences. <b>Coût 113.</b></td></tr>
+    </table></div>
+    <div class="three-trees">
+      <div><div class="dag-wrap" data-tree="ao-c-g"></div><p class="note">Glouton : coût 140</p></div>
+      <div><div class="dag-wrap" data-tree="ao-c-h"></div><p class="note">Hauteur minimum : coût 123</p></div>
+      <div><div class="dag-wrap" data-tree="ao-c-m"></div><p class="note">Coût minimum : coût 113</p></div>
     </div>
-    <p>Le plus équilibré n'est pas le meilleur : la clé 0, très demandée, gagne à être à la racine, même si l'arbre devient penché.</p>
+    <p>L'abr de coût minimum est un <b>compromis</b> entre deux critères qui se contredisent en général : les valeurs fréquentes doivent être près de la racine, et l'arbre doit être peu haut.</p>
+    <h3>Plus petit, pour calculer à la main : F = [5, 1, 1]</h3>
+    <div class="two">
+      <div><div class="dag-wrap" data-tree="ao-eq"></div><p class="note">Hauteur min (racine 1) : 2×5 + 1×1 + 2×1 = <b>13</b></p></div>
+      <div><div class="dag-wrap" data-tree="ao-opt"></div><p class="note">Valeur 0 à la racine : 1×5 + 2×1 + 3×1 = <b>10</b></p></div>
+    </div>
 
     <h2>Supposons le problème résolu</h2>
-    <p>L'ABR optimal sur les clés [i:j] a une racine r, avec i ≤ r &lt; j. Comme c'est un ABR :</p>
+    <p>Soit m(0,n) le coût minimum d'un abr sur [0:n]. La racine peut être 0, ou 1, …, ou n−1. Supposons que ce soit <b>k</b>. Alors :</p>
     <ul>
-      <li>le sous-arbre gauche contient les clés [i:r], et il doit être lui-même optimal (sinon on le remplacerait par un meilleur) ;</li>
-      <li>le sous-arbre droit contient les clés [r+1:j], optimal lui aussi.</li>
+      <li>le sous-arbre gauche est un abr de coût minimum sur [0:k], de coût m(0,k) ;</li>
+      <li>le sous-arbre droit est un abr de coût minimum sur [k+1:n], de coût m(k+1,n).</li>
     </ul>
-    <p>Quand on accroche ces deux sous-arbres sous r, chacune de leurs clés descend d'un niveau : elle coûte une comparaison de plus, celle avec r. Et r elle-même coûte 1 comparaison par recherche. Au total, <b>chaque clé de [i:j] paie une comparaison avec la racine</b>, ce qui ajoute la somme de toutes leurs fréquences :</p>
-    <div class="formula">σ(i,j) = f(i) + f(i+1) + … + f(j−1)<br>coût = coût(gauche) + coût(droit) + σ(i,j)</div>
-    <p>On ne sait pas quelle racine r est la bonne, donc on les essaie toutes et on garde la meilleure.</p>
+    <div class="callout warn"><b>Le piège du cours</b> : m(0,n) = f(k) + m(0,k) + m(k+1,n) est <b>faux</b>. Les deux sous-arbres sont un niveau plus bas que s'ils étaient seuls : chacune de leurs valeurs coûte une comparaison de plus. Le sous-arbre gauche apporte donc m(0,k) + (f(0) + … + f(k−1)), le droit m(k+1,n) + (f(k+1) + … + f(n−1)), et la racine 1 × f(k).</div>
+    <p>En additionnant, on ajoute <b>toutes</b> les fréquences de l'ensemble, f(0) + … + f(n−1). Et comme on ne sait pas quel k est le bon, on prend le minimum :</p>
+    <div class="formula">m(0,n) = min sur 0 ≤ k &lt; n de ( m(0,k) + m(k+1,n) ) + ( f(0) + … + f(n−1) )</div>
 
-    <h2>Équation de récurrence</h2>
-    <p><b>m(i,j)</b> = coût minimum d'un ABR construit sur les clés de l'intervalle [i:j], pour 0 ≤ i ≤ j ≤ n.</p>
-    <div class="rec"><b>Base</b><span>m(i,i) = 0 &nbsp;(intervalle vide, arbre vide)</span><b>Hérédité</b><span>pour 0 ≤ i &lt; j ≤ n :<br>m(i,j) = σ(i,j) + min sur i ≤ r &lt; j de ( m(i,r) + m(r+1,j) )<br>a(i,j) = le r qui réalise ce minimum : la racine</span><b>Réponse</b><span>m(0,n), et l'arbre se reconstruit à partir de a(0,n)</span></div>
-    <p>m(i,j) n'utilise que des intervalles plus courts : on remplit par <b>longueur d = j − i croissante</b>, comme pour les palindromes. Pour calculer σ vite, on précalcule les sommes cumulées S[k] = f(0) + … + f(k−1) : alors σ(i,j) = S[j] − S[i].</p>
+    <h2>Équation de récurrence des m(i,j)</h2>
+    <p><b>m(i,j)</b> = coût minimum d'un abr construit sur le sous-ensemble de valeurs [i:j]. La <b>taille</b> du problème est t = j − i.</p>
+    <div class="rec"><b>Base</b><span>t = 0 : m(i,i) = 0, pour 0 ≤ i &lt; n+1 &nbsp;(ensemble vide, arbre vide, somme sur l'ensemble vide)</span><b>Cas général</b><span>1 ≤ t &lt; n+1, j = i + t, 0 ≤ i &lt; n−t+1 :<br>m(i,j) = min sur i ≤ k &lt; j de ( m(i,k) + m(k+1,j) ) + ( f(i) + … + f(j−1) )</span><b>Réponse</b><span>m(0,n), et l'arbre se construit avec les arg</span></div>
 
-    <h2>Reconstruire l'arbre</h2>
-    <p>Le code ressemble trait pour trait à <code>abrhmin(i, j)</code> du contrôle 2. La seule différence : la racine n'est plus le milieu (i+j)/2, mais la meilleure racine A[i][j].</p>
+    <h2>Le tableau M : valeurs et arguments dans le même tableau</h2>
+    <p>On calcule par <b>tailles t croissantes</b>, c'est-à-dire diagonale par diagonale : t = 0 (la diagonale principale, n+1 cases à 0), puis t = 1 (n cases), …, jusqu'à t = n (une seule case, m(0,n)).</p>
+    <p>Les m(i,j) n'occupent que les cases i ≤ j, la moitié du tableau. L'autre moitié est libre : le cours y range les arguments.</p>
+    <div class="formula">M[i][j] = m(i,j) &nbsp;pour i ≤ j &nbsp;&nbsp;·&nbsp;&nbsp; M[j][i] = arg m(i,j) &nbsp;pour i &lt; j (la racine k)</div>
+    <p class="analogy">Comme un carnet où l'on écrit le prix sur la page de droite et le nom du magasin le moins cher sur la page de gauche, au même endroit.</p>
+
+    <h2>Construire l'abr</h2>
+    <p>Le code ressemble trait pour trait à <code>abrhmin(i, j)</code> : la seule différence est que la racine n'est plus la médiane (i+j)/2, mais l'argument M[j][i].</p>
     <pre class="code" data-code="ao_abr"></pre>
 
     <h2>Complexité</h2>
-    <p>Environ n²/2 intervalles, et pour chacun jusqu'à n racines à essayer : de l'ordre de <b>α·n³</b>.</p>
+    <p>Une valeur m(i,j) de taille t se calcule en Θ(t), il y en a environ n − t de chaque taille. Au total Σ (n − t) × t, dont le terme dominant est n³/6 : <b>Θ(n³)</b>. L'approche exhaustive (essayer tous les abr) est en Θ(4ⁿ / n^1,5) : les nombres de Catalan.</p>
     <button type="button" class="btn primary next-sub" data-go="s">Voir le calcul →</button>
   </div>
 
   <div class="sub" data-sub="s" hidden>
-    <p class="prose">Les tableaux M et A sont remplis diagonale par diagonale. Pour chaque intervalle, on essaie chaque racine r. À la fin, l'arbre optimal se construit, et on vérifie que son coût est bien M[0][n].</p>
+    <p class="prose">Les m(i,j) sont calculés par tailles t croissantes, diagonale par diagonale. Pour chaque ensemble [i:j], on essaie chaque racine k. Pour la lisibilité, les arg sont affichés dans un second tableau ; dans le code du cours, ils sont rangés dans M[j][i]. À la fin, abrcmin construit l'arbre et on vérifie que son coût vaut M[0][n].</p>
     <div class="sim" id="sim-ao">
       <div class="sim-inputs">
-        <label class="grow" for="ao-F">Fréquences f(0), f(1), … <input id="ao-F" type="text" value="3 1 6 2 5"></label>
+        <label class="grow" for="ao-F">Fréquences F[0], F[1], … <input id="ao-F" type="text" value="3 1 6 2 5"></label>
         <button type="button" class="btn primary" id="ao-load">Lancer</button>
         <button type="button" class="btn ghost" id="ao-ex">Exemple 5, 1, 1</button>
+        <button type="button" class="btn ghost" id="ao-cours">Exemple du cours (9 valeurs)</button>
       </div>
       <p class="err" id="ao-err"></p>
       <div class="pbar"></div><div class="pmsg"></div>
@@ -1041,19 +1106,305 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
 
   <div class="sub" data-sub="k" hidden>
     <div class="prose">
-    <div class="codeblock"><h3>calculerMA</h3><p class="explain">Sommes cumulées, base sur la diagonale, puis trois boucles : longueur d, début i, racine r.</p><pre class="code" data-code="ao_MA"></pre></div>
-    <div class="codeblock"><h3>abrOpt : construire l'ABR de coût minimum</h3><p class="explain">Appel principal : <code>AB a = abrOpt(A, 0, n);</code></p><pre class="code" data-code="ao_abr"></pre></div>
+    <div class="codeblock"><h3>cout : le coût d'un abr</h3><pre class="code" data-code="ao_cout"></pre></div>
+    <div class="codeblock"><h3>abrglouton</h3><p class="explain">VparFrequencesDecroissantes(F) est donnée par le cours : elle retourne les valeurs triées par fréquences décroissantes.</p><pre class="code" data-code="ao_glouton"></pre></div>
+    <div class="codeblock"><h3>calculerM (le cœur du chapitre)</h3><p class="explain">Trois boucles : la taille t, le début i (avec j = i + t), la racine k. Le min va dans M[i][j], son arg dans M[j][i].</p><pre class="code" data-code="ao_MA"></pre></div>
+    <div class="codeblock"><h3>abrcmin : construire l'abr de coût minimum</h3><pre class="code" data-code="ao_abr"></pre></div>
     </div>
   </div>
 
   <div class="sub" data-sub="e" hidden>
-    <div class="ex"><h4><span class="kind">À la main</span>Remplis le tableau M <span class="done-mark" data-done="hx-abropt"></span></h4><p>4 clés. La diagonale vaut 0. Remplis par longueur croissante : d'abord les intervalles d'une clé (m(i,i+1) = f(i)), puis de deux, etc. Donne ensuite la racine de l'arbre optimal.</p><div data-hand="abropt"></div></div>
+    <div class="ex"><h4><span class="kind">À la main</span>Remplis le tableau M <span class="done-mark" data-done="hx-abropt"></span></h4><p>4 valeurs. La diagonale vaut 0. Remplis par taille t croissante : d'abord les ensembles d'une valeur (m(i,i+1) = f(i)), puis de deux, etc. Donne ensuite la racine de l'arbre de coût minimum.</p><div data-hand="abropt"></div></div>
     <div class="ex"><h4><span class="kind">QCM</span>ABR de coût minimum <span class="done-mark" data-done="qcm-abropt"></span></h4><div class="qcm" data-qcm="abropt"></div></div>
     <div data-trous="tr-aoMA"></div>
     <div data-trous="tr-aoAbr"></div>
+    <div data-trous="tr-cout"></div>
+    <div data-write="wr-cout"></div>
     <div data-write="wr-aoMA"></div>
     <div data-write="wr-aoAbr"></div>
   </div>
+</section>
+
+<!-- ============ FICHES DE RÉVISION ============ -->
+<section class="view" id="v-fiches" hidden>
+  <header class="sec-head">
+    <p class="eyebrow">À relire la veille</p>
+    <h1>Fiches de révision</h1>
+    <p class="lead">Une fiche par sujet, toujours dans le même ordre : les données, la valeur, « supposons le problème résolu », la récurrence, l'ordre de calcul, le code, un exemple et les pièges. Tout ce qu'il faut pour une question de partiel, sur une page.</p>
+  </header>
+  <div class="fiche-nav" id="fiche-nav" role="tablist"></div>
+  <p class="note" id="fiche-count"></p>
+
+  <!-- ===== MÉTHODE ===== -->
+  <article class="fiche" data-fiche="methode" data-title="Méthode et forme du partiel">
+    <header class="fiche-head"><p class="eyebrow">À lire en premier</p><h2>La méthode et la forme du partiel</h2>
+      <p class="fiche-one">Tous les sujets se traitent avec la même recette. Le partiel te donne un problème (parfois nouveau) et te fait dérouler cette recette question par question.</p></header>
+    <div class="fiche-grid">
+      <div class="fb wide"><h4>Ce que montrent tes deux contrôles</h4>
+        <div class="scroll"><table class="recap">
+          <tr><th></th><th>Contrôle 1 · 10/10/2026</th><th>Contrôle 2 · annale</th></tr>
+          <tr><td>Le problème</td><td>Nouveau : sous-ensemble de somme S avec le moins d'éléments</td><td>Chemin de coût min dans un réseau de bus (vu en TD)</td></tr>
+          <tr><td>Question 1</td><td>Exprimer m(n,S) : « supposons le problème résolu »</td><td>Fonction utilitaire : afficher(G)</td></tr>
+          <tr><td>Question 2</td><td>Récurrence de m(k,s) : base et hérédité, avec intervalles</td><td>Récurrence de m(j)</td></tr>
+          <tr><td>Question 3</td><td>calculerM : remplir le tableau</td><td>calculerMA : remplir M et A</td></tr>
+          <tr><td>Question 4</td><td>asecm : afficher une solution, en récursif</td><td>acm : afficher le chemin, en récursif</td></tr>
+        </table></div>
+        <p>Retiens donc ce schéma : <b>expression ou utilitaire → récurrence → calcul → affichage récursif</b>. Le problème peut être un que tu n'as jamais vu : c'est la recette qui est notée.</p></div>
+      <div class="fb wide"><h4>La recette en 5 étapes</h4><ol>
+        <li><b>Nommer la valeur</b> : « m(k,s) = cardinal minimum d'un sous-ensemble des k premiers éléments, de somme s ». Une phrase complète, avec ce que représentent les indices.</li>
+        <li><b>Supposons le problème résolu</b> : regarde la <b>dernière décision</b> de la meilleure solution (le dernier élément est pris ou pas, la dernière ville, les dernières heures…). Chaque possibilité donne un terme du min ou du max.</li>
+        <li><b>La récurrence</b> : la base (le plus petit cas), l'hérédité (la formule), et <b>les intervalles</b> des indices (qqsoit k, 1 ≤ k &lt; n+1).</li>
+        <li><b>Le calcul</b> : un tableau de la bonne taille, la base, des boucles qui calculent les petits problèmes d'abord, et on garde l'arg si on doit reconstruire.</li>
+        <li><b>L'affichage récursif</b> : cas de base, lire la décision, <b>appel récursif d'abord</b>, affichage ensuite.</li>
+      </ol></div>
+      <div class="fb"><h4>Les habitudes du prof</h4><ul>
+        <li>Intervalles semi-ouverts : [i:j] = de i à j−1, et « 1 ≤ k &lt; n+1 » plutôt que « 1 ≤ k ≤ n ».</li>
+        <li>« qqsoit k, 1 ≤ k &lt; n+1, qqsoit s, 0 ≤ s &lt; S+1 » dans les récurrences.</li>
+        <li>Infini = <code>Integer.MAX_VALUE/2</code>, pour que Infini + 1 ne déborde pas.</li>
+        <li>Des commentaires qui prouvent chaque ligne (« secm(k−1,s) affiché donc secm(k,s) affiché »).</li>
+      </ul></div>
+      <div class="fb"><h4>Le jour J</h4><ul>
+        <li>Commence par la récurrence : c'est elle qui donne tout le reste.</li>
+        <li>Ne laisse jamais une question vide : la taille du tableau, la base, les boucles et le return rapportent déjà.</li>
+        <li>Teste ta récurrence sur l'exemple de l'énoncé avant d'écrire le code.</li>
+      </ul></div>
+      <div class="fb wide"><h4>Les deux squelettes</h4><div class="two-col"><pre class="code" data-code="sk_calcul"></pre><pre class="code" data-code="sk_affiche"></pre></div></div>
+    </div>
+    <footer class="fiche-foot"><a class="btn" href="#methode">Revoir la méthode</a><a class="btn ghost" href="#examen">Faire un sujet blanc</a></footer>
+  </article>
+
+  <!-- ===== CONTRÔLE 1 ===== -->
+  <article class="fiche" data-fiche="controle1" data-title="Contrôle 1 · cardinal minimum">
+    <header class="fiche-head"><p class="eyebrow">Annale · contrôle 1 du 10/10/2026</p><h2>Sous-ensemble de somme S, de cardinal minimum</h2>
+      <p class="fiche-one">Avec des pièces de valeurs X, payer exactement S avec le moins de pièces possible.</p>
+      <p class="analogy">Tu dois payer 10 € avec des pièces de 1, 2, 4, 5, 6 et 7 € (une de chaque). 4 + 6 fait 2 pièces ; 1 + 2 + 7 en fait 3. On veut le moins de pièces.</p></header>
+    <div class="fiche-grid">
+      <div class="fb"><h4>Les données</h4><p>X[0:n] : n entiers positifs. S : la somme à atteindre.</p></div>
+      <div class="fb"><h4>La valeur</h4><p><b>m(k,s)</b> = cardinal minimum d'un sous-ensemble des k premiers éléments de X, de somme s. <b>Infini</b> s'il n'en existe pas.</p></div>
+      <div class="fb wide"><h4>Supposons le problème résolu</h4><p>Le dernier élément x(n−1) est soit <b>absent</b> de la solution (il reste à faire S avec n−1 éléments : m(n−1,S)), soit <b>présent</b> (il compte pour 1, et il reste S − x(n−1) avec n−1 éléments). D'où m(n,S) = min{ m(n−1,S), 1 + m(n−1, S−x(n−1)) }.</p>
+        <p class="analogy">C'est le même raisonnement que Juliette ou le sac à dos : « est-ce que je prends le dernier objet ? »</p></div>
+      <div class="fb wide rec-b"><h4>Récurrence</h4><pre class="code" data-code="rec_secm"></pre></div>
+      <div class="fb"><h4>Ordre de calcul · complexité</h4><p>M[0:n+1][0:S+1], ligne par ligne : k croissant, car la ligne k n'utilise que la ligne k−1. Temps Θ(n × S).</p></div>
+      <div class="fb"><h4>Reconstruction</h4><p>Pas de tableau A : on reteste la formule. Si M[k][s] == M[k−1][s], x(k−1) n'est pas pris. Sinon il est pris : on affiche d'abord le reste (k−1, s−x(k−1)), puis x(k−1).</p></div>
+      <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="secm_M"></pre><pre class="code" data-code="secm_aff"></pre></div></div>
+      <div class="fb"><h4>Exemple à connaître</h4><pre class="mini">X = [1, 2, 4, 5, 6, 7], S = 10
+m(6,10) = 2  →  { 4, 6 }
+X = [2, 4, 6, 8], S = 5
+m(4,5) = infini  →  aucun sous-ensemble</pre></div>
+      <div class="fb pieges"><h4>Pièges</h4><ul>
+        <li>La base a <b>deux</b> parties : m(0,0) = 0, et m(0,s) = infini pour s ≥ 1.</li>
+        <li>Tester <code>s - X[k-1] &lt; 0</code> avant de lire <code>M[k-1][s-X[k-1]]</code> (indice négatif sinon).</li>
+        <li>Infini = MAX_VALUE/2, sinon 1 + Infini devient négatif.</li>
+        <li>Appeler asecm seulement si M[n][S] &lt; Infini.</li>
+      </ul></div>
+      <div class="fb wide"><h4>Vérifie-toi</h4><div class="qcm" data-qcm="controle1"></div></div>
+    </div>
+    <footer class="fiche-foot"><a class="btn" href="#examen">Faire l'annale en 90 min</a></footer>
+  </article>
+
+  <!-- ===== CHEMINS ===== -->
+  <article class="fiche" data-fiche="chemins" data-title="Chemins de coût minimum">
+    <header class="fiche-head"><p class="eyebrow">TD2 ex. 2 et 3 · Contrôle 2</p><h2>Chemins de coût minimum</h2>
+      <p class="fiche-one">Aller de la ville 0 à la ville n−1 en payant le moins cher possible, en ne roulant que vers des villes plus grandes.</p>
+      <p class="analogy">Le GPS qui cherche le trajet le moins cher : le meilleur prix pour arriver en j, c'est le meilleur prix pour arriver juste avant, plus le dernier tronçon.</p></header>
+    <div class="fiche-grid">
+      <div class="fb wide"><h4>Les données (trois versions)</h4><ul>
+        <li><b>Ex. 2, deux lignes</b> : D1[j] = coût de j à j+1, D2[j] = coût de j à j+2.</li>
+        <li><b>Ex. 3, toutes les lignes</b> : D[i][j] = coût de i à j, pour i &lt; j.</li>
+        <li><b>Contrôle 2, un graphe</b> : G[i] = liste des villes atteintes depuis i, C[i][j] = coût. Les prédécesseurs de j sont dans <code>Gp = symetrique(G)</code>.</li></ul></div>
+      <div class="fb"><h4>La valeur</h4><p><b>m(j)</b> = coût minimum d'un trajet de la ville 0 à la ville j.</p></div>
+      <div class="fb"><h4>Supposons le problème résolu</h4><p>Le meilleur trajet vers j arrive par une <b>dernière ville i</b>. Avant i, c'est forcément un meilleur trajet de 0 à i (sinon on le remplacerait). Donc m(j) = m(i) + coût(i,j), pour le meilleur i.</p></div>
+      <div class="fb wide rec-b"><h4>Récurrences</h4><pre class="code" data-code="rec_ex2"></pre><pre class="code" data-code="rec_ctl"></pre></div>
+      <div class="fb"><h4>Ordre de calcul · complexité</h4><p>j croissant : m(j) n'utilise que des villes plus petites. Ex. 2 : Θ(n). Ex. 3 : Θ(n²). Graphe : de l'ordre de n + nombre d'arcs.</p></div>
+      <div class="fb"><h4>Reconstruction</h4><p>A[j] = la ville juste avant j (−1 pour la ville 0). acm(A, C, j) : si j == 0, afficher 0 ; sinon acm sur A[j], <b>puis</b> afficher « --(coût)-->j ». Ex. 2 : pas de A, on reteste <code>M[j] == M[j-1] + D1[j-1]</code>.</p></div>
+      <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="ch_ctl_MA"></pre><pre class="code" data-code="ch_ctl_acm"></pre></div><pre class="code" data-code="ch_ex2_M"></pre></div>
+      <div class="fb"><h4>Exemple à connaître (ex. 2)</h4><pre class="code" data-code="ans_ex2h"></pre></div>
+      <div class="fb pieges"><h4>Pièges</h4><ul>
+        <li>Ex. 2 : la base a <b>deux</b> cases, m(0) = 0 et m(1) = d1(0).</li>
+        <li>Graphe : on parcourt <code>Gp[j]</code> (qui arrive en j), jamais <code>G[j]</code> (qui part de j).</li>
+        <li>Le min démarre à <code>Integer.MAX_VALUE</code>, l'arg à −1.</li>
+        <li>Retour de deux tableaux : <code>return new int[][] {M, A};</code></li>
+      </ul></div>
+    </div>
+    <footer class="fiche-foot"><a class="btn" href="#chemins">Revoir le chapitre</a></footer>
+  </article>
+
+  <!-- ===== JULIETTE ===== -->
+  <article class="fiche" data-fiche="juliette" data-title="Juliette">
+    <header class="fiche-head"><p class="eyebrow">TD3</p><h2>Juliette optimise ses révisions</h2>
+      <p class="fiche-one">Répartir H heures de révision entre n unités pour avoir la meilleure somme des notes pondérées par les coefficients.</p>
+      <p class="analogy">Un budget à répartir : chaque heure donnée à une matière est une heure en moins pour les autres. C'est une variante du <b>sac à dos</b> (à dire dans ta copie : la question est souvent posée).</p></header>
+    <div class="fiche-grid">
+      <div class="fb"><h4>Les données</h4><p>E[k][h] = note espérée dans l'unité k avec h heures (0 ≤ h ≤ H). C[k] = coefficient de l'unité k. H = E[0].length − 1.</p></div>
+      <div class="fb"><h4>La valeur</h4><p><b>m(k,t)</b> = meilleure somme pondérée des notes des k premières unités, quand on leur donne t heures au total.</p></div>
+      <div class="fb wide"><h4>Supposons le problème résolu</h4><p>Dans la meilleure répartition, la <b>dernière unité</b> k−1 reçoit h heures (h entre 0 et t). Elle rapporte c(k−1) × e(k−1,h), et les t−h heures restantes sont réparties au mieux entre les k−1 premières : m(k−1, t−h). On essaie tous les h et on garde le max.</p></div>
+      <div class="fb wide rec-b"><h4>Récurrence</h4><pre class="code" data-code="rec_ju"></pre></div>
+      <div class="fb"><h4>Ordre de calcul · complexité</h4><p>M[n+1][H+1], k croissant ; pour chaque (k,t), une boucle sur h. Trois boucles : de l'ordre de n × H².</p></div>
+      <div class="fb"><h4>Reconstruction</h4><p>A[k][t] = le h qui donne le max. aro(k, t) : si k == 0, rien ; sinon h = A[k][t], aro(k−1, t−h) <b>puis</b> afficher l'unité k−1 avec ses h heures. Appel : aro(A, E, C, n, H).</p></div>
+      <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="ju_MA"></pre><pre class="code" data-code="ju_aro"></pre></div></div>
+      <div class="fb"><h4>Exemple à connaître</h4><pre class="mini">2 unités, H = 2, C = [2, 1]
+E[0] = [2, 5, 8]    E[1] = [1, 8, 9]
+m(1,t) = 2 × E[0][t] = 4, 10, 16
+m(2,2) = max( h=0 : 16 + 1×1 = 17,
+              h=1 : 10 + 1×8 = 18,
+              h=2 :  4 + 1×9 = 13 ) = 18
+→ 1 heure chacune</pre></div>
+      <div class="fb pieges"><h4>Pièges</h4><ul>
+        <li>Taille <b>[n+1][H+1]</b> : k va jusqu'à n, t jusqu'à H.</li>
+        <li>L'unité numéro k dans m(k,·) est d'indice <b>k−1</b> : C[k-1], E[k-1][h].</li>
+        <li>h va de 0 à <b>t</b> (pas H) : on ne peut pas donner plus que ce qu'on a.</li>
+        <li>Un max démarre à <code>Integer.MIN_VALUE</code> (ou −1 si les notes sont positives).</li>
+      </ul></div>
+    </div>
+    <footer class="fiche-foot"><a class="btn" href="#juliette">Revoir le chapitre</a></footer>
+  </article>
+
+  <!-- ===== PLSC ===== -->
+  <article class="fiche" data-fiche="plsc" data-title="PLSC">
+    <header class="fiche-head"><p class="eyebrow">TD4</p><h2>Plus longue séquence commune (plsc)</h2>
+      <p class="fiche-one">Le plus long mot qu'on obtient en barrant des lettres dans T et aussi en barrant des lettres dans U.</p>
+      <p class="analogy">Comparer deux versions d'un texte pour voir ce qu'elles ont en commun : c'est ce que fait un logiciel de « diff ».</p></header>
+    <div class="fiche-grid">
+      <div class="fb"><h4>Les données</h4><p>T de longueur m, U de longueur n. On travaille sur les <b>préfixes</b> : T[0:p] = les p premières lettres.</p></div>
+      <div class="fb"><h4>La valeur</h4><p><b>l(p,q)</b> = longueur d'une plsc du préfixe de longueur p de T et du préfixe de longueur q de U.</p></div>
+      <div class="fb wide"><h4>Supposons le problème résolu</h4><p>On regarde les <b>dernières lettres</b> t(p−1) et u(q−1). Si elles sont égales, on les garde toutes les deux : 1 + l(p−1,q−1). Sinon, l'une des deux ne sert pas : on jette celle de T ou celle de U, et on garde le meilleur des deux.</p></div>
+      <div class="fb wide rec-b"><h4>Récurrence</h4><pre class="code" data-code="rec_lcs"></pre></div>
+      <div class="fb"><h4>Ordre de calcul · complexité</h4><p>L[m+1][n+1], ligne 0 et colonne 0 à 0, puis p croissant et q croissant : chaque case utilise la case du haut, de gauche, et en diagonale. Θ(m × n).</p></div>
+      <div class="fb"><h4>Reconstruction</h4><p>On repart de (m, n). Lettres égales : on remonte en diagonale et on ajoute la lettre <b>après</b> l'appel. Sinon on va vers la plus grande des deux cases (haut ou gauche). Arrêt quand p == 0 ou q == 0.</p></div>
+      <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="lcs_L"></pre><pre class="code" data-code="lcs_plsc"></pre></div></div>
+      <div class="fb"><h4>Exemple à connaître</h4><pre class="code" data-code="ans_lcs1"></pre></div>
+      <div class="fb pieges"><h4>Pièges</h4><ul>
+        <li>Sous-<b>séquence</b> : on peut sauter des lettres (contrairement à la sous-chaîne du palindrome).</li>
+        <li><code>T.length()</code> et <code>T.charAt(p-1)</code> : parenthèses et indice p−1.</li>
+        <li>Deux bases : la ligne 0 <b>et</b> la colonne 0.</li>
+        <li>Dans plsc, l'appel récursif d'abord, la lettre ensuite.</li>
+      </ul></div>
+    </div>
+    <footer class="fiche-foot"><a class="btn" href="#plsc">Revoir le chapitre</a></footer>
+  </article>
+
+  <!-- ===== PLSSC ===== -->
+  <article class="fiche" data-fiche="plssc" data-title="PLSSC">
+    <header class="fiche-head"><p class="eyebrow">TD6</p><h2>Plus longue sous-séquence strictement croissante (plssc)</h2>
+      <p class="fiche-one">Garder le plus de nombres possible de S, dans l'ordre, pour qu'ils soient strictement croissants.</p>
+      <p class="analogy">Un escalier : chaque marche doit être plus haute que la précédente, et on veut le plus de marches possible en prenant les nombres dans l'ordre.</p></header>
+    <div class="fiche-grid">
+      <div class="fb"><h4>Les données et le graphe</h4><p>S[0:n]. On construit le graphe G(S) : une flèche <b>i → j</b> si i &lt; j et S[i] &lt; S[j]. Les prédécesseurs de j sont dans Gprime = symetrique(G).</p></div>
+      <div class="fb"><h4>La valeur</h4><p><b>l(j)</b> = longueur d'une plssc qui <b>finit</b> en S[j].</p></div>
+      <div class="fb wide"><h4>Supposons le problème résolu</h4><p>La meilleure suite qui finit en j a un <b>avant-dernier</b> élément i, avec une flèche i → j. Avant lui, c'est une meilleure suite qui finit en i. Donc l(j) = 1 + le plus grand l(i). Personne avant : l(j) = 1 (S[j] tout seul).</p></div>
+      <div class="fb wide rec-b"><h4>Récurrence</h4><pre class="code" data-code="rec_lis"></pre></div>
+      <div class="fb"><h4>Ordre de calcul · complexité</h4><p>j croissant (les flèches vont vers la droite). Construire le graphe : Θ(n²). Calcul de L et A : de l'ordre de n + nombre d'arcs, donc α·n² au pire.</p></div>
+      <div class="fb"><h4>Reconstruction</h4><p>j* = argmax(L) : l'indice du plus grand L[j]. plssc(A, S, j) : si A[j] == −1, S[j] est le début ; sinon plssc(A, S, A[j]) <b>puis</b> S[j].</p></div>
+      <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="lis_LA"></pre><div><pre class="code" data-code="lis_plssc"></pre><pre class="code" data-code="lis_argmax"></pre></div></div></div>
+      <div class="fb"><h4>Exemple à connaître</h4><pre class="mini">S = 10 1 20 2 30 1 2
+L = 1  1  2  2  3  1  2
+max des L = 3 : par exemple 10 20 30
+(ou 1 20 30, ou 1 2 30)</pre></div>
+      <div class="fb pieges"><h4>Pièges</h4><ul>
+        <li>La réponse est le <b>max de tous les L[j]</b>, pas L[n−1] : la suite ne finit pas forcément au dernier nombre.</li>
+        <li><b>Strictement</b> : S[i] &lt; S[j], pas ≤.</li>
+        <li>Base : A[j] = −1 quand Gprime[j] est vide.</li>
+      </ul></div>
+    </div>
+    <footer class="fiche-foot"><a class="btn" href="#plssc">Revoir le chapitre</a></footer>
+  </article>
+
+  <!-- ===== ARBRES ===== -->
+  <article class="fiche" data-fiche="arbres" data-title="Arbres binaires">
+    <header class="fiche-head"><p class="eyebrow">Hors TD · cours sur les arbres binaires de recherche</p><h2>Arbres binaires et abr</h2>
+      <p class="fiche-one">Un arbre binaire est vide (), ou un triplet (vr g d). Toutes les fonctions suivent la même recette : le cas vide, puis on combine les deux sous-arbres.</p>
+      <p class="analogy">Un organigramme : pour compter les employés, le chef demande à ses deux adjoints combien ils sont dans leur équipe, additionne, et s'ajoute lui-même.</p></header>
+    <div class="fiche-grid">
+      <div class="fb"><h4>Le vocabulaire du cours</h4><ul>
+        <li><b>feuille</b> : (v () ())</li>
+        <li><b>t(a)</b> : taille, nombre de valeurs</li>
+        <li><b>h(a)</b> : hauteur, longueur du plus long chemin depuis la racine. <b>h(()) = −1</b>, h(feuille) = 0</li>
+        <li><b>abr</b> : x ∈ g ⇒ x &lt; vr, x ∈ d ⇒ x &gt; vr, et g, d sont des abr</li>
+      </ul></div>
+      <div class="fb"><h4>Les formules</h4><pre class="mini">t(()) = 0      t(a) = 1 + t(g) + t(d)
+h(()) = -1     h(a) = 1 + max(h(g), h(d))
+grd : gauche, racine, droite → croissant
+drg : droite, racine, gauche → décroissant
+abrhmin(i,j) : racine k = (i+j)/2,
+   g sur [i:k], d sur [k+1:j]</pre></div>
+      <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><div><pre class="code" data-code="ab_th"></pre><pre class="code" data-code="ab_appartient"></pre><pre class="code" data-code="ab_hmin"></pre></div><div><pre class="code" data-code="ab_parcours"></pre><pre class="code" data-code="ab_ins"></pre></div></div></div>
+      <div class="fb"><h4>Exemple à connaître</h4><pre class="mini">On insère 50 30 70 20 40 60 80 35
+            50
+          /    \
+        30      70
+       /  \    /  \
+     20   40  60   80
+          /
+        35
+t = 8, h = 3
+grd : 20 30 35 40 50 60 70 80</pre></div>
+      <div class="fb pieges"><h4>Pièges</h4><ul>
+        <li>h(()) = <b>−1</b> dans ton cours (et non 0).</li>
+        <li>inserer doit <b>reconstruire</b> le nœud : <code>new AB(vr(a), inserer(x, sag(a)), sad(a))</code>. Retourner seulement <code>inserer(x, sag(a))</code> perd la racine.</li>
+        <li>in(x, a) retourne un <b>arbre</b> (le sous-arbre ou ()), pas un booléen.</li>
+        <li>abrhmin s'arrête quand <code>j-i &lt;= 0</code>. Appel principal : abrhmin(0, n).</li>
+        <li>Insérer des valeurs déjà triées donne une « liste » de hauteur n−1.</li>
+      </ul></div>
+    </div>
+    <footer class="fiche-foot"><a class="btn" href="#arbres">Revoir le chapitre</a></footer>
+  </article>
+
+  <!-- ===== PALINDROME ===== -->
+  <article class="fiche" data-fiche="palindrome" data-title="Sous-chaîne palindrome">
+    <header class="fiche-head"><p class="eyebrow">Hors TD · à traiter comme un contrôle</p><h2>Plus longue sous-chaîne palindrome</h2>
+      <p class="fiche-one">Le plus long morceau d'un seul tenant de S qui se lit pareil dans les deux sens.</p>
+      <p class="analogy">Éplucher un oignon : on cache la première et la dernière lettre avec les doigts. Si elles sont égales, il reste à vérifier l'intérieur.</p></header>
+    <div class="fiche-grid">
+      <div class="fb"><h4>Les données</h4><p>S de longueur n. S[i:j] = les lettres d'indices i à j−1, soit <code>S.substring(i, j)</code>, de longueur j − i.</p></div>
+      <div class="fb"><h4>La valeur</h4><p><b>p(i,j)</b> = vrai si S[i:j] est un palindrome, pour 0 ≤ i ≤ j ≤ n.</p></div>
+      <div class="fb wide"><h4>Supposons le problème résolu</h4><p>S[i:j] est un palindrome si et seulement si ses <b>deux lettres du bord</b> sont égales, S[i] == S[j−1], <b>et</b> l'intérieur S[i+1:j−1] est un palindrome.</p></div>
+      <div class="fb wide rec-b"><h4>Récurrence</h4><pre class="code" data-code="rec_pal"></pre></div>
+      <div class="fb"><h4>Ordre de calcul · complexité</h4><p>Par <b>longueur d = j − i croissante</b> (diagonale par diagonale), car p(i,j) utilise une sous-chaîne plus courte de 2. P[n+1][n+1]. Θ(n²) au lieu de Θ(n³) en testant tout.</p></div>
+      <div class="fb"><h4>Le résultat</h4><p>Parcourir tous les (i, j) avec P[i][j] vrai et garder le plus grand j − i. Retourner <code>S.substring(bi, bj)</code>.</p></div>
+      <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="pal_P"></pre><pre class="code" data-code="pal_res"></pre></div></div>
+      <div class="fb"><h4>Exemple à connaître</h4><pre class="code" data-code="ans_pal1"></pre></div>
+      <div class="fb pieges"><h4>Pièges</h4><ul>
+        <li>Deux bases : la chaîne vide p(i,i) et une lettre p(i,i+1).</li>
+        <li>La dernière lettre de S[i:j] est S[j−1], pas S[j].</li>
+        <li>« et » (&amp;&amp;) entre les deux conditions, pas « ou ».</li>
+        <li>Ne pas remplir par i croissant : la case de l'intérieur ne serait pas prête.</li>
+      </ul></div>
+    </div>
+    <p class="note">Je n'ai pas l'énoncé du prof pour ce problème : la fiche suit la méthode classique avec ses notations [i:j].</p>
+    <footer class="fiche-foot"><a class="btn" href="#palindrome">Revoir le chapitre</a></footer>
+  </article>
+
+  <!-- ===== ABR COÛT MIN ===== -->
+  <article class="fiche" data-fiche="abropt" data-title="ABR de coût minimum">
+    <header class="fiche-head"><p class="eyebrow">Cours du 5 octobre 2026 · dernier chapitre au programme</p><h2>Arbre binaire de recherche de coût minimum</h2>
+      <p class="fiche-one">Ranger les valeurs [0:n] dans un abr pour que le coût moyen de recherche, avec les fréquences F, soit le plus petit possible.</p>
+      <p class="analogy">Ranger un magasin : les produits les plus demandés près de l'entrée, mais en gardant le rayon trié (plus petit à gauche, plus grand à droite).</p></header>
+    <div class="fiche-grid">
+      <div class="fb"><h4>Les données et le coût</h4><p>F[v] = fréquence de recherche de la valeur v. Une valeur au niveau l demande l + 1 comparaisons. <b>Coût de l'abr</b> = Σ F[v] × (nombre de comparaisons pour trouver v).</p></div>
+      <div class="fb"><h4>La valeur</h4><p><b>m(i,j)</b> = coût minimum d'un abr construit sur le sous-ensemble de valeurs [i:j]. Taille du problème : t = j − i.</p></div>
+      <div class="fb wide"><h4>Supposons le problème résolu</h4><p>La racine est une valeur k de [i:j]. Le sous-arbre gauche est un abr de coût min sur [i:k], le droit sur [k+1:j]. Mais ils sont <b>un niveau plus bas</b> : chacune de leurs valeurs fait une comparaison de plus. Avec la racine (1 × f(k)), on ajoute donc <b>toutes</b> les fréquences de [i:j]. On essaie toutes les racines k.</p></div>
+      <div class="fb wide rec-b"><h4>Récurrence</h4><pre class="code" data-code="rec_ao"></pre></div>
+      <div class="fb"><h4>Ordre de calcul · complexité</h4><p>Par <b>tailles t croissantes</b>, diagonale par diagonale. M[n+1][n+1] contient les m(i,j) (cases i ≤ j) <b>et</b> les arg (dans M[j][i]). Θ(n³), contre Θ(4ⁿ/n^1,5) pour l'approche exhaustive.</p></div>
+      <div class="fb"><h4>Reconstruction</h4><p>abrcmin(M, i, j) : comme abrhmin, mais la racine est <code>M[j][i]</code> au lieu de la médiane. Ensemble vide (j − i ≤ 0) : arbre vide. Appel : abrcmin(M, 0, n).</p></div>
+      <div class="fb wide"><h4>Code à savoir écrire</h4><div class="two-col"><pre class="code" data-code="ao_MA"></pre><div><pre class="code" data-code="ao_abr"></pre><pre class="code" data-code="ao_cout"></pre></div></div></div>
+      <div class="fb"><h4>Exemple à connaître</h4><pre class="mini">Cours : n = 9, F = [2,3,1,8,5,4,6,7,9]
+abr glouton (fréquences décr.) : 140
+abr de hauteur min (abrhmin)   : 123
+abr de coût min (calculerM)    : 113
+
+À la main : F = [5, 1, 1]
+racine 1 (hauteur min) : 2×5+1×1+2×1 = 13
+0 → 1 → 2 (penché)    : 1×5+2×1+3×1 = 10</pre></div>
+      <div class="fb pieges"><h4>Pièges</h4><ul>
+        <li>m(0,n) = f(k) + m(0,k) + m(k+1,n) est <b>faux</b> : il faut ajouter la somme de <b>toutes</b> les fréquences de [i:j].</li>
+        <li>La racine k va de i à <b>j−1</b> (pas jusqu'à j).</li>
+        <li>L'arg se range dans <b>M[j][i]</b> (cases inversées), le coût dans M[i][j].</li>
+        <li>M[i][j] = MAX_VALUE avant la boucle sur k, et la somme ajoutée <b>après</b> la boucle.</li>
+        <li>L'abr le plus équilibré n'est pas toujours le moins cher, le glouton non plus.</li>
+      </ul></div>
+    </div>
+    <footer class="fiche-foot"><a class="btn" href="#abropt">Revoir le chapitre</a></footer>
+  </article>
 </section>
 
 <!-- ============ URGENCE ============ -->
@@ -1066,18 +1417,18 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
 
   <div class="panel urg-strat">
     <h3>La stratégie : où sont les 10 points</h3>
-    <p>Le partiel, c'est 4 questions de 5 points, presque toujours dans cet ordre : une fonction utilitaire, la récurrence, la fonction de calcul, la fonction récursive d'affichage.</p>
+    <p>Le partiel, c'est 4 questions dans cet ordre : « supposons le problème résolu » ou une fonction utilitaire, la récurrence, la fonction de calcul, la fonction récursive d'affichage. Le contrôle 1 portait sur un problème jamais vu en TD : la recette compte plus que le problème.</p>
     <div class="scroll"><table class="recap">
       <tr><th>Question</th><th>Ce que tu apprends par cœur</th><th>Points visés</th></tr>
-      <tr><td>Récurrence</td><td>Les 8 cartes ci-dessous (base + hérédité + intervalle)</td><td><b>4 à 5</b></td></tr>
-      <tr><td>Fonction utilitaire</td><td>afficher(G), symetrique(G), le parcours de liste, les fonctions d'arbre</td><td><b>3 à 5</b></td></tr>
+      <tr><td>Récurrence</td><td>Les 9 cartes ci-dessous (base + hérédité + intervalle)</td><td><b>4 à 5</b></td></tr>
+      <tr><td>Question 1</td><td>« Supposons le problème résolu » : le dernier élément est pris ou non, la dernière ville… Ou une fonction utilitaire : afficher(G), symetrique(G), les fonctions d'arbre</td><td><b>3 à 5</b></td></tr>
       <tr><td>Fonction de calcul</td><td>Le squelette n°1 : même incomplet, la base, les boucles et le return rapportent</td><td><b>2 à 3</b></td></tr>
       <tr><td>Affichage récursif</td><td>Le squelette n°2 : 4 lignes, toujours les mêmes</td><td><b>2 à 3</b></td></tr>
     </table></div>
     <p class="note">Ces estimations viennent du barème des sujets blancs de cette plateforme, pas du barème officiel du prof. L'idée reste valable : ne laisse <b>jamais</b> une question vide, le squelette seul rapporte des points.</p>
   </div>
 
-  <h2>1 · Les 8 récurrences à savoir par cœur</h2>
+  <h2>1 · Les 9 récurrences à savoir par cœur</h2>
   <p class="prose">Lis le titre, récite la réponse dans ta tête (ou écris-la), puis clique sur la carte pour vérifier. Marque « Je sais » quand tu la récites sans faute.</p>
   <div class="row"><button type="button" class="btn" id="urg-hide">Tout cacher</button><button type="button" class="btn" id="urg-show">Tout montrer</button><span class="note" id="urg-count"></span></div>
   <div class="flash" id="urg-cards"></div>
@@ -1098,11 +1449,11 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
     <div><h5>Graphe symétrique</h5><pre class="code" data-code="symetrique"></pre></div>
   </div>
   <div class="two-col">
-    <div><h5>Taille et hauteur</h5><pre class="code" data-code="ab_th"></pre><h5>abrhmin</h5><pre class="code" data-code="ab_hmin"></pre></div>
-    <div><h5>Insérer dans un ABR</h5><pre class="code" data-code="ab_ins"></pre><h5>Parcours infixe (ordre croissant)</h5><pre class="code" data-code="abr_ac"></pre></div>
+    <div><h5>t et h (h(()) = −1)</h5><pre class="code" data-code="ab_th"></pre><h5>abrhmin</h5><pre class="code" data-code="ab_hmin"></pre></div>
+    <div><h5>Insérer dans un abr</h5><pre class="code" data-code="ab_ins"></pre><h5>grd : ordre croissant</h5><pre class="code" data-code="ab_grd"></pre></div>
   </div>
 
-  <h2>5 · Les 10 pièges qui coûtent des points</h2>
+  <h2>5 · Les 12 pièges qui coûtent des points</h2>
   <ol class="pieges">
     <li><b>n+1</b> pour la taille quand il existe un cas « 0 élément » : <code>M[n+1][H+1]</code>, <code>L[m+1][n+1]</code>, <code>P[n+1][n+1]</code>.</li>
     <li>Le k-ième élément a l'indice <b>k−1</b> : <code>C[k-1]</code>, <code>T.charAt(p-1)</code>.</li>
@@ -1113,14 +1464,16 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
     <li>Retourner deux tableaux : <code>return new int[][] {M, A};</code> (et <code>int[][][]</code> pour deux tableaux 2D).</li>
     <li>PLSSC : la réponse est le <b>max de tous les L[j]</b>, pas L[n−1].</li>
     <li>Prédécesseurs = graphe symétrique : <code>Gp[j]</code>, jamais <code>G[j]</code>.</li>
-    <li>Dans une récurrence, écris <b>toujours</b> l'intervalle des indices (1 ≤ j &lt; n…). Il est noté.</li>
+    <li>Dans une récurrence, écris <b>toujours</b> l'intervalle des indices (qqsoit k, 1 ≤ k &lt; n+1…). Il est noté.</li>
+    <li>Arbres : <b>h(()) = −1</b> dans ton cours. ABR de coût min : on ajoute f(i) + … + f(j−1) et l'arg va dans <b>M[j][i]</b>.</li>
+    <li>Infini = <code>Integer.MAX_VALUE/2</code>, sinon 1 + Infini déborde et devient négatif.</li>
   </ol>
 
   <h2>6 · Le plan du dernier jour</h2>
   <div class="plan">
     <div><b>Matin · 2 h</b><p>Les deux squelettes et les fonctions utilitaires : lis-les, puis réécris-les de mémoire sur une feuille, 3 fois chacun, jusqu'à zéro erreur.</p></div>
-    <div><b>Après-midi · 2 h</b><p>Les 8 cartes de récurrence jusqu'à toutes les savoir, puis les <b>codes à trous</b> de chaque chapitre (onglet S'entraîner).</p></div>
-    <div><b>Soir · 1 h 30</b><p>Un sujet blanc chronométré : l'<a href="#examen">annale du contrôle 2</a>. Corrige-toi avec le barème et relis seulement ce que tu as raté.</p></div>
+    <div><b>Après-midi · 2 h</b><p>Les 9 cartes de récurrence jusqu'à toutes les savoir, puis les <b>codes à trous</b> de chaque chapitre (onglet S'entraîner).</p></div>
+    <div><b>Soir · 1 h 30</b><p>Un sujet blanc chronométré : l'<a href="#examen">annale du contrôle 1</a> (ou celle du contrôle 2). Corrige-toi avec le barème et relis seulement ce que tu as raté.</p></div>
     <div><b>Avant de dormir · 15 min</b><p>Relis les 10 pièges et les cartes. Puis dors : une nuit de sommeil fixe mieux ce que tu as appris qu'une heure de plus.</p></div>
   </div>
   <div class="callout warn" style="margin-top:18px"><b>Le jour J :</b> commence par la question de récurrence, puis la fonction utilitaire. Pour les deux autres, écris d'abord le squelette (base, boucles, return) puis complète ce que tu peux.</div>
@@ -1133,6 +1486,7 @@ ol.pieges{display:grid;gap:6px;padding-left:1.4rem;max-width:80ch}
     <h1>Sujets blancs</h1>
     <p class="lead">Au format du partiel : 90 minutes, 4 questions, sans regarder le cours. Écris tes réponses, rends ta copie, puis corrige-toi avec le barème détaillé.</p>
   </header>
+  <div class="callout">Commence par l'<b>annale du contrôle 1</b> : c'est le vrai format de cette année, sur un problème que tu n'as pas vu en TD. Les barèmes sont des estimations, pas ceux du prof.</div>
   <div id="exam-root"></div>
 </section>
 
@@ -1952,6 +2306,290 @@ SUJETS.push(
   {pts:5,enonce:'Écrire <code>AB abrOpt(int[][] A, int i, int j)</code> qui retourne un ABR de coût minimum sur [i:j].',sol:'ao_abr'}
  ]}
 );
+// ===================== DONNÉES v3 : conventions du cours (ABR) + contrôle 1 =====================
+const replaceById = (arr, id, obj) => { const i = arr.findIndex(x => x.id === id); if (i >= 0) arr[i] = obj; else arr.push(obj); };
+
+Object.assign(CODES, {
+ab_class: `static class AB{ int r; AB g, d;            // racine, sous-arbres gauche et droit
+    AB(int racine, AB gauche, AB droit){ r = racine; g = gauche; d = droit; }
+}
+static boolean vide(AB a){ return a == null; }      // l'arbre vide () est null
+static int vr(AB a){ return a.r; }                  // valeur racine (a non vide)
+static AB sag(AB a){ return a.g; }                  // sous-arbre gauche
+static AB sad(AB a){ return a.d; }                  // sous-arbre droit
+static boolean feuille(AB a){ return vide(sag(a)) && vide(sad(a)); }`,
+ab_th: `static int t(AB a){      // taille : nombre de valeurs de a
+    if (vide(a)) return 0;
+    return 1 + t(sag(a)) + t(sad(a));
+}
+static int h(AB a){      // hauteur : longueur du plus long chemin depuis la racine
+    if (vide(a)) return -1;                   // convention du cours : h(()) = -1
+    return 1 + max(h(sag(a)), h(sad(a)));     // donc une feuille a h = 0
+}
+static int max(int x, int y){ if (x >= y) return x; return y; }`,
+ab_hauteur: `static int h(AB a){      // hauteur : longueur du plus long chemin depuis la racine
+    if (vide(a)) return -1;                   // h(()) = -1, donc h(feuille) = 0
+    return 1 + max(h(sag(a)), h(sad(a)));
+}`,
+ab_feuilles: `static int nbFeuilles(AB a){
+    if (vide(a)) return 0;
+    if (feuille(a)) return 1;                 // sag et sad vides
+    return nbFeuilles(sag(a)) + nbFeuilles(sad(a));
+}`,
+ab_parcours: `static void grd(AB a){   // gauche, racine, droite : un abr à l'endroit (croissant)
+    if (vide(a)) return;
+    grd(sag(a));
+    System.out.print(vr(a) + " ");
+    grd(sad(a));
+}
+static void drg(AB a){   // droite, racine, gauche : un abr à l'envers (décroissant)
+    if (vide(a)) return;
+    drg(sad(a));
+    System.out.print(vr(a) + " ");
+    drg(sag(a));
+}
+static void rgd(AB a){   // racine d'abord (préfixe)
+    if (vide(a)) return;
+    System.out.print(vr(a) + " ");
+    rgd(sag(a));
+    rgd(sad(a));
+}`,
+ab_appartient: `static AB in(int x, AB a){  // si x est dans l'abr a : le sous-arbre (x g d), sinon ()
+    if (vide(a)) return a;                    // x absent : on retourne l'arbre vide
+    if (x == vr(a)) return a;                 // trouvé
+    if (x < vr(a)) return in(x, sag(a));      // x ne peut être qu'à gauche
+    return in(x, sad(a));                     // x ne peut être qu'à droite
+}`,
+ab_ins: `static AB inserer(int x, AB a){  // retourne « a augmenté de la valeur x »
+    if (vide(a)) return new AB(x, null, null);         // place libre : nouvelle feuille
+    if (x == vr(a)) return a;                           // pas de répétition dans un abr
+    if (x < vr(a)) return new AB(vr(a), inserer(x, sag(a)), sad(a));
+    return new AB(vr(a), sag(a), inserer(x, sad(a)));   // x > vr(a)
+}`,
+ab_hmin: `static AB abrhmin(int i, int j){  // abr de hauteur min sur [i:j]. Appel : abrhmin(0, n)
+    if (j-i <= 0) return null;        // sous-ensemble vide, arbre vide
+    int k = (i+j)/2;                  // valeur médiane
+    AB g = abrhmin(i, k);             // abr de hauteur min sur [i:k]
+    AB d = abrhmin(k+1, j);           // abr de hauteur min sur [k+1:j]
+    return new AB(k, g, d);
+}   // Theta(n)`,
+ao_cout: `static int cout(AB a, int[] F){       // coût de l'abr a
+    return cout(a, F, 0);                 // sa racine est au niveau 0
+}
+static int cout(AB a, int[] F, int l){ // coût de a, dont la racine est au niveau l
+    if (vide(a)) return 0;                // aucune recherche, coût nul
+    int v = vr(a), f = F[v];              // f : fréquence de recherche de v
+    // l+1 comparaisons pour trouver v ; les sous-arbres sont au niveau l+1
+    return (l+1)*f + cout(sag(a), F, l+1) + cout(sad(a), F, l+1);
+}`,
+ao_glouton: `static AB abrglouton(int[] F){ int n = F.length;
+    int[] Vprime = VparFrequencesDecroissantes(F);   // [0:n] trié par fréquences décroissantes
+    AB a = null;
+    for (int i = 0; i < n; i++) a = inserer(Vprime[i], a);
+    return a;
+}   // pire cas (fréquences croissantes) : arbre en « liste », Theta(n²)`,
+ao_MA: `static int[][] calculerM(int[] F){ int n = F.length;
+    // M[i][j] = m(i,j) pour i <= j ;  M[j][i] = arg m(i,j) pour i < j
+    int[][] M = new int[n+1][n+1];
+    // base, t = 0 : M[i][i] = 0, déjà fait par Java
+    for (int t = 1; t < n+1; t++)               // par tailles t = j-i croissantes
+        for (int i = 0; i < n-t+1; i++){ int j = i+t;
+            M[i][j] = Integer.MAX_VALUE;
+            for (int k = i; k < j; k++){        // k à la racine
+                int mikj = M[i][k] + M[k+1][j];
+                if (mikj < M[i][j]){ M[i][j] = mikj; M[j][i] = k; }  // arg m(i,j)
+            }
+            M[i][j] = M[i][j] + somme(F, i, j);  // + f(i) + ... + f(j-1)
+        }
+    return M;
+}   // Theta(n³)
+static int somme(int[] F, int i, int j){ int s = 0;
+    for (int k = i; k < j; k++) s = s + F[k];
+    return s;
+}`,
+ao_abr: `static AB abrcmin(int[][] M, int i, int j){  // abr de coût min sur [i:j]
+    if (j-i <= 0) return null;                   // [i:j] vide : arbre vide
+    int kij = M[j][i];                           // arg m(i,j) : la valeur racine
+    return new AB(kij, abrcmin(M, i, kij), abrcmin(M, kij+1, j));
+}   // appel principal : AB a = abrcmin(M, 0, n);`,
+rec_ao: `m(i,j) = coût minimum d'un abr construit sur les valeurs [i:j] (i à j-1).
+Taille du problème : t = j - i.
+Base (t = 0) :     m(i,i) = 0          pour 0 ≤ i < n+1   (arbre vide)
+Cas général (1 ≤ t < n+1, j = i+t, 0 ≤ i < n-t+1) :
+    m(i,j) = min sur i ≤ k < j de ( m(i,k) + m(k+1,j) )  +  ( f(i) + ... + f(j-1) )
+    arg m(i,j) = le k (la racine) qui donne ce minimum, rangé dans M[j][i]
+Pourquoi la somme : toutes les valeurs de [i:j] passent par une comparaison
+avec la racine (k compris), d'où + f(i) + ... + f(j-1).`,
+ans_ao1: `F = [5, 1, 1]
+Arbre de hauteur min (racine 1) : 2×5 + 1×1 + 2×1 = 13
+Racine 0, puis 1 à droite, puis 2 à droite : 1×5 + 2×1 + 3×1 = 10
+Le second est meilleur : la valeur 0, très demandée, est à la racine.`,
+// ---------- Contrôle 1 : sous-ensemble de cardinal minimum ----------
+secm_expr: `Supposons le problème résolu : soit E un sous-ensemble de X, de somme S,
+de cardinal minimum. Deux cas pour le dernier élément x(n-1) :
+ • x(n-1) n'est pas dans E : E est une solution pour les n-1 premiers
+   éléments et la même somme S  →  m(n-1, S)
+ • x(n-1) est dans E : le reste de E est une solution pour les n-1 premiers
+   éléments et la somme S - x(n-1)  →  1 + m(n-1, S - x(n-1))
+m(n,S) = min { m(n-1,S), 1 + m(n-1, S - x(n-1)) }`,
+rec_secm: `m(k,s) = cardinal minimum d'un sous-ensemble des k premiers éléments de X,
+         de somme s (infini s'il n'en existe pas).
+Base :      m(0,0) = 0  et  qqsoit s, 1 ≤ s < S+1 :  m(0,s) = infini
+Hérédité :  qqsoit k, 1 ≤ k < n+1, qqsoit s, 0 ≤ s < S+1 :
+            m(k,s) = min{ m(k-1,s), 1 + m(k-1, s-x(k-1)) }
+            (si s - x(k-1) < 0, seul le premier terme existe)`,
+secm_M: `static final int Infini = Integer.MAX_VALUE/2;   // /2 : Infini + 1 ne déborde pas
+static int[][] calculerM(int[] X, int S){ int n = X.length;
+    int[][] M = new int[n+1][S+1];
+    M[0][0] = 0; for (int s = 1; s < S+1; s++) M[0][s] = Infini;   // base
+    for (int k = 1; k < n+1; k++)
+        for (int s = 0; s < S+1; s++)
+            if (s-X[k-1] < 0) M[k][s] = M[k-1][s];                   // x(k-1) trop grand
+            else M[k][s] = min(M[k-1][s], 1 + M[k-1][s-X[k-1]]);
+    return M;
+}`,
+secm_aff: `static void asecm(int[][] M, int[] X, int k, int s){
+    if (k == 0 && s == 0) return;           // secm(0,0) = Ø : rien à afficher
+    if (M[k][s] == M[k-1][s])               // x(k-1) n'est pas dans la solution
+        asecm(M, X, k-1, s);
+    else {                                  // x(k-1) est dans la solution
+        asecm(M, X, k-1, s-X[k-1]);         // d'abord le reste...
+        System.out.printf("%d, ", X[k-1]);  // ...puis x(k-1)
+    }
+}   // appel principal, si M[n][S] < Infini : asecm(M, X, n, S);`,
+ans_secm: `X = [1, 2, 4, 5, 6, 7], S = 10  →  { 4, 6 }, cardinal 2
+(1+2+7 marche aussi, mais avec 3 éléments.)
+X = [2, 4, 6, 8], S = 5  →  aucun sous-ensemble (que des nombres pairs).`
+});
+
+Object.assign(CHECKS, {
+ab_th: [['t : vide → 0, sinon 1 + t(sag) + t(sad)',2],['h : vide → −1 (convention du cours), sinon 1 + max des deux hauteurs',2]],
+ab_hauteur: [['Cas vide : return −1',1],['1 + max(h(sag(a)), h(sad(a)))',2],['Récursif sur les deux sous-arbres, sans boucle',1]],
+ab_feuilles: [['Cas vide : 0',1],['Feuille (sag et sad vides) : 1',1.5],['Sinon : nbFeuilles(sag) + nbFeuilles(sad)',1.5]],
+ab_parcours: [['Cas vide : return',1],['grd : gauche, racine, droite (ordre croissant)',1.5],['drg : droite, racine, gauche (ordre décroissant)',1.5]],
+ab_appartient: [['Cas vide : retourne a (l\'arbre vide)',1],['x == vr(a) : retourne a',1],['Ne descend que d\'un côté selon x < vr(a)',2]],
+ab_ins: [['Vide → new AB(x, null, null)',1],['x == vr(a) → a',0.5],['x < vr : new AB(vr(a), inserer(x, sag(a)), sad(a))',1.5],['Sinon : new AB(vr(a), sag(a), inserer(x, sad(a)))',1]],
+ab_hmin: [['j − i ≤ 0 → null',1],['k = (i + j) / 2',1],['new AB(k, abrhmin(i, k), abrhmin(k+1, j))',2]],
+ao_MA: [['M = new int[n+1][n+1], base M[i][i] = 0',1],['Boucles : taille t de 1 à n, puis i de 0 à n−t, avec j = i + t',1.5],['M[i][j] = MAX_VALUE puis boucle k de i à j−1 sur M[i][k] + M[k+1][j]',1.5],['Garde le min et range l\'arg dans M[j][i] = k',1],['Ajoute somme(F, i, j) et retourne M',1]],
+ao_abr: [['j − i ≤ 0 → null',1.5],['kij = M[j][i]',1],['new AB(kij, abrcmin(M, i, kij), abrcmin(M, kij+1, j))',2.5]],
+rec_ao: [['Définition de m(i,j) sur l\'ensemble de valeurs [i:j]',1],['Base : m(i,i) = 0',1],['Cas général : min sur i ≤ k < j de m(i,k) + m(k+1,j)',2],['+ f(i) + … + f(j−1), justifié (une comparaison de plus pour chaque valeur)',1]],
+ans_ao1: [['Arbre de hauteur min : coût 13',1.5],['Arbre 0 → 1 → 2 : coût 10',1.5],['Conclusion : le second est meilleur',1]],
+ao_cout: [['Fonction auxiliaire avec le niveau l, appel avec l = 0',1],['Vide → 0',1],['(l+1) × F[vr(a)]',1.5],['+ cout des deux sous-arbres au niveau l+1',1.5]],
+secm_expr: [['« Supposons le problème résolu » : deux cas pour x(n−1)',1],['x(n−1) absent : m(n−1, S)',1],['x(n−1) présent : 1 + m(n−1, S − x(n−1))',1],['m(n,S) = min des deux',1]],
+rec_secm: [['Base : m(0,0) = 0',1],['Base : m(0,s) = infini pour 1 ≤ s ≤ S',1.5],['Hérédité : min{ m(k−1,s), 1 + m(k−1, s−x(k−1)) }',1.5],['Intervalles : 1 ≤ k < n+1 et 0 ≤ s < S+1',1]],
+secm_M: [['M = new int[n+1][S+1]',1],['Base : M[0][0] = 0 et M[0][s] = Infini',1.5],['Boucles k de 1 à n, s de 0 à S',1],['Cas s − X[k−1] < 0 traité à part',1.5],['M[k][s] = min(M[k−1][s], 1 + M[k−1][s−X[k−1]]), return M',1]],
+secm_aff: [['Base : k == 0 && s == 0 → return',1],['Test M[k][s] == M[k−1][s] : x(k−1) absent → asecm(k−1, s)',1.5],['Sinon : appel asecm(k−1, s − X[k−1]) PUIS affichage de X[k−1]',2.5]],
+ans_secm: [['{4, 6} pour S = 10',1.5],['Pas de solution pour S = 5',1.5]]
+});
+
+QCM.arbres = [
+ ['Une feuille est un arbre de la forme…',['(v () ()) : ses deux sous-arbres sont vides','() : l\'arbre vide','(v g d) avec g non vide','la racine de l\'arbre'],'Une feuille est tout en bas : rien à gauche, rien à droite.'],
+ ['Dans un abr (vr g d), x ∈ g implique…',['x < vr','x > vr','x = vr','rien de particulier'],'Plus petit à gauche, plus grand à droite, et g et d sont eux-mêmes des abr.'],
+ ['Convention du cours : h(()) = −1. Que vaut h d\'une feuille ?',['0','1','−1','2'],'h(feuille) = 1 + max(h(()), h(())) = 1 + (−1) = 0. La hauteur est la longueur du plus long chemin depuis la racine.'],
+ ['Pour a non vide, t(a) = ?',['1 + t(sag(a)) + t(sad(a))','t(sag(a)) + t(sad(a))','1 + max( t(sag(a)), t(sad(a)) )','2 × t(sag(a))'],'On compte la racine (1) plus tout ce qu\'il y a à gauche et à droite.'],
+ ['Pour a non vide, h(a) = ?',['1 + max( h(sag(a)), h(sad(a)) )','1 + h(sag(a)) + h(sad(a))','max( h(sag(a)), h(sad(a)) )','t(a) − 1'],'Un pas pour descendre de la racine, plus le plus long des deux chemins.'],
+ ['grd(a) affiche les valeurs d\'un abr…',['dans l\'ordre croissant','dans l\'ordre décroissant','dans l\'ordre d\'insertion','niveau par niveau'],'Gauche (les plus petits), racine, droite (les plus grands). drg fait l\'inverse : ordre décroissant.'],
+ ['in(x, a) retourne, si x n\'est pas dans a…',['l\'arbre vide ()','false','a','−1'],'in retourne un arbre : le sous-arbre (x g d) si x est présent, sinon l\'arbre vide.'],
+ ['abrhmin(0, 7) met à la racine…',['3, la médiane (0 + 7) / 2','0','7','4'],'Division entière : 7 / 2 = 3. L\'ensemble [0:7] contient 0 à 6, dont la médiane est 3.'],
+ ['Dans inserer(x, a), si x < vr(a), on retourne…',['new AB(vr(a), inserer(x, sag(a)), sad(a))','inserer(x, sag(a))','new AB(x, sag(a), sad(a))','new AB(vr(a), sag(a), inserer(x, sad(a)))'],'On recrée la racine avec sa valeur et son sous-arbre droit, et un sous-arbre gauche qui contient x. Retourner seulement inserer(x, sag(a)) perdrait la racine.'],
+ ['On insère 1, 2, 3, 4, 5 dans cet ordre dans un abr vide. Hauteur ?',['4 : l\'arbre est une « liste »','2','5','0'],'Chaque valeur va à droite de la précédente : un chemin de 5 nœuds, donc 4 arcs. C\'est le pire cas de l\'abr glouton.']
+];
+QCM.abropt = [
+ ['Le coût d\'un abr, c\'est…',['la somme des f(v) × (nombre de comparaisons pour trouver v)','sa hauteur','son nombre de nœuds','la somme des valeurs'],'Une valeur au niveau l demande l + 1 comparaisons, à chacune de ses f(v) recherches. Il faut 1 comparaison pour la racine.'],
+ ['Exemple du cours, F = [2,3,1,8,5,4,6,7,9]. Classe les abr du moins cher au plus cher.',['coût min (113), hauteur min (123), glouton (140)','glouton, hauteur min, coût min','hauteur min, coût min, glouton','ils coûtent tous pareil'],'L\'abr de coût minimum fait le meilleur compromis entre « valeurs fréquentes près de la racine » et « arbre peu haut ».'],
+ ['L\'abr glouton insère les valeurs…',['par fréquences décroissantes, sans regarder les valeurs','par valeurs croissantes','en mettant la médiane à la racine','au hasard'],'Le plus fréquent devient la racine, mais l\'arbre peut devenir très haut (jusqu\'à une « liste » si les fréquences sont croissantes).'],
+ ['Si la racine de l\'abr sur [i:j] est k, son sous-arbre gauche est construit sur…',['[i:k], les valeurs i à k−1','[i:j]','[k+1:j]','[0:k+1]'],'C\'est un abr : à gauche, les valeurs de l\'ensemble plus petites que k.'],
+ ['Dans m(i,j), pourquoi ajoute-t-on f(i) + … + f(j−1) ?',['Chaque valeur de [i:j] fait une comparaison avec la racine en plus','Pour compter les nœuds','Pour calculer la hauteur','On ne l\'ajoute pas'],'Les sous-arbres descendent d\'un niveau : +1 comparaison pour chacune de leurs valeurs. Et la racine k coûte 1 × f(k). Au total, on ajoute toutes les fréquences de [i:j].'],
+ ['Que vaut m(i,i) ?',['0 : ensemble vide, arbre vide','f(i)','1','infini'],'Aucune valeur, aucune recherche : une somme sur l\'ensemble vide vaut 0.'],
+ ['Dans quel ordre calcule-t-on les m(i,j) ?',['Par tailles t = j − i croissantes (diagonale par diagonale)','Par i croissant puis j croissant','Par j décroissant','Dans n\'importe quel ordre'],'m(i,j) utilise m(i,k) et m(k+1,j), de tailles plus petites.'],
+ ['Dans calculerM du cours, où est rangé arg m(i,j) ?',['Dans M[j][i], la moitié du tableau qui ne sert pas aux m(i,j)','Dans un tableau A séparé','Dans M[i][j]','Il n\'est pas rangé'],'Les m(i,j) n\'utilisent que les cases i ≤ j. Les cases M[j][i], avec i < j, sont libres : on y range la racine k.'],
+ ['Complexité de calculerM ?',['Θ(n³)','Θ(n²)','Θ(n)','Θ(4ⁿ / n^1,5), comme l\'approche exhaustive'],'n²/2 sous-problèmes environ, et jusqu\'à n racines essayées pour chacun. L\'approche exhaustive, elle, explose (nombres de Catalan).'],
+ ['abrcmin(M, i, j) ressemble à abrhmin(i, j), sauf que…',['la racine est M[j][i] au lieu de la médiane (i + j) / 2','on trie les valeurs avant','on n\'utilise pas la récursivité','les sous-arbres sont inversés'],'Même structure récursive : seule la façon de choisir la racine change.']
+];
+QCM.controle1 = [
+ ['m(k,s) vaut infini quand…',['aucun sous-ensemble des k premiers éléments n\'a pour somme s','s = 0','k = 0 et s = 0','x(k−1) > s'],'Infini veut dire « impossible ». Par exemple m(0,s) = infini pour s ≥ 1 : sans élément, on n\'atteint pas une somme positive.'],
+ ['Pourquoi Infini = Integer.MAX_VALUE / 2 et pas MAX_VALUE ?',['Pour que 1 + Infini ne déborde pas en nombre négatif','Pour aller plus vite','C\'est une erreur','Pour que Infini soit pair'],'MAX_VALUE + 1 donne un nombre négatif en Java : le min le choisirait. Avec MAX_VALUE / 2, 1 + Infini reste très grand.'],
+ ['Dans asecm, comment sait-on que x(k−1) n\'est pas dans la solution ?',['M[k][s] == M[k−1][s]','M[k][s] == 0','X[k−1] > s','M[k−1][s] == Infini'],'Si la valeur n\'a pas changé en ajoutant x(k−1), on peut s\'en passer. Pas besoin de tableau A : on reteste la formule, comme pour les chemins du TD2 ex. 2.']
+];
+
+replaceById(TROUS, 'tr-taille', {id:'tr-taille',topic:'arbres',title:'t (la taille)',code:`static int t(AB a){
+    if (⟦vide(a)‖a == null⟧) return ⟦0⟧;
+    return ⟦1⟧ + t(⟦sag(a)⟧) + t(⟦sad(a)⟧);
+}`});
+replaceById(TROUS, 'tr-hauteur', {id:'tr-hauteur',topic:'arbres',title:'h (la hauteur, convention du cours)',code:`static int h(AB a){
+    if (vide(a)) return ⟦-1⟧;
+    return ⟦1⟧ + ⟦max‖Math.max⟧(h(⟦sag(a)⟧), h(⟦sad(a)⟧));
+}`});
+replaceById(TROUS, 'tr-appartient', {id:'tr-appartient',topic:'arbres',title:'in (chercher dans un abr)',code:`static AB in(int x, AB a){
+    if (vide(a)) return ⟦a‖null⟧;
+    if (x == vr(a)) return ⟦a⟧;
+    if (⟦x < vr(a)‖vr(a) > x⟧) return in(x, ⟦sag(a)⟧);
+    return in(x, ⟦sad(a)⟧);
+}`});
+replaceById(TROUS, 'tr-inserer', {id:'tr-inserer',topic:'arbres',title:'inserer',code:`static AB inserer(int x, AB a){
+    if (vide(a)) return ⟦new AB(x, null, null)⟧;
+    if (x == vr(a)) return ⟦a⟧;
+    if (x < vr(a)) return new AB(vr(a), ⟦inserer(x, sag(a))⟧, ⟦sad(a)⟧);
+    return new AB(vr(a), ⟦sag(a)⟧, ⟦inserer(x, sad(a))⟧);
+}`});
+replaceById(TROUS, 'tr-hmin', {id:'tr-hmin',topic:'arbres',title:'abrhmin',code:`static AB abrhmin(int i, int j){
+    if (⟦j-i <= 0‖j <= i‖i >= j⟧) return null;
+    int k = ⟦(i+j)/2‖(i + j) / 2⟧;
+    return new AB(⟦k⟧, abrhmin(⟦i⟧, ⟦k⟧), abrhmin(⟦k+1⟧, ⟦j⟧));
+}`});
+replaceById(TROUS, 'tr-aoMA', {id:'tr-aoMA',topic:'abropt',title:'le cœur de calculerM',code:`for (int t = 1; t < n+1; t++)
+    for (int i = 0; i < ⟦n-t+1⟧; i++){ int j = ⟦i+t‖t+i⟧;
+        M[i][j] = Integer.MAX_VALUE;
+        for (int k = ⟦i⟧; k < ⟦j⟧; k++){ int mikj = M[i][⟦k⟧] + M[⟦k+1⟧][j];
+            if (mikj < M[i][j]){ M[i][j] = mikj; M[⟦j⟧][⟦i⟧] = k; }
+        }
+        M[i][j] = M[i][j] + ⟦somme(F, i, j)‖somme(F,i,j)⟧;
+    }`});
+replaceById(TROUS, 'tr-aoAbr', {id:'tr-aoAbr',topic:'abropt',title:'abrcmin',code:`static AB abrcmin(int[][] M, int i, int j){
+    if (⟦j-i <= 0‖j <= i‖i >= j⟧) return null;
+    int kij = ⟦M[j][i]⟧;
+    return new AB(⟦kij⟧, abrcmin(M, ⟦i⟧, ⟦kij⟧), abrcmin(M, ⟦kij+1⟧, ⟦j⟧));
+}`});
+TROUS.push({id:'tr-cout',topic:'abropt',title:'cout (le coût d\'un abr)',code:`static int cout(AB a, int[] F, int l){
+    if (vide(a)) return ⟦0⟧;
+    int v = vr(a), f = ⟦F[v]⟧;
+    return ⟦(l+1)*f‖f*(l+1)⟧ + cout(sag(a), F, ⟦l+1⟧) + cout(sad(a), F, ⟦l+1⟧);
+}`});
+
+replaceById(WRITES, 'wr-hauteur', {id:'wr-hauteur',topic:'arbres',sol:'ab_hauteur',title:'Écris h(AB a)',enonce:'Écris <code>int h(AB a)</code> qui retourne la hauteur de a : la longueur du plus long chemin depuis sa racine. Convention du cours : h(()) = −1, donc une feuille a une hauteur 0. Repère : 4 lignes.'});
+replaceById(WRITES, 'wr-appartient', {id:'wr-appartient',topic:'arbres',sol:'ab_appartient',title:'Écris in(int x, AB a)',enonce:'a est un abr. Écris <code>AB in(int x, AB a)</code> qui retourne : si x n\'est pas dans a, l\'arbre vide ; sinon le sous-arbre (x g d) de a. Sans parcourir tout l\'arbre.'});
+replaceById(WRITES, 'wr-inserer', {id:'wr-inserer',topic:'arbres',sol:'ab_ins',title:'Écris inserer(int x, AB a)',enonce:'Écris <code>AB inserer(int x, AB a)</code> qui retourne : si x est dans a, a ; sinon « a augmenté de la valeur x ». 4 cas : vide(a), x == vr(a), x &lt; vr(a), x &gt; vr(a). Repère : 6 lignes.'});
+replaceById(WRITES, 'wr-aoMA', {id:'wr-aoMA',topic:'abropt',sol:'ao_MA',title:'Écris calculerM(int[] F)',enonce:'Les fréquences des valeurs 0 à n−1 sont dans F[0:n]. Écris <code>int[][] calculerM(int[] F)</code> qui retourne M[0:n+1][0:n+1] avec M[i][j] = m(i,j) pour i ≤ j, et M[j][i] = arg m(i,j) pour i &lt; j.'});
+replaceById(WRITES, 'wr-aoAbr', {id:'wr-aoAbr',topic:'abropt',sol:'ao_abr',title:'Écris abrcmin(M, i, j)',enonce:'Écris <code>AB abrcmin(int[][] M, int i, int j)</code> qui retourne un abr de coût minimum construit sur [i:j]. Appel principal : <code>abrcmin(M, 0, n)</code>.'});
+WRITES.push({id:'wr-cout',topic:'abropt',sol:'ao_cout',title:'Écris cout(AB a, int[] F)',enonce:'Écris <code>int cout(AB a, int[] F)</code> qui retourne le coût de l\'abr a, F[v] étant la fréquence de recherche de la valeur v. Indice : écris une fonction auxiliaire <code>cout(a, F, l)</code> où l est le niveau de la racine de a.'});
+
+const AB_INTRO = '<p>On utilise la classe <code>AB</code> du cours (champs <code>r</code>, <code>g</code>, <code>d</code>) et les fonctions <code>vide(a)</code>, <code>vr(a)</code>, <code>sag(a)</code>, <code>sad(a)</code>. Un arbre binaire de recherche (abr) est vide, ou un triplet (vr g d) où toute valeur de g est &lt; vr, toute valeur de d est &gt; vr, et g et d sont des abr. Convention : h(()) = −1.</p>';
+replaceById(SUJETS, 'ab', {id:'ab',tag:'Sujet blanc · cours',titre:'Arbres binaires de recherche',desc:'Les fonctions du cours : t et h, in, grd et drg, inserer, abrhmin.',intro:AB_INTRO,q:[
+  {pts:4,enonce:'Écrire <code>int t(AB a)</code> (taille : nombre de valeurs) et <code>int h(AB a)</code> (hauteur : longueur du plus long chemin depuis la racine, h(()) = −1).',sol:'ab_th'},
+  {pts:4,enonce:'a est un abr. Écrire <code>AB in(int x, AB a)</code> qui retourne : si x n\'est pas dans a alors (), sinon le sous-arbre (x g d) de a.',sol:'ab_appartient'},
+  {pts:4,enonce:'Écrire <code>void grd(AB a)</code> qui affiche les valeurs de l\'abr a dans l\'ordre croissant, et <code>void drg(AB a)</code> qui les affiche dans l\'ordre décroissant.',sol:'ab_parcours'},
+  {pts:4,enonce:'Écrire <code>AB inserer(int x, AB a)</code> qui retourne : si x est dans a alors a, sinon « a augmenté de la valeur x ».',sol:'ab_ins'},
+  {pts:4,enonce:'Écrire <code>AB abrhmin(int i, int j)</code> qui retourne un abr de hauteur minimum construit sur l\'ensemble de valeurs [i:j].',sol:'ab_hmin'}
+ ]});
+replaceById(SUJETS, 'ao', {id:'ao',tag:'Sujet blanc · cours',titre:'ABR de coût minimum',desc:'Coût d\'un abr à la main, récurrence de m(i,j), calculerM, abrcmin.',intro:'<p>Les valeurs de l\'ensemble [0:n] sont recherchées avec les fréquences F[0:n]. Le coût de recherche d\'une valeur v est F[v] × (nombre de comparaisons pour la trouver) ; il faut une comparaison pour trouver la racine. Le coût d\'un abr est la somme des coûts de ses valeurs. On cherche un abr de coût minimum.</p>',q:[
+  {pts:4,enonce:'Trois valeurs, F = [5, 1, 1]. Calculer le coût de l\'abr de hauteur minimum (racine 1), puis celui de l\'abr de racine 0 dont le fils droit est 1 et le petit-fils droit est 2. Lequel est le meilleur ?',sol:'ans_ao1'},
+  {pts:5,enonce:'On note m(i,j) le coût minimum d\'un abr construit sur le sous-ensemble de valeurs [i:j]. Établir l\'équation de récurrence (base et cas général, avec les intervalles) en justifiant le terme ajouté.',sol:'rec_ao'},
+  {pts:6,enonce:'Écrire <code>int[][] calculerM(int[] F)</code> qui retourne M[0:n+1][0:n+1] de terme général M[i][j] = m(i,j) pour 0 ≤ i ≤ j &lt; n+1, et M[j][i] = arg m(i,j) pour i &lt; j.',sol:'ao_MA'},
+  {pts:5,enonce:'Écrire <code>AB abrcmin(int[][] M, int i, int j)</code> qui retourne un abr de coût minimum construit sur [i:j].',sol:'ao_abr'}
+ ]});
+SUJETS.splice(0, 0, {id:'c1',tag:'Annale · contrôle 1 du 10/10/2026',titre:'Contrôle 1 : sous-ensemble de cardinal minimum',desc:'Le premier contrôle de cette année. Un problème nouveau, 4 questions : supposons le problème résolu, récurrence, calculerM, affichage récursif.',intro:'<p>X = [x(0), …, x(n−1)] est un tableau de n entiers positifs et S un entier positif. On cherche un sous-ensemble de X <b>de somme S</b> ayant <b>le moins d\'éléments possible</b> (cardinal minimum), s\'il en existe un. On note m(k,s) le cardinal minimum d\'un sous-ensemble des k premiers éléments de X de somme s, avec m(k,s) = infini s\'il n\'en existe pas. En Java, on prend <code>Infini = Integer.MAX_VALUE/2</code>.</p><p>Exemple : X = [1, 2, 4, 5, 6, 7] et S = 10. Le sous-ensemble {4, 6} a 2 éléments ; {1, 2, 7} marche aussi mais en a 3.</p><p class="note">Énoncé reconstitué à partir du corrigé du prof. Les questions et les réponses sont les siennes ; le barème est une estimation.</p>',q:[
+  {pts:4,enonce:'Exprimer m(n,S) en fonction de valeurs m(n−1, ·). (Supposez le problème résolu et regardez le dernier élément x(n−1).)',sol:'secm_expr'},
+  {pts:5,enonce:'Donner l\'équation de récurrence des valeurs m(k,s) : base et hérédité, avec les intervalles de k et de s.',sol:'rec_secm'},
+  {pts:6,enonce:'Écrire <code>int[][] calculerM(int[] X, int S)</code> qui calcule et retourne M[0:n+1][0:S+1] de terme général M[k][s] = m(k,s).',sol:'secm_M'},
+  {pts:5,enonce:'Écrire <code>void asecm(int[][] M, int[] X, int k, int s)</code> qui affiche un sous-ensemble des k premiers éléments de X, de somme s, de cardinal minimum. Appel principal : <code>asecm(M, X, n, S)</code>.',sol:'secm_aff'}
+ ]});
+CODES.ab_grd = `static void grd(AB a){   // a est un abr : affiche ses valeurs à l'endroit
+    if (vide(a)) return;
+    grd(sag(a));             // les valeurs de sag(a) ont été affichées à l'endroit
+    System.out.print(vr(a) + " ");
+    grd(sad(a));             // puis celles de sad(a) : a est affiché à l'endroit
+}`;
+TOPICS.splice(TOPICS.findIndex(t => t.id === 'examen'), 0, {id:'fiches',tag:'La veille',title:'Fiches de révision',desc:'Une fiche par sujet : données, valeur, récurrence, code, exemple, pièges.'});
 // ===================== OUTILS =====================
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -2561,7 +3199,7 @@ function examStart(id) {
 }
 
 // ===================== NAVIGATION =====================
-const VIEWS = ['accueil', 'methode', 'chemins', 'juliette', 'plsc', 'plssc', 'arbres', 'palindrome', 'abropt', 'examen', 'urgence'];
+const VIEWS = ['accueil', 'methode', 'chemins', 'juliette', 'plsc', 'plssc', 'arbres', 'palindrome', 'abropt', 'fiches', 'examen', 'urgence'];
 function route() {
   let h = location.hash.slice(1); if (!VIEWS.includes(h)) h = 'accueil';
   $$('.view').forEach(v => v.hidden = v.id !== 'v-' + h);
@@ -2580,7 +3218,7 @@ function init() {
   Store.load();
   $('#home-cards').innerHTML = TOPICS.map(t => `<a class="card" href="#${t.id}"><p class="tag">${esc(t.tag)}</p><h3>${esc(t.title)}</h3><p>${esc(t.desc)}</p><p class="small" data-count="${t.id}"></p><div class="bar"><i data-bar="${t.id}"></i></div></a>`).join('');
   $$('pre[data-code]').forEach(p => p.innerHTML = hl(CODES[p.dataset.code] || ''));
-  initUrgence();
+  initUrgence(); initFiches();
   renderStaticDags();
   $$('[data-qcm]').forEach(renderQCM);
   $$('[data-trous]').forEach(renderTrous);
@@ -2603,7 +3241,9 @@ function init() {
 const T = {
   ins(t, x) { if (!t) return { v: x, g: null, d: null }; if (x === t.v) return t; return x < t.v ? { v: t.v, g: T.ins(t.g, x), d: t.d } : { v: t.v, g: t.g, d: T.ins(t.d, x) }; },
   size(t) { return t ? 1 + T.size(t.g) + T.size(t.d) : 0; },
-  height(t) { return t ? 1 + Math.max(T.height(t.g), T.height(t.d)) : 0; },
+  height(t) { return t ? 1 + Math.max(T.height(t.g), T.height(t.d)) : -1; },
+  cout(t, F, l = 0) { return t ? (l + 1) * F[t.v] + T.cout(t.g, F, l + 1) + T.cout(t.d, F, l + 1) : 0; },
+  glouton(F) { return T.fromList([...F.keys()].sort((a, b) => F[b] - F[a] || a - b)); },
   pre(t, o = []) { if (t) { o.push(t.v); T.pre(t.g, o); T.pre(t.d, o); } return o; },
   inf(t, o = []) { if (t) { T.inf(t.g, o); o.push(t.v); T.inf(t.d, o); } return o; },
   post(t, o = []) { if (t) { T.post(t.g, o); T.post(t.d, o); o.push(t.v); } return o; },
@@ -2629,11 +3269,15 @@ function drawTree(t, o = {}) {
   });
   return s + '</svg>';
 }
+const FCOURS = [2, 3, 1, 8, 5, 4, 6, 7, 9];
 function renderStaticTrees() {
   const make = {
     demo: () => drawTree(T.fromList([50, 30, 70, 20, 40, 60, 80, 35]), { nodeClass: v => [20, 35, 60, 80].includes(v) ? 'path' : '' }),
     'ao-eq': () => drawTree(T.fromList([1, 0, 2]), { sub: (v, d) => `f=${[5, 1, 1][v]}, p=${d}` }),
-    'ao-opt': () => drawTree(T.fromList([0, 1, 2]), { sub: (v, d) => `f=${[5, 1, 1][v]}, p=${d}`, nodeClass: v => v === 0 ? 'path' : '' })
+    'ao-opt': () => drawTree(T.fromList([0, 1, 2]), { sub: (v, d) => `f=${[5, 1, 1][v]}, p=${d}`, nodeClass: v => v === 0 ? 'path' : '' }),
+    'ao-c-g': () => drawTree(T.glouton(FCOURS), { sub: v => 'f=' + FCOURS[v] }),
+    'ao-c-h': () => drawTree(T.hmin(0, 9), { sub: v => 'f=' + FCOURS[v] }),
+    'ao-c-m': () => drawTree(aoBuild(aoSolve(FCOURS).A, 0, 9), { sub: v => 'f=' + FCOURS[v], nodeClass: () => 'path' })
   };
   $$('[data-tree]').forEach(d => { if (make[d.dataset.tree]) d.innerHTML = make[d.dataset.tree](); });
 }
@@ -2670,9 +3314,9 @@ function initArbres() {
     const i = +$('#hm-i').value, j = +$('#hm-j').value;
     if (!Number.isInteger(i) || !Number.isInteger(j) || j - i > 31 || i < 0) { $('#hm-err').textContent = 'Choisis des entiers avec 0 ≤ i et j − i ≤ 31.'; return; }
     $('#hm-err').textContent = '';
-    const out = []; (function tr(a, b, dep) { out.push('    '.repeat(dep) + `abrhmin(${a}, ${b})` + (a >= b ? ' → vide' : ` → racine ${Math.floor((a + b) / 2)}`)); if (a < b) { const m = Math.floor((a + b) / 2); tr(a, m, dep + 1); tr(m + 1, b, dep + 1); } })(i, j, 0);
+    const out = []; (function tr(a, b, dep) { out.push('    '.repeat(dep) + `abrhmin(${a}, ${b})` + (a >= b ? ' → vide' : ` → racine k = ${Math.floor((a + b) / 2)}`)); if (a < b) { const m = Math.floor((a + b) / 2); tr(a, m, dep + 1); tr(m + 1, b, dep + 1); } })(i, j, 0);
     const t = T.hmin(i, j);
-    $('#sim-hmin .sim-view').innerHTML = `<div class="dag-wrap">${drawTree(t)}</div><p>Hauteur ${T.height(t)} pour ${Math.max(0, j - i)} valeur${j - i > 1 ? 's' : ''}. Les appels récursifs :</p><pre class="mini">${out.join('\n')}</pre>`;
+    $('#sim-hmin .sim-view').innerHTML = `<div class="dag-wrap">${drawTree(t)}</div><p>h = ${T.height(t)} (convention du cours : h(()) = −1) pour ${Math.max(0, j - i)} valeur${j - i > 1 ? 's' : ''}. Les appels récursifs :</p><pre class="mini">${out.join('\n')}</pre>`;
   }
   $('#hm-go').addEventListener('click', hm); hm();
 }
@@ -2739,21 +3383,21 @@ function aoSteps(F) {
   const n = F.length, Sx = [0]; F.forEach((f, k) => Sx.push(Sx[k] + f));
   const M = [...Array(n + 1)].map(() => Array(n + 1).fill(null)), A = [...Array(n + 1)].map(() => Array(n + 1).fill(null));
   const snap = x => Object.assign({ F, M: M.map(r => r.slice()), A: A.map(r => r.slice()), cur: null, deps: [], best: [], path: [], tree: null }, x);
-  const steps = [snap({ msg: `Clés 0 à ${n - 1}, fréquences f = [${F.join(', ')}]. La case (i, j) contiendra le coût minimum d'un ABR sur les clés [i:j], c'est-à-dire de i à j−1.` })];
+  const steps = [snap({ msg: `Valeurs 0 à ${n - 1}, fréquences F = [${F.join(', ')}]. La case (i, j) contiendra m(i,j), le coût minimum d'un abr sur les valeurs [i:j], c'est-à-dire de i à j−1.` })];
   for (let i = 0; i <= n; i++) M[i][i] = 0;
-  steps.push(snap({ msg: `<b>Base</b> : m(i,i) = 0. Un intervalle vide donne l'arbre vide, qui ne coûte rien.` }));
+  steps.push(snap({ msg: `<b>Base, taille t = 0</b> : m(i,i) = 0. Un ensemble vide donne l'arbre vide, qui ne coûte rien.` }));
   for (let d = 1; d <= n; d++) for (let i = 0; i + d <= n; i++) {
     const j = i + d, sig = Sx[j] - Sx[i]; let best = INF, br = i; const lines = [];
     for (let r = i; r < j; r++) { const m = M[i][r] + M[r + 1][j]; lines.push({ r, a: M[i][r], b: M[r + 1][j], m }); if (m < best) { best = m; br = r; } }
     M[i][j] = best + sig; A[i][j] = br;
-    const msg = `<b>m(${i},${j})</b> : clés ${i} à ${j - 1}. σ(${i},${j}) = ${F.slice(i, j).join(' + ')} = ${sig}. On essaie chaque racine r :<ul class="cands">${lines.map(l => `<li class="${l.r === br ? 'best' : ''}">r = ${l.r} : m(${i},${l.r}) + m(${l.r + 1},${j}) = ${l.a} + ${l.b} = <b>${l.m}</b>${l.r === br ? ' ← minimum' : ''}</li>`).join('')}</ul>M[${i}][${j}] = ${best} + ${sig} = <b>${M[i][j]}</b>, A[${i}][${j}] = ${br}.`;
+    const msg = `<b>m(${i},${j})</b>, taille t = ${d} : valeurs ${i} à ${j - 1}. somme(F,${i},${j}) = ${F.slice(i, j).join(' + ')} = ${sig}. On essaie chaque racine k :<ul class="cands">${lines.map(l => `<li class="${l.r === br ? 'best' : ''}">k = ${l.r} : m(${i},${l.r}) + m(${l.r + 1},${j}) = ${l.a} + ${l.b} = <b>${l.m}</b>${l.r === br ? ' ← minimum' : ''}</li>`).join('')}</ul>M[${i}][${j}] = ${best} + ${sig} = <b>${M[i][j]}</b>, et l'arg M[${j}][${i}] = ${br}.`;
     steps.push(snap({ cur: [i, j], deps: lines.flatMap(l => [[i, l.r], [l.r + 1, j]]), best: [[i, br], [br + 1, j]], msg }));
   }
   const order = []; (function rec(i, j) { if (i >= j) return; const r = A[i][j]; order.push({ i, j, r }); rec(i, r); rec(r + 1, j); })(0, n);
-  order.forEach((o, k) => steps.push(snap({ cur: [o.i, o.j], path: order.slice(0, k + 1).map(x => [x.i, x.j]), tree: T.fromList(order.slice(0, k + 1).map(x => x.r)), msg: `<b>abrOpt(${o.i},${o.j})</b> : A[${o.i}][${o.j}] = ${o.r}, la clé ${o.r} est la racine de ce sous-arbre. À gauche abrOpt(${o.i},${o.r})${o.r === o.i ? ' (vide)' : ''}, à droite abrOpt(${o.r + 1},${o.j})${o.r + 1 === o.j ? ' (vide)' : ''}.` })));
+  order.forEach((o, k) => steps.push(snap({ cur: [o.i, o.j], path: order.slice(0, k + 1).map(x => [x.i, x.j]), tree: T.fromList(order.slice(0, k + 1).map(x => x.r)), msg: `<b>abrcmin(M, ${o.i}, ${o.j})</b> : M[${o.j}][${o.i}] = ${o.r}, la valeur ${o.r} est la racine de ce sous-arbre. À gauche abrcmin(M, ${o.i}, ${o.r})${o.r === o.i ? ' (vide)' : ''}, à droite abrcmin(M, ${o.r + 1}, ${o.j})${o.r + 1 === o.j ? ' (vide)' : ''}.` })));
   const tree = aoBuild(A, 0, n), dep = T.depths(tree);
   const parts = F.map((f, k) => `${f}×${dep[k] + 1}`), tot = F.reduce((s, f, k) => s + f * (dep[k] + 1), 0);
-  steps.push(snap({ tree, path: order.map(x => [x.i, x.j]), msg: `Arbre terminé. Vérification du coût, Σ f(k) × (profondeur + 1) :<div class="out">${parts.join(' + ')} = ${tot}</div>C'est bien M[0][${n}] = ${M[0][n]}.` }));
+  steps.push(snap({ tree, path: order.map(x => [x.i, x.j]), msg: `Arbre terminé. Vérification avec cout(a, F) : chaque valeur v coûte F[v] × (niveau + 1) :<div class="out">${parts.join(' + ')} = ${tot}</div>C'est bien M[0][${n}] = ${M[0][n]}.` }));
   return steps;
 }
 function aoRender(st) {
@@ -2773,17 +3417,18 @@ function aoRender(st) {
   };
   const ftbl = `<div class="tblwrap"><table class="grid"><caption>Fréquences</caption><tr><th>clé</th>${st.F.map((_, k) => `<th>${k}</th>`).join('')}</tr><tr><th>f</th>${st.F.map(f => `<td>${f}</td>`).join('')}</tr></table></div>`;
   const tree = st.tree ? `<div class="dag-wrap">${drawTree(st.tree, { sub: v => 'f=' + st.F[v] })}</div>` : '';
-  $('#sim-ao .sim-view').innerHTML = `<div class="tables">${ftbl}${tbl(st.M, 'Tableau M : m(i,j)', true)}${tbl(st.A, 'Tableau A : racines', false)}</div>${tree}`;
+  $('#sim-ao .sim-view').innerHTML = `<div class="tables">${ftbl}${tbl(st.M, 'Tableau M : m(i,j)', true)}${tbl(st.A, 'Les arg m(i,j) : dans le cours, rangés dans M[j][i]', false)}</div>${tree}`;
 }
 function initAo() {
   const P = Player($('#sim-ao'), aoRender);
   function run() {
     const F = $('#ao-F').value.split(/[\s,;]+/).filter(Boolean).map(Number);
-    const err = !F.length ? 'Entre au moins une fréquence.' : F.some(x => isNaN(x) || x < 0) ? 'Il ne faut que des nombres positifs.' : F.length > 8 ? '8 clés maximum pour que les tableaux restent lisibles.' : '';
+    const err = !F.length ? 'Entre au moins une fréquence.' : F.some(x => isNaN(x) || x < 0) ? 'Il ne faut que des nombres positifs.' : F.length > 9 ? '9 valeurs maximum pour que les tableaux restent lisibles.' : '';
     $('#ao-err').textContent = err; if (!err) P.load(aoSteps(F));
   }
   $('#ao-load').addEventListener('click', run);
   $('#ao-ex').addEventListener('click', () => { $('#ao-F').value = '5 1 1'; run(); });
+  $('#ao-cours').addEventListener('click', () => { $('#ao-F').value = FCOURS.join(' '); run(); });
   run();
 }
 
@@ -2821,14 +3466,14 @@ function handAo(body) {
   const n = 4, F = [...Array(n)].map(() => rnd(1, 9)); const { M, A } = aoSolve(F);
   let h = `<div class="tables"><div class="tblwrap"><table class="grid"><caption>Fréquences</caption><tr><th>clé</th>${F.map((_, k) => `<th>${k}</th>`).join('')}</tr><tr><th>f</th>${F.map(f => `<td>${f}</td>`).join('')}</tr></table></div><div class="tblwrap"><table class="grid"><caption>Tableau M</caption><tr><th>i \\ j</th>${[...Array(n + 1).keys()].map(j => `<th>${j}</th>`).join('')}</tr>`;
   for (let i = 0; i <= n; i++) { h += `<tr><th>${i}</th>`; for (let j = 0; j <= n; j++) { if (j < i) h += '<td class="na"></td>'; else if (j === i) h += '<td>0</td>'; else h += `<td class="inp">${cellIn(`M${i}_${j}`, 44)}</td>`; } h += '</tr>'; }
-  body.innerHTML = h + `</table></div></div><p>Racine de l'ABR de coût minimum sur toutes les clés : ${cellIn('root')}</p>`;
+  body.innerHTML = h + `</table></div></div><p>Racine de l'abr de coût minimum sur toutes les valeurs, M[n][0] : ${cellIn('root')}</p>`;
   return {
     check() {
       const ok = markCells(body, (k, v) => {
         if (k === 'root') { const r = parseNum(v); return Number.isInteger(r) && r >= 0 && r < n && M[0][r] + M[r + 1][n] + F.reduce((a, b) => a + b, 0) === M[0][n]; }
         const [i, j] = k.slice(1).split('_').map(Number); return parseNum(v) === M[i][j];
       });
-      return ok || 'Il reste des erreurs. m(i,j) = σ(i,j) + le plus petit m(i,r) + m(r+1,j). Par exemple m(i,i+1) = f(i).';
+      return ok || 'Il reste des erreurs. m(i,j) = min sur k de m(i,k) + m(k+1,j), plus f(i) + … + f(j−1). Par exemple m(i,i+1) = f(i).';
     },
     solve() { for (let i = 0; i < n; i++) for (let j = i + 1; j <= n; j++) $(`[data-k=M${i}_${j}]`, body).value = M[i][j]; $('[data-k=root]', body).value = A[0][n]; $$('input.cell', body).forEach(i => i.classList.remove('good', 'bad')); }
   };
@@ -2863,8 +3508,9 @@ const URG = [
  ['PLSC (TD4)','l(p,q) ? Base ? Les deux cas ?','l(p,q) = longueur d\'une plsc des p et q préfixes\nl(0,q) = 0 ;  l(p,0) = 0\nsi t(p−1) = u(q−1) : 1 + l(p−1, q−1)\nsinon : max( l(p−1, q), l(p, q−1) )\nL[m+1][n+1] ; Θ(m·n)'],
  ['PLSSC (TD6)','Flèche i → j ? l(j) ? Où est la réponse ?','flèche i → j ssi i < j et S[i] < S[j]\nl(j) = longueur d\'une plssc qui finit en j\npred(j) = ∅ : l(j) = 1, A[j] = −1\nsinon : l(j) = 1 + max sur i ∈ pred(j) de l(i)\nRéponse : le MAX des l(j), pas l(n−1)'],
  ['Sous-chaîne palindrome','p(i,j) ? Base ? Hérédité ? Ordre ?','p(i,j) = vrai si S[i:j] est un palindrome\np(i,i) = vrai ;  p(i,i+1) = vrai\np(i,j) = S[i] == S[j−1] et p(i+1, j−1)\npour j − i ≥ 2\nordre : longueur d = j − i croissante ; Θ(n²)'],
- ['ABR de coût minimum','m(i,j) ? Base ? Hérédité ? σ ?','m(i,j) = coût min d\'un ABR sur les clés [i:j]\nm(i,i) = 0\nm(i,j) = σ(i,j) + min sur i ≤ r < j de\n         m(i,r) + m(r+1,j)\nσ(i,j) = f(i) + … + f(j−1) ;  A[i][j] = r\nordre : longueur croissante ; n³'],
- ['Arbres binaires','taille ? hauteur ? règle de l\'ABR ? parcours ?','taille : vide → 0, sinon 1 + taille(g) + taille(d)\nhauteur : vide → 0, sinon 1 + max(h(g), h(d))\nABR : gauche < racine < droite\npréfixe : R G D   infixe : G R D   suffixe : G D R\ninfixe d\'un ABR = ordre croissant']
+ ['ABR de coût minimum (cours)','m(i,j) ? Base ? Cas général ? Où va l\'arg ?','m(i,j) = coût min d\'un abr sur les valeurs [i:j]\nm(i,i) = 0\nm(i,j) = min sur i ≤ k < j de ( m(i,k) + m(k+1,j) )\n         + f(i) + … + f(j−1)\nM[i][j] = m(i,j) ;  M[j][i] = arg (la racine k)\nordre : tailles t = j − i croissantes ; Θ(n³)'],
+ ['Arbres binaires (cours)','t ? h ? règle de l\'abr ? grd ? abrhmin ?','t : () → 0, sinon 1 + t(g) + t(d)\nh : () → −1, sinon 1 + max(h(g), h(d))\n    (une feuille a h = 0)\nabr : x ∈ g ⇒ x < vr,  x ∈ d ⇒ x > vr\ngrd : croissant   drg : décroissant\nabrhmin(i,j) : k = (i+j)/2, g sur [i:k], d sur [k+1:j]'],
+ ['Cardinal minimum (contrôle 1)','m(k,s) ? Base ? Hérédité ? Comment afficher ?','m(k,s) = cardinal min d\'un sous-ensemble des\n         k premiers éléments, de somme s\nm(0,0) = 0 ;  m(0,s) = infini pour 1 ≤ s ≤ S\nm(k,s) = min{ m(k−1,s), 1 + m(k−1, s−x(k−1)) }\n1 ≤ k < n+1, 0 ≤ s < S+1\nasecm : M[k][s] == M[k−1][s] → x(k−1) pas pris']
 ];
 function initUrgence() {
   const box = $('#urg-cards');
@@ -2883,6 +3529,34 @@ function initUrgence() {
   $('#urg-hide').addEventListener('click', () => $$('.fcard', box).forEach(c => flip(c, false)));
   $('#urg-show').addEventListener('click', () => $$('.fcard', box).forEach(c => flip(c, true)));
   sync();
+}
+// ===================== FICHES DE RÉVISION =====================
+function initFiches() {
+  const arts = $$('#v-fiches .fiche'), nav = $('#fiche-nav');
+  arts.forEach(a => {
+    register('fiches', 'fiche-' + a.dataset.fiche);
+    $('.fiche-foot', a).insertAdjacentHTML('afterbegin', `<button type="button" class="btn primary" data-relu="${a.dataset.fiche}">J'ai relu cette fiche</button>`);
+  });
+  nav.innerHTML = arts.map(a => `<button type="button" role="tab" data-f="${a.dataset.fiche}">${esc(a.dataset.title)}</button>`).join('');
+  const sync = () => {
+    let k = 0;
+    $$('button', nav).forEach(b => { const on = Store.is('fiche-' + b.dataset.f); if (on) k++; b.classList.toggle('read', on); });
+    $$('[data-relu]').forEach(b => { const on = Store.is('fiche-' + b.dataset.relu); b.textContent = on ? '✓ Fiche relue' : 'J\'ai relu cette fiche'; b.classList.toggle('primary', !on); });
+    $('#fiche-count').textContent = `${k} / ${arts.length} fiches relues`;
+  };
+  const show = id => {
+    arts.forEach(a => a.hidden = a.dataset.fiche !== id);
+    $$('button', nav).forEach(b => { b.classList.toggle('on', b.dataset.f === id); b.setAttribute('aria-selected', b.dataset.f === id); });
+  };
+  nav.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; show(b.dataset.f); const r = nav.getBoundingClientRect(); if (r.top < 0) nav.scrollIntoView(); });
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-relu]'); if (!b) return;
+    Store.done('fiche-' + b.dataset.relu); sync();
+    const i = arts.findIndex(a => a.dataset.fiche === b.dataset.relu);
+    if (i < arts.length - 1) { show(arts[i + 1].dataset.fiche); nav.scrollIntoView(); }
+  });
+  $('#reset-prog')?.addEventListener('click', sync);
+  show(arts[0].dataset.fiche); sync();
 }
 init();
 </script>
